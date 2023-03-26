@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Wizards"
         tools:targetApi="31">
         <activity
+            android:name=".OwnHand"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
