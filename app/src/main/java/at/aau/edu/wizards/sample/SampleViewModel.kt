@@ -16,7 +16,7 @@ class SampleViewModel(
 
     init {
         // that launch allows us to call a function with "suspend"
-        viewModelScope.launch {
+        SampleViewModel.launch {
             val receivedData = dataSource.provideData(someDependency)
 
             _dataToBeObservedInFragment.postValue(receivedData) // update the observable value. Fragment will receive that value if it observes
