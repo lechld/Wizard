@@ -69,21 +69,45 @@ sonarqube {
 }
 
 dependencies {
+    // Just typical standard dependencies
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
+    // Gives us access to coroutines, and some sugar to use it
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
 
+    /**
+     * Upgrading causes kotlin dependency issues, as new lifecycle version
+     * already uses kotlin 1.8. Just waiting until other dependencies updated
+     * to that kotlin version will solve the issues from alone.
+     *
+     * Other option would be to exclude that specifically. Which seems
+     * more likely to stay in code base forever.
+     *
+     * Check "androidx.fragment:fragment-ktx:1.5.4" too when upgrading this dependencies.
+     */
+    //noinspection GradleDependency
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    //noinspection GradleDependency
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+    //noinspection GradleDependency
     implementation "androidx.lifecycle:lifecycle-common:2.5.1"
 
+    // Android changes between versions, with the AndroidX libraries we know which apis
+    // we can safely use. Also that allows us to use apis like ActivityResultContracts (helpful
+    // for Permissions) and other stuff.
+    implementation "androidx.activity:activity-ktx:1.7.0"
+    //noinspection GradleDependency
+    implementation "androidx.fragment:fragment-ktx:1.5.4"
+
+    // Setup testing environment
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 
+    // TODO: Think about removing, we won't write UI tests anyway. If we require Android dependencies let's think about Robolectric.
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
