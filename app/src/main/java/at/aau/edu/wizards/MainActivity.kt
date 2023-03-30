@@ -27,4 +27,11 @@ class MainActivity : AppCompatActivity() {
             .add(R.id.fragment_container, SampleFragment(), "TAG")
             .commit()
     }
+
+    private fun showDragAndDrop(){
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_container,  )
+            .commit()
+    }
+
 }
