@@ -15,6 +15,11 @@ class MainActivity : AppCompatActivity() {
                 showSampleFragment()
             }
         }
+        findViewById<Button>(R.id.draganddrop_button)?.let { sampleButton ->
+            sampleButton.setOnClickListener {
+                showSampleFragment()
+            }
+        }
     }
 
     private fun showSampleFragment() {
