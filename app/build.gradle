@@ -75,35 +75,21 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-    // Gives us access to coroutines, and some sugar to use it
+    // https://github.com/Kotlin/kotlinx.coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
 
-    /**
-     * Upgrading causes kotlin dependency issues, as new lifecycle version
-     * already uses kotlin 1.8. Just waiting until other dependencies updated
-     * to that kotlin version will solve the issues from alone.
-     *
-     * Other option would be to exclude that specifically. Which seems
-     * more likely to stay in code base forever.
-     *
-     * Check "androidx.fragment:fragment-ktx:1.5.4" too when upgrading this dependencies.
-     */
-    //noinspection GradleDependency
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
-    //noinspection GradleDependency
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
-    //noinspection GradleDependency
-    implementation "androidx.lifecycle:lifecycle-common:2.5.1"
+    // https://developer.android.com/jetpack/androidx/releases/lifecycle
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
+    implementation "androidx.lifecycle:lifecycle-common:2.6.1"
 
-    // Android changes between versions, with the AndroidX libraries we know which apis
-    // we can safely use. Also that allows us to use apis like ActivityResultContracts (helpful
-    // for Permissions) and other stuff.
+    // https://developer.android.com/jetpack/androidx/releases/activity
     implementation "androidx.activity:activity-ktx:1.7.0"
-    //noinspection GradleDependency
-    implementation "androidx.fragment:fragment-ktx:1.5.4"
+    // https://developer.android.com/jetpack/androidx/releases/fragment
+    implementation "androidx.fragment:fragment-ktx:1.5.6"
 
-    // Setup testing environment
+    // https://github.com/junit-team/junit5
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 
