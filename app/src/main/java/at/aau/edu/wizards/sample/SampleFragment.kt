@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.R
+import at.aau.edu.wizards.databinding.FragmentSampleBinding
 
 class SampleFragment : Fragment() {
 
@@ -19,12 +20,18 @@ class SampleFragment : Fragment() {
         )[SampleViewModel::class.java]
     }
 
+    private var binding: FragmentSampleBinding? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_sample, container, false)
+    ): View {
+        val binding = FragmentSampleBinding.inflate(inflater, container, false)
+
+        this.binding = binding
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,15 +40,22 @@ class SampleFragment : Fragment() {
         setupUI()
     }
 
+    override fun onDestroyView() {
+        binding = null // important to set binding to null here. It's a memory leak otherwise.
+        super.onDestroyView()
+    }
+
     private fun setupUI() {
-        val textView = view?.findViewById<TextView>(R.id.some_text_view)
+        val binding = this.binding ?: return
 
         viewModel.dataToBeObservedInFragment.observe(viewLifecycleOwner) { newData ->
             println("Received new data from view model. Do something with it.")
             println(newData)
 
             // could use
-            // textView?.text = "something" to update the text of the textview
+            // binding.someTextView.text = "something" to update the text of the textview
         }
+
+        // binding.someTextView.text = "something" to update the text of the textview
     }
 }
