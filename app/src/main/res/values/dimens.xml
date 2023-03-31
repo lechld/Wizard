@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 48x48dp is defined by material design to be the minimum required touch size for good UX-->
+    <dimen name="min_touch_target">48dp</dimen>
+    <!-- Default margin we keep to borders of the screen itself-->
+    <dimen name="default_margin">16dp</dimen>
+    <!-- Half margin of default_margin. Can be helpful if we items next to each other. Eg: RecyclerView. -->
+    <dimen name="default_margin_half">8dp</dimen>
+
+    <!-- Define useful dimension here-->
+</resources>
