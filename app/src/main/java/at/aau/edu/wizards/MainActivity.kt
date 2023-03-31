@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showDragAndDrop(){
         supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container,  )
+            .add(R.id.fragment_container, SampleFragment(),"TAG")
             .commit()
     }
 

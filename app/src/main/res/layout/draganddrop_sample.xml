@@ -7,7 +7,7 @@
     android:layout_margin="@dimen/default_margin">
 
     <TextView
-        android:id="@+id/some_text_view"
+        android:id="@+id/drop_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/darker_gray"
@@ -26,7 +26,7 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/drag_view"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="114dp"
