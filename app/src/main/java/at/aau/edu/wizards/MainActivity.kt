@@ -3,6 +3,7 @@ package at.aau.edu.wizards
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import at.aau.edu.wizards.DragAndDrop.DragAndDrop_Fragment
 import at.aau.edu.wizards.sample.SampleFragment
 
 class MainActivity : AppCompatActivity() {
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.draganddrop_button)?.let { sampleButton ->
             sampleButton.setOnClickListener {
-                showSampleFragment()
+                showDragAndDrop()
             }
         }
     }
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showDragAndDrop(){
         supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container, SampleFragment(),"TAG")
+            .add(R.id.fragment_container, DragAndDrop_Fragment(),"TAG")
             .commit()
     }
 

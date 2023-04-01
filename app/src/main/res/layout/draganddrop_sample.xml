@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     android:layout_margin="@dimen/default_margin">
 
+
     <TextView
-        android:id="@+id/drop_view"
+        android:id="@+id/dropview"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@android:color/darker_gray"
+        android:background="@android:color/tertiary_text_light"
         android:gravity="center"
         android:text="Drop bereich"
         app:layout_constraintBottom_toBottomOf="@id/guideline"
@@ -26,20 +27,20 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <TextView
-        android:id="@+id/drag_view"
+        android:id="@+id/dragview"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="114dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="129dp"
         android:layout_marginEnd="115dp"
         android:layout_marginBottom="120dp"
         android:background="@android:color/holo_orange_light"
-        android:text="Drag"
         android:gravity="center"
+        android:text="Drag"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/some_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/dropview"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
