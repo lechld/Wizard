@@ -6,7 +6,7 @@ interface GameModelCardDealerInterface {
      * Deals a random card, that is still left in the current set of cards.
      * (Was not already dealt)
      */
-    fun dealCardInSet(playerId: Int, parent: GameModel): GameModelCard
+    fun dealCardInSet(playerId: Int, parent: GameModel): GameModelResult<GameModelCard>
 
     /**
      * Resets the set of cards, to a fresh set of cards.

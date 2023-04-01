@@ -1,10 +1,10 @@
 package at.aau.edu.wizards.gameModel
 
-class GameModelPlayer(override val id: Int, val isCPU: Int) : GameModelPlayerInterface {
+class GameModelPlayer(val id: Int, val isCPU: Int) : GameModelPlayerInterface {
 
-    override val cards = ArrayList<GameModelCard>()
+    val cards = ArrayList<GameModelCard>()
     private val currentCards = ArrayList<GameModelCard>()
-    private var guess:Int? = null
+    private var guess: Int? = null
     private val scores = ArrayList<Int>()
 
     override fun getString(): String {
@@ -18,15 +18,18 @@ class GameModelPlayer(override val id: Int, val isCPU: Int) : GameModelPlayerInt
         }
     }
 
-    fun dealHand(turn:Int): GameModelResult<Unit> {
+    override fun dealHand(turn: Int): GameModelResult<Unit> {
         if (turn > 10) {
             return GameModelResult.Failure(Exception("Failed to deal hand: Trying to go over the turn limit of 10!"))
-        } else if(currentCards.isNotEmpty()) {
+        } else if (currentCards.isNotEmpty()) {
             return GameModelResult.Failure(Exception("Failed to deal hand: There are still cards in play!"))
         }
         var pos = 0
-        for (skip in 1..turn){
+        for (skip in 1..turn) {
             pos += skip
+        }
+        if (cards.size <= pos + turn) {
+            return GameModelResult.Failure(Exception("Failed to deal hand: Not enough cards left do deal!"))
         }
         for (card in 0 until turn) {
             currentCards.add(cards[pos + card])
@@ -35,56 +38,64 @@ class GameModelPlayer(override val id: Int, val isCPU: Int) : GameModelPlayerInt
         return GameModelResult.Success(Unit)
     }
 
-    fun cardsContain(hash: String): Boolean {
+
+    override fun cardsContain(hash: String): Boolean {
         for (card in 0 until currentCards.size) {
-            if(currentCards[card].getString()==hash){
+            if (currentCards[card].getString() == hash) {
                 return true
             }
         }
         return false
     }
 
-    fun cardsContainColor(color:Int): Boolean {
+    override fun cardsContainColor(color: Int): Boolean {
         for (card in 0 until currentCards.size) {
-            if(currentCards[card].color==color){
+            if (currentCards[card].color == color) {
                 return true
             }
         }
         return false
     }
 
-    fun removeCardFromHand(card :GameModelCard){
-        //TODO ERROR HANDLING
-        for(index in 0 until currentCards.size){
-            if(currentCards[index] == card){
+    override fun removeCardFromHand(card: GameModelCard): GameModelResult<Unit> {
+        if (!currentCards.contains(card)) {
+            return GameModelResult.Failure(Exception("Failed to remove card from hand: Card does not exist!"))
+        }
+        for (index in 0 until currentCards.size) {
+            if (currentCards[index] == card) {
                 currentCards.removeAt(index)
             }
         }
+        return GameModelResult.Success(Unit)
     }
 
-    fun cardsEmpty(): Boolean{
-        if(currentCards.isEmpty()){
+    override fun cardsEmpty(): Boolean {
+        if (currentCards.isEmpty()) {
             return true
         }
         return false
     }
 
-    fun getGuess(){
+    override fun getGuess(): GameModelResult<Unit> {
         //TODO implement and call GameModel sendMove - currently mock function
-        guess = 1
+        setGuess(1)
+        return GameModelResult.Success(Unit)
     }
 
-    fun setGuess(){
-        //TODO implement and call from GameModel reciveMove
+    override fun setGuess(receivedGuess: Int) {
+        guess = receivedGuess
     }
 
-    fun score(amountWon : Int){
-        //TODO add Error catch for NULL CASE
+    override fun score(amountWon: Int): GameModelResult<Unit> {
+        if (guess == null) {
+            return GameModelResult.Failure(Exception("Failed to score: Guess was not set"))
+        }
         if (guess!! == amountWon) {
             scores.add(20 + (amountWon * 10))
         } else {
             scores.add((amountWon * 10) - ((guess!! - amountWon) * 10))
         }
         guess = null
+        return GameModelResult.Success(Unit)
     }
 }

@@ -1,37 +1,69 @@
 package at.aau.edu.wizards.gameModel
 
-class GameModel() : GameModelInterface {
+class GameModel : GameModelInterface {
 
-    val listOfPlayers = ArrayList<GameModelPlayer>()
+    override val listOfPlayers = ArrayList<GameModelPlayer>()
     private val rules = GameModelRules(this)
 
-    override fun sendMove(move: String, cheat: Boolean): GameModelResult<Unit> {
-        if (!legalMessageCard(move) || !cheat && !rules.checkMoveLegal(move) || cheat && !rules.checkMoveLegalCheat(move)) {
-            GameModelResult.Failure(Throwable("Unable to send move: No such move legally possible"))
+    override fun sendMove(move: String): GameModelResult<Unit> {
+        if (!legalMessageCard(move, listOfPlayers.size) || (!rules.checkMoveLegal(move) && !rules.checkMoveLegalCheat(move))) {
+            return GameModelResult.Failure(Throwable("Unable to send move: No such move possible"))
         }
-        TODO("Call Network function")
+        //TODO("Call Network function")
+        //for mock implementation we will just call local receiveMove function
+        return when (val forErrorHandling = receiveMove(move)) {
+            is GameModelResult.Failure -> {
+                GameModelResult.Failure(forErrorHandling.throwable)
+            }
+            is GameModelResult.Success -> {
+                GameModelResult.Success(Unit)
+            }
+        }
     }
 
     override fun receiveMove(move: String): GameModelResult<Unit> {
         if (move.length == 3) {
-            if (move[0].code in 0..14 && move[1].code in 1..4 && move[2].code == 6) {
-                rules.addTrump(move)
-                return GameModelResult.Success<Unit>(Unit)
-            } else if (!legalMessageCard(move) || !legalMove(move)) {
+            if (move[0].code in 0..14 && move[1].code in 0..4 && move[2].code == 6) {
+                return when (val forErrorHandling = rules.addTrump(move)) {
+                    is GameModelResult.Failure -> {
+                        GameModelResult.Failure(forErrorHandling.throwable)
+                    }
+                    is GameModelResult.Success -> {
+                        GameModelResult.Success(Unit)
+                    }
+                }
+            } else if (!legalMessageCard(move, listOfPlayers.size) || !legalMove(move)) {
                 return GameModelResult.Failure(Exception("Failed to load move: The string does not represent a legal move!"))
             }
-            rules.playCard(move)
+            return when (val forErrorHandling = rules.playCard(move)) {
+                is GameModelResult.Failure -> {
+                    GameModelResult.Failure(forErrorHandling.throwable)
+                }
+                is GameModelResult.Success -> {
+                    GameModelResult.Success(Unit)
+                }
+            }
         } else if (move.length == 1 && move[0].code == 1) {
-            rules.initFirstTurn()
+            return when (val forErrorHandling = rules.initFirstRound()) {
+                is GameModelResult.Failure -> {
+                    GameModelResult.Failure(forErrorHandling.throwable)
+                }
+                is GameModelResult.Success -> {
+                    GameModelResult.Success(Unit)
+                }
+            }
         } else {
             if (!legalMessageConfig(move)) {
                 return GameModelResult.Failure(Exception("Failed to load config: The string does not represent a legal config!"))
             }
             setConfig(move)
+            return GameModelResult.Success(Unit)
         }
-        return GameModelResult.Success<Unit>(Unit)
     }
 
+    /**
+     * Sets the config depending on the received String.
+     */
     private fun setConfig(hash: String) {
         rules.id = hash[0].code
         for (pos in 1..(hash.length - 1) / 3) {
@@ -46,39 +78,38 @@ class GameModel() : GameModelInterface {
         receiveMove(buildString { append(1.toChar()) })
     }
 
-    /**
-     * Checks if the received message does indeed represent a legal card value
-     */
-    private fun legalMessageCard(hash: String): Boolean {
-        if (hash[0].code in 0..14 && hash[1].code in 1..4 && hash[2].code in 0 until listOfPlayers.size) {
+    override fun legalMessageCard(hash: String, numberOfPlayer: Int): Boolean {
+        if (hash[0].code in 0..14 && hash[1].code in 1..4 && hash[2].code in 0 until numberOfPlayer) {
             return true
         }
         return false
     }
 
     /**
-     * Checks if the received message does indeed represent a legal config value
+     * Checks if the received message does represent a legal config value
      */
     private fun legalMessageConfig(hash: String): Boolean {
-        if (hash[0].code in 1..5) {
+        if (hash.length != 1 && hash[0].code in 1..5) {
             var playerCount = 0
             for (input in 1..(hash.length - 1) / 3) {
-                if ((hash[input].code != 15 || hash[input + 1].code !in 0..1 || hash[input + 2].code !in 0..5)) {
+                if ((hash[input].code == 15 || hash[input + 1].code !in 0..1 || hash[input + 2].code !in 0..5)) {
                     playerCount++
-                } else if (!legalMessageCard(hash.substring(input, input + 2))) {
+                } else if (!legalMessageCard(hash.substring(input, input + 2), playerCount)) {
                     return false
                 }
             }
-            if (playerCount !in 3..6 || 55 * playerCount + 1 != hash.length) {
-                return false
+            if (playerCount in 3..6 && ((55 * playerCount + 1) + 10) * 3 == hash.length) {
+                return true
             }
-            return true
         }
         return false
     }
 
+    /**
+     * Checks if a message is a legal move.
+     */
     private fun legalMove(move: String): Boolean {
-        if (listOfPlayers[move[2].code].cardsContain(move) && rules.isTurn(move[2].code)) {
+        if (listOfPlayers[move[2].code].cardsContain(move) && rules.isActivePlayer(move[2].code)) {
             return true
         }
         return false

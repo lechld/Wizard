@@ -1,5 +1,7 @@
 package at.aau.edu.wizards.gameModel
 
+import kotlin.random.Random
+
 class GameModelConfig(private val parent: GameModel) : GameModelConfigInterface {
 
     private val trumps = ArrayList<String>()
@@ -19,14 +21,30 @@ class GameModelConfig(private val parent: GameModel) : GameModelConfigInterface 
         for (round in 1..10) {
             for (player in 0 until parent.listOfPlayers.size) {
                 for (card in 1..round) {
-                    parent.listOfPlayers[player].cards.add(
-                            dealer.dealCardInSet(player, parent)
-                    )
+                    when (val newCard = dealer.dealCardInSet(player, parent)) {
+                        is GameModelResult.Failure -> {
+                            return GameModelResult.Failure(newCard.throwable)
+                        }
+                        is GameModelResult.Success -> {
+                            parent.listOfPlayers[player].cards.add(newCard.output)
+                        }
+                    }
                 }
             }
             if (round < 10) {
-                val trump = dealer.dealCardInSet(6, parent).toString()
-                parent.receiveMove(trump)
+                val trump = buildString {
+                    append(Random.nextInt(0, 14).toChar())
+                    append(Random.nextInt(1, 4).toChar())
+                    append(6.toChar())
+                }
+                when (val forErrorHandling = parent.receiveMove(trump)) {
+                    is GameModelResult.Failure -> {
+                        return GameModelResult.Failure(forErrorHandling.throwable)
+                    }
+                    is GameModelResult.Success -> {
+
+                    }
+                }
                 trumps.add(trump)
             } else {
                 val trump = buildString {
@@ -34,23 +52,37 @@ class GameModelConfig(private val parent: GameModel) : GameModelConfigInterface 
                     append(0.toChar())
                     append(6.toChar())
                 }
-                parent.receiveMove(trump)
+                when (val forErrorHandling = parent.receiveMove(trump)) {
+                    is GameModelResult.Failure -> {
+                        return GameModelResult.Failure(forErrorHandling.throwable)
+                    }
+                    is GameModelResult.Success -> {
+
+                    }
+                }
                 trumps.add(trump)
             }
             dealer.resetSet()
         }
-        parent.receiveMove(buildString { append(1.toChar()) })
-        return GameModelResult.Success<Unit>(Unit)
+        when (val forErrorHandling = parent.receiveMove(buildString { append(1.toChar()) })) {
+            is GameModelResult.Failure -> {
+                return GameModelResult.Failure(forErrorHandling.throwable)
+            }
+            is GameModelResult.Success -> {
+
+            }
+        }
+        return GameModelResult.Success(Unit)
     }
 
     override fun getConfig(): GameModelResult<String> {
         while (parent.listOfPlayers[player].isCPU == 1) {
             player++
         }
-        if (player > parent.listOfPlayers.size) {
-            return GameModelResult.Failure(Exception("Failed to get config: Player exceeding player amount specified in config!"))
+        if (player >= parent.listOfPlayers.size) {
+            return GameModelResult.Failure(Exception("Failed to get config: Player is exceeding player amount specified in config!"))
         }
-        return GameModelResult.Success<String>(buildString {
+        return GameModelResult.Success(buildString {
             append(player++.toChar())
             for (player in 0 until parent.listOfPlayers.size) {
                 append(parent.listOfPlayers[player].getString())
