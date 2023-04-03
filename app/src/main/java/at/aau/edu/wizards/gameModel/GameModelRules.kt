@@ -253,4 +253,23 @@ class GameModelRules(private val parent: GameModel) : GameModelRulesInterface {
             }
         }
     }
+
+    override fun getCurrentPlayer(): Int {
+        return currentPlayer
+    }
+
+    override fun getActiveTrump(): GameModelCard {
+        return when (val trump = board.getTrumpComplete()) {
+            is GameModelResult.Failure -> {
+                GameModelCard(buildString {
+                    append(0.toChar())
+                    append(0.toChar())
+                    append(0.toChar())
+                })
+            }
+            is GameModelResult.Success -> {
+                trump.output
+            }
+        }
+    }
 }

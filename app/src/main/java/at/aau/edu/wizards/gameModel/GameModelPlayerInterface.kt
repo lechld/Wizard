@@ -55,4 +55,19 @@ interface GameModelPlayerInterface {
      * Failure if card is illegal or does not belong to the player.
      */
     fun addCardToPlayerStack(card: GameModelCard): GameModelResult<Unit>
+
+    /**
+     * Gets the cards currently held.
+     */
+    fun getCurrentCards(): ArrayList<GameModelCard>
+
+    /**
+     * Gets the current guess of the player.
+     */
+    fun getCurrentGuess(): Int
+
+    /**
+     * Returns scores of all completed turns.
+     */
+    fun getScores(): ArrayList<Int>
 }

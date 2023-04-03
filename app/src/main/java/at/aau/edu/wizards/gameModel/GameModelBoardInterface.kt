@@ -18,6 +18,7 @@ interface GameModelBoardInterface {
     /**
      * Returns the color code of the current Trump card.
      * Failure if there is no trump set. (This should not happen.)
+     * If you want the full card values, use [getTrumpComplete].
      */
     fun getTrump(): GameModelResult<Int>
 
@@ -59,4 +60,9 @@ interface GameModelBoardInterface {
      * Use this if you know trump cant be null.
      */
     fun getTrumpCantBeNull(): Int
+
+    /**
+     * Returns the complete trump card, instead of just the color at [getTrump].
+     */
+    fun getTrumpComplete(): GameModelResult<GameModelCard>
 }

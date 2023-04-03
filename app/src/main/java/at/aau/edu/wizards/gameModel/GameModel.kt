@@ -5,6 +5,7 @@ class GameModel : GameModelInterface {
     override val listOfPlayers = ArrayList<GameModelPlayer>()
     private val rules = GameModelRules(this)
     private var waitingForAnswer = false
+    private val listener = GameModelDataListener(this, rules)
 
 
     private val mockNetwork = ArrayList<String>()
@@ -35,6 +36,7 @@ class GameModel : GameModelInterface {
                         GameModelResult.Failure(forErrorHandling.throwable)
                     }
                     is GameModelResult.Success -> {
+                        listener.update()
                         GameModelResult.Success(Unit)
                     }
                 }
@@ -46,6 +48,7 @@ class GameModel : GameModelInterface {
                     GameModelResult.Failure(forErrorHandling.throwable)
                 }
                 is GameModelResult.Success -> {
+                    listener.update()
                     GameModelResult.Success(Unit)
                 }
             }
@@ -55,6 +58,7 @@ class GameModel : GameModelInterface {
                     GameModelResult.Failure(forErrorHandling.throwable)
                 }
                 is GameModelResult.Success -> {
+                    listener.update()
                     GameModelResult.Success(Unit)
                 }
             }
@@ -63,6 +67,7 @@ class GameModel : GameModelInterface {
                 return GameModelResult.Failure(Exception("Failed to load config: The string does not represent a legal config!"))
             }
             setConfig(move)
+            listener.update()
             GameModelResult.Success(Unit)
         } else {
             GameModelResult.Failure(Exception("Failed to load config: The string is empty!"))
@@ -135,5 +140,9 @@ class GameModel : GameModelInterface {
             mockNetwork.removeAt(0)
         }
         waitingForAnswer = false
+    }
+
+    fun getListener(): GameModelDataListener {
+        return listener
     }
 }

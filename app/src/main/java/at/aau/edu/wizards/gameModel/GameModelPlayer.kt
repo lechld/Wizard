@@ -1,5 +1,7 @@
 package at.aau.edu.wizards.gameModel
 
+import kotlin.math.abs
+
 class GameModelPlayer(val id: Int, val isCPU: Int) : GameModelPlayerInterface {
 
     private val cards = ArrayList<GameModelCard>()
@@ -89,7 +91,7 @@ class GameModelPlayer(val id: Int, val isCPU: Int) : GameModelPlayerInterface {
         if (guess == amountWon) {
             scores.add(20 + (amountWon * 10))
         } else {
-            scores.add((amountWon * 10) - ((guess - amountWon) * 10))
+            scores.add((amountWon * 10) - ((abs(guess - amountWon)) * 10))
         }
         guess = 0
     }
@@ -100,5 +102,25 @@ class GameModelPlayer(val id: Int, val isCPU: Int) : GameModelPlayerInterface {
         }
         cards.add(card)
         return GameModelResult.Success(Unit)
+    }
+
+    override fun getCurrentCards(): ArrayList<GameModelCard> {
+        val list = ArrayList<GameModelCard>()
+        for (card in currentCards) {
+            list.add(GameModelCard(card.getString()))
+        }
+        return list
+    }
+
+    override fun getCurrentGuess(): Int {
+        return guess
+    }
+
+    override fun getScores(): ArrayList<Int> {
+        val list = ArrayList<Int>()
+        for (score in scores) {
+            list.add(score)
+        }
+        return list
     }
 }

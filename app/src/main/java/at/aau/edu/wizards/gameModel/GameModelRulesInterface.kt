@@ -35,4 +35,14 @@ interface GameModelRulesInterface {
      * Failure if card is of an illegal value for trump.
      */
     fun addTrump(trump: String): GameModelResult<Unit>
+
+    /**
+     * Returns the id of the active player. (Player who can play cards.)
+     */
+    fun getCurrentPlayer(): Int
+
+    /**
+     * Returns the active trump card. 0 0 0 is returned for no trump!
+     */
+    fun getActiveTrump(): GameModelCard
 }

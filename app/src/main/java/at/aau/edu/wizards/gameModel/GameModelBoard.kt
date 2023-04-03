@@ -93,4 +93,14 @@ class GameModelBoard : GameModelBoardInterface {
         }
         return counter
     }
+
+    override fun getTrumpComplete(): GameModelResult<GameModelCard> {
+        if (trump == null) {
+            return GameModelResult.Failure(Exception("Unable to return trump color: Trump not set!"))
+        }
+        return GameModelResult.Success(GameModelCard(buildString {
+            append(trump!!)
+            append(6.toChar())
+        }))
+    }
 }
