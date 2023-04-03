@@ -9,7 +9,7 @@ class GameModelBoard : GameModelBoardInterface {
     private val trumpStack = ArrayList<String>()
 
     override fun addTrumpToStack(trump: String): GameModelResult<Unit> {
-        if (trump.length != 2 || trump[0].code !in 0..14 || trump[1].code !in 0..5) {
+        if ((trump.length != 2 || trump[0].code > 14 || (trump[1].code !in 1..4 && (trump[0].code != 0 || trump[1].code != 0)))) {
             return GameModelResult.Failure(Exception("Unable to add trump to stack: Illegal trump card!"))
         }
         trumpStack.add(trump)
@@ -31,6 +31,13 @@ class GameModelBoard : GameModelBoardInterface {
         return GameModelResult.Success(trump!![1].code)
     }
 
+    override fun getTrumpCantBeNull(): Int {
+        if (trump == null) {
+            return 0
+        }
+        return trump!![1].code
+    }
+
 
     override fun nextTrump(): GameModelResult<Unit> {
         if (trumpStack.isEmpty()) {
@@ -44,10 +51,12 @@ class GameModelBoard : GameModelBoardInterface {
 
     override fun addWinningCard(card: GameModelCard): GameModelResult<Unit> {
         if (!card.isLegal()) {
-            GameModelResult.Failure(Exception("Failed to add winning card to board: Illegal card!"))
+            return GameModelResult.Failure(Exception("Failed to add winning card to board: Illegal card!"))
+        }
+        if (winningCard != null) {
+            addNonWinningCard(winningCard!!)
         }
         winningCard = card
-        addNonWinningCard(card)
         return GameModelResult.Success(Unit)
     }
 
@@ -62,13 +71,15 @@ class GameModelBoard : GameModelBoardInterface {
 
 
     override fun clearGame() {
+        if (winningCard != null) {
+            winningCards.add(winningCard!!)
+        }
         winningCard = null
         game.clear()
     }
 
 
     override fun clearRound() {
-        clearGame()
         winningCards.clear()
     }
 
@@ -76,7 +87,7 @@ class GameModelBoard : GameModelBoardInterface {
     override fun gamesWon(playerId: Int): Int {
         var counter = 0
         for (card in winningCards) {
-            if (card.owner.id == playerId) {
+            if (card.id == playerId) {
                 counter++
             }
         }

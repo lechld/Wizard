@@ -37,7 +37,7 @@ interface GameModelPlayerInterface {
     /**
      * Gets the guess for the current round from the player and sends it to the server.
      */
-    fun getGuess(): GameModelResult<Unit>
+    fun getGuess()
 
     /**
      * Sets the guess for the current round.
@@ -48,5 +48,11 @@ interface GameModelPlayerInterface {
      * Calculates the score of the current round and saves it.
      * Failure if guess was not set.
      */
-    fun score(amountWon: Int): GameModelResult<Unit>
+    fun score(amountWon: Int)
+
+    /**
+     * Adds a card to the future draw pool of the player.
+     * Failure if card is illegal or does not belong to the player.
+     */
+    fun addCardToPlayerStack(card: GameModelCard): GameModelResult<Unit>
 }

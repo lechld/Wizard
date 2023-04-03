@@ -2,9 +2,9 @@ package at.aau.edu.wizards.gameModel
 
 class GameModelPlayer(val id: Int, val isCPU: Int) : GameModelPlayerInterface {
 
-    val cards = ArrayList<GameModelCard>()
+    private val cards = ArrayList<GameModelCard>()
     private val currentCards = ArrayList<GameModelCard>()
-    private var guess: Int? = null
+    private var guess: Int = 0
     private val scores = ArrayList<Int>()
 
     override fun getString(): String {
@@ -19,17 +19,19 @@ class GameModelPlayer(val id: Int, val isCPU: Int) : GameModelPlayerInterface {
     }
 
     override fun dealHand(turn: Int): GameModelResult<Unit> {
-        if (turn > 10) {
+        if (turn < 1) {
+            return GameModelResult.Failure(Exception("Failed to deal hand: Trying to go under the turn minimum of 1!"))
+        } else if (turn > 10) {
             return GameModelResult.Failure(Exception("Failed to deal hand: Trying to go over the turn limit of 10!"))
         } else if (currentCards.isNotEmpty()) {
             return GameModelResult.Failure(Exception("Failed to deal hand: There are still cards in play!"))
         }
         var pos = 0
-        for (skip in 1..turn) {
+        for (skip in 1 until turn) {
             pos += skip
         }
-        if (cards.size <= pos + turn) {
-            return GameModelResult.Failure(Exception("Failed to deal hand: Not enough cards left do deal!"))
+        if (cards.size < pos + turn) {
+            return GameModelResult.Failure(Exception("Failed to deal hand: Not enough cards left do deal or/and turn smaller or equal to 0!"))
         }
         for (card in 0 until turn) {
             currentCards.add(cards[pos + card])
@@ -50,7 +52,7 @@ class GameModelPlayer(val id: Int, val isCPU: Int) : GameModelPlayerInterface {
 
     override fun cardsContainColor(color: Int): Boolean {
         for (card in 0 until currentCards.size) {
-            if (currentCards[card].color == color) {
+            if (currentCards[card].color == color && currentCards[card].value in 1..13) {
                 return true
             }
         }
@@ -58,15 +60,13 @@ class GameModelPlayer(val id: Int, val isCPU: Int) : GameModelPlayerInterface {
     }
 
     override fun removeCardFromHand(card: GameModelCard): GameModelResult<Unit> {
-        if (!currentCards.contains(card)) {
-            return GameModelResult.Failure(Exception("Failed to remove card from hand: Card does not exist!"))
-        }
         for (index in 0 until currentCards.size) {
-            if (currentCards[index] == card) {
+            if (currentCards[index].getString() == card.getString()) {
                 currentCards.removeAt(index)
+                return GameModelResult.Success(Unit)
             }
         }
-        return GameModelResult.Success(Unit)
+        return GameModelResult.Failure(Exception("Failed to remove card from hand: Card does not exist!"))
     }
 
     override fun cardsEmpty(): Boolean {
@@ -76,26 +76,29 @@ class GameModelPlayer(val id: Int, val isCPU: Int) : GameModelPlayerInterface {
         return false
     }
 
-    override fun getGuess(): GameModelResult<Unit> {
+    override fun getGuess() {
         //TODO implement and call GameModel sendMove - currently mock function
         setGuess(1)
-        return GameModelResult.Success(Unit)
     }
 
     override fun setGuess(receivedGuess: Int) {
         guess = receivedGuess
     }
 
-    override fun score(amountWon: Int): GameModelResult<Unit> {
-        if (guess == null) {
-            return GameModelResult.Failure(Exception("Failed to score: Guess was not set"))
-        }
-        if (guess!! == amountWon) {
+    override fun score(amountWon: Int) {
+        if (guess == amountWon) {
             scores.add(20 + (amountWon * 10))
         } else {
-            scores.add((amountWon * 10) - ((guess!! - amountWon) * 10))
+            scores.add((amountWon * 10) - ((guess - amountWon) * 10))
         }
-        guess = null
+        guess = 0
+    }
+
+    override fun addCardToPlayerStack(card: GameModelCard): GameModelResult<Unit> {
+        if (!card.isLegal() || card.id != id) {
+            return GameModelResult.Failure(Exception("Failed to add card to player stack: Card is not legal or does not belong to player!"))
+        }
+        cards.add(card)
         return GameModelResult.Success(Unit)
     }
 }

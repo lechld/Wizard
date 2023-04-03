@@ -53,4 +53,10 @@ interface GameModelBoardInterface {
      * Returns the amount of games a player has won. This should be called before a new turn is started.
      */
     fun gamesWon(playerId: Int): Int
+
+    /**
+     * Same function as get Trump, but does not throw an error if it is null. (Instead returns 0)
+     * Use this if you know trump cant be null.
+     */
+    fun getTrumpCantBeNull(): Int
 }
