@@ -31,6 +31,9 @@ class GameModel : GameModelInterface {
     }
 
     override fun receiveMove(move: String): GameModelResult<Unit> {
+        if (waitingForAnswer) {
+            waitingForAnswer = false
+        }
         if (move.length == 3) {
             if (move[0].code < 15 && move[1].code < 4 && move[2].code == 6) {
                 return when (val forErrorHandling = rules.addTrump(move)) {
@@ -147,7 +150,6 @@ class GameModel : GameModelInterface {
             receiveMove(mockNetwork[0])
             mockNetwork.removeAt(0)
         }
-        waitingForAnswer = false
     }
 
     fun getListener(): GameModelDataListener {
