@@ -16,7 +16,9 @@ class GameModel : GameModelInterface {
                 listOfPlayers.size
             ) || (!rules.checkMoveLegal(move) && !rules.checkMoveLegalCheat(move))
         ) {
-            return GameModelResult.Failure(Throwable("Unable to send move: No such move possible"))
+            if (!checkMoveIsGuess(move)) {
+                return GameModelResult.Failure(Throwable("Unable to send move: No such move possible"))
+            }
         }
         if (!waitingForAnswer) {
             //Call real Network function - this is a mock implementation
@@ -62,15 +64,21 @@ class GameModel : GameModelInterface {
                     GameModelResult.Success(Unit)
                 }
             }
-        } else return if (move.isNotEmpty()) {
-            if (!legalMessageConfig(move)) {
-                return GameModelResult.Failure(Exception("Failed to load config: The string does not represent a legal config!"))
-            }
-            setConfig(move)
+        } else if (checkMoveIsGuess(move)) {
+            listOfPlayers[(move[0].code - 10) / 11].setGuess((move[0].code - 10) % 11)
             listener.update()
-            GameModelResult.Success(Unit)
+            return GameModelResult.Success(Unit)
         } else {
-            GameModelResult.Failure(Exception("Failed to load config: The string is empty!"))
+            return if (move.isNotEmpty()) {
+                if (!legalMessageConfig(move)) {
+                    return GameModelResult.Failure(Exception("Failed to load config: The string does not represent a legal config!"))
+                }
+                setConfig(move)
+                listener.update()
+                GameModelResult.Success(Unit)
+            } else {
+                GameModelResult.Failure(Exception("Failed to load config: The string is empty!"))
+            }
         }
     }
 
@@ -144,5 +152,12 @@ class GameModel : GameModelInterface {
 
     fun getListener(): GameModelDataListener {
         return listener
+    }
+
+    /**
+     * Checks if the provided move is a legal guess considering the amount of players.
+     */
+    private fun checkMoveIsGuess(move: String): Boolean {
+        return move.length == 1 && move[0].code in 10..listOfPlayers.size * 11 + 9
     }
 }
