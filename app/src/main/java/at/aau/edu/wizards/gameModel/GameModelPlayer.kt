@@ -79,7 +79,7 @@ class GameModelPlayer(val id: Int, val isCPU: Int) : GameModelPlayerInterface {
     }
 
     override fun getGuess() {
-        //TODO implement and call GameModel sendMove - currently mock function
+        //TODO call ui get guess
         setGuess(1)
     }
 

@@ -1,5 +1,6 @@
 package at.aau.edu.wizards.gameModel
 
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 
@@ -90,6 +91,32 @@ class GameModelUnitTest {
             append(1.toChar())
             append(0.toChar())
         })))
+
+        assertFalse(resultUnit(model.sendMove(
+            buildString {
+                append(9.toChar())
+            }
+        )))
+        assert(resultUnit(model.sendMove(
+            buildString {
+                append(10.toChar())
+            }
+        )))
+        model.mockNetworkDoneSending()
+        assert(resultUnit(model.sendMove(
+            buildString {
+                append(31.toChar())
+            }
+        )))
+        model.mockNetworkDoneSending()
+        assertFalse(resultUnit(model.sendMove(
+            buildString {
+                append(32.toChar())
+            }
+        )))
+
+        assertEquals(0, model.getListener().getCurrentGuessOfPlayer(0))
+        assertEquals(10, model.getListener().getCurrentGuessOfPlayer(1))
     }
 
     @Test
