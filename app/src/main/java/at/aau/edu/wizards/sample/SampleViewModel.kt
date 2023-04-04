@@ -1,7 +1,7 @@
 package at.aau.edu.wizards.sample
 
 import androidx.lifecycle.*
-import kotlinx.coroutines.launch
+//import kotlinx.coroutines.launch
 
 class SampleViewModel(
     private val someDependency: String, // can be anything, whatever we need

@@ -11,14 +11,14 @@ class GameModel : GameModelInterface {
     private val mockNetwork = ArrayList<String>()
 
     override fun sendMove(move: String): GameModelResult<Unit> {
-        if (!legalMessageCard(
+        if ((!legalMessageCard(
                 move,
                 listOfPlayers.size
-            ) || (!rules.checkMoveLegal(move) && !rules.checkMoveLegalCheat(move))
+            ) || (!rules.checkMoveLegal(move) && !rules.checkMoveLegalCheat(move))) && !checkMoveIsGuess(
+                move
+            )
         ) {
-            if (!checkMoveIsGuess(move)) {
-                return GameModelResult.Failure(Throwable("Unable to send move: No such move possible"))
-            }
+            return GameModelResult.Failure(Throwable("Unable to send move: No such move possible"))
         }
         if (!waitingForAnswer) {
             //Call real Network function - this is a mock implementation
