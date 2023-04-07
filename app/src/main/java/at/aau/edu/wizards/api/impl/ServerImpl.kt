@@ -2,7 +2,6 @@ package at.aau.edu.wizards.api.impl
 
 import at.aau.edu.wizards.BuildConfig
 import at.aau.edu.wizards.api.Server
-import at.aau.edu.wizards.api.model.Connection
 import com.google.android.gms.nearby.connection.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,42 +14,46 @@ internal class ServerImpl(
     private val applicationIdentifier: String = BuildConfig.APPLICATION_ID,
 ) : Server {
 
-    private val _connections = MutableStateFlow<List<Connection>>(emptyList())
-    override val connections: StateFlow<List<Connection>> = _connections.asStateFlow()
+    private val _connections = MutableStateFlow<List<Server.Connection>>(emptyList())
+    override val connections: StateFlow<List<Server.Connection>> = _connections.asStateFlow()
 
-    override fun getConnections(): List<Connection> {
+    override fun getConnections(): List<Server.Connection> {
         return _connections.value
     }
 
     override fun startBroadcasting() {
+        val connections = mutableListOf<Server.Connection>()
+
         connectionsClient.startAdvertising(
             userIdentifier,
             applicationIdentifier,
             object : ConnectionLifecycleCallback() {
-                val connections = mutableListOf<Connection>()
-
                 override fun onConnectionInitiated(endpointId: String, info: ConnectionInfo) {
-                    connections.add(Connection.Pending(endpointId))
+                    connections.add(Server.Connection.ClientRequest(endpointId, info.endpointName))
 
                     _connections.tryEmit(connections)
                 }
 
                 override fun onConnectionResult(endpointId: String, result: ConnectionResolution) {
-                    connections.remove(Connection.Pending(endpointId))
-
-                    if (result.status.isSuccess) {
-                        connections.add(Connection.Success(endpointId))
+                    val old = connections.first { it.endpointId == endpointId }
+                    val new = if (result.status.isSuccess) {
+                        Server.Connection.Connected(endpointId, old.endpointName)
+                    } else {
+                        Server.Connection.Failure(endpointId, old.endpointName)
                     }
+
+                    connections.remove(old)
+                    connections.add(new)
 
                     _connections.tryEmit(connections)
                 }
 
                 override fun onDisconnected(endpointId: String) {
-                    connections.remove(Connection.Pending(endpointId))
-                    connections.remove(Connection.Success(endpointId))
-                    connections.add(
-                        Connection.Failure(endpointId, IllegalStateException("disconnected"))
-                    )
+                    val old = connections.first { it.endpointId == endpointId }
+                    val new = Server.Connection.Failure(endpointId, old.endpointName)
+
+                    connections.remove(old)
+                    connections.add(new)
 
                     _connections.tryEmit(connections)
                 }
@@ -63,11 +66,11 @@ internal class ServerImpl(
         connectionsClient.stopAdvertising()
     }
 
-    override fun acceptPendingConnection(endpointId: String) {
-        connectionsClient.acceptConnection(endpointId, payloadCallback)
+    override fun acceptClientRequest(connection: Server.Connection) {
+        connectionsClient.acceptConnection(connection.endpointId, payloadCallback)
     }
 
-    override fun declinePendingConnection(endpointId: String) {
-        connectionsClient.rejectConnection(endpointId)
+    override fun declineClientRequest(connection: Server.Connection) {
+        connectionsClient.rejectConnection(connection.endpointId)
     }
 }

@@ -1,6 +1,5 @@
 package at.aau.edu.wizards.api
 
-import at.aau.edu.wizards.api.model.Connection
 import kotlinx.coroutines.flow.Flow
 
 interface Server {
@@ -10,7 +9,27 @@ interface Server {
     fun startBroadcasting()
     fun stopBroadcasting()
 
-    fun acceptPendingConnection(endpointId: String)
-    fun declinePendingConnection(endpointId: String)
+    fun acceptClientRequest(connection: Connection)
+    fun declineClientRequest(connection: Connection)
+
+    sealed interface Connection {
+        val endpointId: String
+        val endpointName: String
+
+        data class ClientRequest(
+            override val endpointId: String,
+            override val endpointName: String
+        ) : Connection
+
+        data class Connected(
+            override val endpointId: String,
+            override val endpointName: String
+        ) : Connection
+
+        data class Failure(
+            override val endpointId: String,
+            override val endpointName: String
+        ) : Connection
+    }
 }
 

@@ -1,6 +1,5 @@
 package at.aau.edu.wizards.api
 
-import at.aau.edu.wizards.api.model.Connection
 import kotlinx.coroutines.flow.Flow
 
 interface Client {
@@ -10,5 +9,30 @@ interface Client {
     fun startDiscovery()
     fun stopDiscovery()
 
-    fun connect(endpointId: String)
+    fun connect(connection: Connection)
+
+    sealed interface Connection {
+        val endpointId: String
+        val endpointName: String
+
+        data class Found(
+            override val endpointId: String,
+            override val endpointName: String,
+        ) : Connection
+
+        data class Requested(
+            override val endpointId: String,
+            override val endpointName: String,
+        ) : Connection
+
+        data class Connected(
+            override val endpointId: String,
+            override val endpointName: String,
+        ) : Connection
+
+        data class Failure(
+            override val endpointId: String,
+            override val endpointName: String,
+        ) : Connection
+    }
 }

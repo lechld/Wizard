@@ -4,6 +4,7 @@ import com.google.android.gms.nearby.connection.AdvertisingOptions
 import com.google.android.gms.nearby.connection.DiscoveryOptions
 import com.google.android.gms.nearby.connection.Strategy
 import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 private val strategy = Strategy.P2P_STAR
@@ -17,4 +18,4 @@ val discoveryOptions = DiscoveryOptions.Builder()
     .build()
 
 // TODO: Need to provide some functionality to pick a name somewhere
-val GENERATED_NAME: String = "GEN" + DateFormat.getDateInstance().format(Date())
+val GENERATED_NAME: String = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())
