@@ -99,12 +99,18 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
     implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
 
-
+    // https://developers.google.com/nearby
     implementation 'com.google.android.gms:play-services-nearby:18.5.0'
 
     // https://github.com/junit-team/junit5
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
+    // https://github.com/mockito/mockito-kotlin
+    testImplementation 'org.mockito.kotlin:mockito-kotlin:4.1.0'
+
+    // https://github.com/Kotlin/kotlinx.coroutines/tree/master/kotlinx-coroutines-test
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
 
     // TODO: Think about removing, we won't write UI tests anyway. If we require Android dependencies let's think about Robolectric.
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
