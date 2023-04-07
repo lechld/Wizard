@@ -1,7 +1,6 @@
 package at.aau.edu.wizards.api.impl
 
 import at.aau.edu.wizards.BuildConfig
-import at.aau.edu.wizards.GENERATED_NAME
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.api.model.Connection
 import com.google.android.gms.nearby.connection.*
