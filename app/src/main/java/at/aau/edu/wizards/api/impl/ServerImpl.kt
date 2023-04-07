@@ -1,35 +1,43 @@
 package at.aau.edu.wizards.api.impl
 
 import at.aau.edu.wizards.BuildConfig
+import at.aau.edu.wizards.api.MessageReceiver
+import at.aau.edu.wizards.api.MessageSender
 import at.aau.edu.wizards.api.Server
-import com.google.android.gms.nearby.connection.*
+import at.aau.edu.wizards.api.model.ServerConnection
+import com.google.android.gms.nearby.connection.ConnectionInfo
+import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback
+import com.google.android.gms.nearby.connection.ConnectionResolution
+import com.google.android.gms.nearby.connection.ConnectionsClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 internal class ServerImpl(
     private val connectionsClient: ConnectionsClient,
-    private val payloadCallback: PayloadCallback,
     private val userIdentifier: String = GENERATED_NAME,
     private val applicationIdentifier: String = BuildConfig.APPLICATION_ID,
-) : Server {
+    private val messageDelegate: MessageDelegate = MessageDelegate(connectionsClient),
+) : Server,
+    MessageSender by messageDelegate,
+    MessageReceiver by messageDelegate {
 
-    private val _connections = MutableStateFlow<List<Server.Connection>>(emptyList())
-    override val connections: StateFlow<List<Server.Connection>> = _connections.asStateFlow()
+    private val _connections = MutableStateFlow<List<ServerConnection>>(emptyList())
+    override val connections: StateFlow<List<ServerConnection>> = _connections.asStateFlow()
 
-    override fun getConnections(): List<Server.Connection> {
+    override fun getConnections(): List<ServerConnection> {
         return _connections.value
     }
 
     override fun startBroadcasting() {
-        val connections = mutableListOf<Server.Connection>()
+        val connections = mutableListOf<ServerConnection>()
 
         connectionsClient.startAdvertising(
             userIdentifier,
             applicationIdentifier,
             object : ConnectionLifecycleCallback() {
                 override fun onConnectionInitiated(endpointId: String, info: ConnectionInfo) {
-                    connections.add(Server.Connection.ClientRequest(endpointId, info.endpointName))
+                    connections.add(ServerConnection.ClientRequest(endpointId, info.endpointName))
 
                     _connections.tryEmit(connections)
                 }
@@ -37,9 +45,9 @@ internal class ServerImpl(
                 override fun onConnectionResult(endpointId: String, result: ConnectionResolution) {
                     val old = connections.first { it.endpointId == endpointId }
                     val new = if (result.status.isSuccess) {
-                        Server.Connection.Connected(endpointId, old.endpointName)
+                        ServerConnection.Connected(endpointId, old.endpointName)
                     } else {
-                        Server.Connection.Failure(endpointId, old.endpointName)
+                        ServerConnection.Failure(endpointId, old.endpointName)
                     }
 
                     connections.remove(old)
@@ -50,7 +58,7 @@ internal class ServerImpl(
 
                 override fun onDisconnected(endpointId: String) {
                     val old = connections.first { it.endpointId == endpointId }
-                    val new = Server.Connection.Failure(endpointId, old.endpointName)
+                    val new = ServerConnection.Failure(endpointId, old.endpointName)
 
                     connections.remove(old)
                     connections.add(new)
@@ -66,11 +74,11 @@ internal class ServerImpl(
         connectionsClient.stopAdvertising()
     }
 
-    override fun acceptClientRequest(connection: Server.Connection) {
-        connectionsClient.acceptConnection(connection.endpointId, payloadCallback)
+    override fun acceptClientRequest(connection: ServerConnection) {
+        connectionsClient.acceptConnection(connection.endpointId, messageDelegate)
     }
 
-    override fun declineClientRequest(connection: Server.Connection) {
+    override fun declineClientRequest(connection: ServerConnection) {
         connectionsClient.rejectConnection(connection.endpointId)
     }
 }

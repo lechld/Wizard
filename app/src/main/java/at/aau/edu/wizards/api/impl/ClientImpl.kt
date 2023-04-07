@@ -2,26 +2,31 @@ package at.aau.edu.wizards.api.impl
 
 import at.aau.edu.wizards.BuildConfig
 import at.aau.edu.wizards.api.Client
+import at.aau.edu.wizards.api.model.ClientConnection
+import at.aau.edu.wizards.api.MessageReceiver
+import at.aau.edu.wizards.api.MessageSender
 import com.google.android.gms.nearby.connection.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class ClientImpl(
     private val connectionsClient: ConnectionsClient,
-    private val payloadCallback: PayloadCallback,
     private val userIdentifier: String = GENERATED_NAME,
     private val applicationIdentifier: String = BuildConfig.APPLICATION_ID,
-) : Client {
+    private val messageDelegate: MessageDelegate = MessageDelegate(connectionsClient),
+) : Client,
+    MessageSender by messageDelegate,
+    MessageReceiver by messageDelegate {
 
-    private val _connections = MutableStateFlow(emptyList<Client.Connection>())
-    override val connections: Flow<List<Client.Connection>> = _connections
+    private val _connections = MutableStateFlow(emptyList<ClientConnection>())
+    override val connections: Flow<List<ClientConnection>> = _connections
 
-    override fun getConnections(): List<Client.Connection> {
+    override fun getConnections(): List<ClientConnection> {
         return _connections.value
     }
 
     override fun startDiscovery() {
-        val connections = mutableListOf<Client.Connection>()
+        val connections = mutableListOf<ClientConnection>()
 
         connectionsClient.startDiscovery(
             applicationIdentifier,
@@ -30,7 +35,7 @@ internal class ClientImpl(
                     endpointId: String,
                     endpointInfo: DiscoveredEndpointInfo
                 ) {
-                    connections.add(Client.Connection.Found(endpointId, endpointInfo.endpointName))
+                    connections.add(ClientConnection.Found(endpointId, endpointInfo.endpointName))
 
                     _connections.tryEmit(connections)
                 }
@@ -50,13 +55,18 @@ internal class ClientImpl(
         connectionsClient.stopDiscovery()
     }
 
-    override fun connect(connection: Client.Connection) {
+    override fun connect(connection: ClientConnection) {
         // As long we are automatically calling acceptConnection below
         // it's fine to update connections immediately
         // Move to Requested state, server needs to approve connection too
         val immediateUpdate = getConnections().toMutableList()
         immediateUpdate.removeAll { it.endpointId == connection.endpointId }
-        immediateUpdate.add(Client.Connection.Requested(connection.endpointId, connection.endpointName))
+        immediateUpdate.add(
+            ClientConnection.Requested(
+                connection.endpointId,
+                connection.endpointName
+            )
+        )
         _connections.tryEmit(immediateUpdate)
 
         connectionsClient.requestConnection(
@@ -65,16 +75,16 @@ internal class ClientImpl(
             object : ConnectionLifecycleCallback() {
                 override fun onConnectionInitiated(endpointId: String, info: ConnectionInfo) {
                     // we selected to connect, therefore we can directly accept that connection
-                    connectionsClient.acceptConnection(endpointId, payloadCallback)
+                    connectionsClient.acceptConnection(endpointId, messageDelegate)
                 }
 
                 override fun onConnectionResult(endpointId: String, result: ConnectionResolution) {
                     val connections = getConnections().toMutableList()
                     val old = connections.first { it.endpointId == endpointId }
                     val new = if (result.status.isSuccess) {
-                        Client.Connection.Connected(endpointId, old.endpointName)
+                        ClientConnection.Connected(endpointId, old.endpointName)
                     } else {
-                        Client.Connection.Failure(endpointId, old.endpointName)
+                        ClientConnection.Failure(endpointId, old.endpointName)
                     }
 
                     connections.remove(old)
@@ -86,7 +96,7 @@ internal class ClientImpl(
                 override fun onDisconnected(endpointId: String) {
                     val connections = _connections.value.toMutableList()
                     val old = connections.first { it.endpointId == endpointId }
-                    val new = Client.Connection.Failure(endpointId, old.endpointName)
+                    val new = ClientConnection.Failure(endpointId, old.endpointName)
 
                     connections.remove(old)
                     connections.add(new)

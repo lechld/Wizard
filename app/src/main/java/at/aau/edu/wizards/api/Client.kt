@@ -1,38 +1,36 @@
 package at.aau.edu.wizards.api
 
+import android.content.Context
+import at.aau.edu.wizards.api.impl.ClientImpl
+import at.aau.edu.wizards.api.model.ClientConnection
+import com.google.android.gms.nearby.Nearby
 import kotlinx.coroutines.flow.Flow
 
-interface Client {
-    val connections: Flow<List<Connection>>
-    fun getConnections(): List<Connection>
+interface Client : MessageSender, MessageReceiver {
+    val connections: Flow<List<ClientConnection>>
+    fun getConnections(): List<ClientConnection>
 
     fun startDiscovery()
     fun stopDiscovery()
 
-    fun connect(connection: Connection)
+    fun connect(connection: ClientConnection)
 
-    sealed interface Connection {
-        val endpointId: String
-        val endpointName: String
+    companion object {
+        private var instance: Client? = null
 
-        data class Found(
-            override val endpointId: String,
-            override val endpointName: String,
-        ) : Connection
+        fun getInstance(context: Context): Client {
+            val instance = this.instance
 
-        data class Requested(
-            override val endpointId: String,
-            override val endpointName: String,
-        ) : Connection
+            if (instance != null) {
+                return instance
+            }
 
-        data class Connected(
-            override val endpointId: String,
-            override val endpointName: String,
-        ) : Connection
+            val newInstance = ClientImpl(
+                connectionsClient = Nearby.getConnectionsClient(context)
+            )
 
-        data class Failure(
-            override val endpointId: String,
-            override val endpointName: String,
-        ) : Connection
+            this.instance = newInstance
+            return newInstance
+        }
     }
 }
