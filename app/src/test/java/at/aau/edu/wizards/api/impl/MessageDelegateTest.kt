@@ -2,18 +2,17 @@ package at.aau.edu.wizards.api.impl
 
 import at.aau.edu.wizards.api.EMPTY_DATA
 import at.aau.edu.wizards.api.model.Connection
+import at.aau.edu.wizards.api.model.Data
 import com.google.android.gms.nearby.connection.ConnectionsClient
 import com.google.android.gms.nearby.connection.Payload
+import com.google.android.gms.nearby.connection.PayloadTransferUpdate
 import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.then
-import org.mockito.kotlin.whenever
+import org.mockito.kotlin.*
 import java.nio.charset.Charset
 
 internal class MessageDelegateTest {
@@ -46,14 +45,56 @@ internal class MessageDelegateTest {
 
         messageDelegate.send(connection, data)
 
-        // TODO: need to verify only arguments
-        then(connectionsClient).should() .sendPayload(connection.endpointId, payload)
+        then(connectionsClient).should().sendPayload(
+            eq(connection.endpointId),
+            argThat { String(asBytes()!!, encoding) == data }
+        )
     }
 
-    // When send, then connectionsclient sendpayload should be called
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given delegate, on receiving payload with null bytes, assert data is created with empty string`() =
+        runTest {
+            val endpointId = "some endpoint id"
+            val payload = mock<Payload> {
+                on { asBytes() } doReturn null
+            }
 
-    // payload received with null bytes, with real bytes
+            messageDelegate.onPayloadReceived(endpointId, payload)
 
-    // transferupdate - assert nothing happens on mock
+            val message = messageDelegate.messages
+                .first()
 
+            val expected = Data(endpointId, "")
+
+            Assertions.assertEquals(expected, message)
+        }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given delegate, on receiving payload with bytes, assert data is created with proper string`() =
+        runTest {
+            val endpointId = "some endpoint id"
+            val value = "some value"
+            val payload = Payload.fromBytes(value.toByteArray(encoding))
+
+            messageDelegate.onPayloadReceived(endpointId, payload)
+
+            val message = messageDelegate.messages
+                .first()
+
+            val expected = Data(endpointId, value)
+
+            Assertions.assertEquals(expected, message)
+        }
+
+    @Test
+    fun `given delegate, on payload transfer update, assert nothing happens`() {
+        val endpointId = "some endpoint id"
+        val payloadTransferUpdate = PayloadTransferUpdate.Builder().build()
+
+        messageDelegate.onPayloadTransferUpdate(endpointId, payloadTransferUpdate)
+
+        then(connectionsClient).shouldHaveNoInteractions()
+    }
 }
