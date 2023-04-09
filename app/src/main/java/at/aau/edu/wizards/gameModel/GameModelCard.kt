@@ -1,23 +1,27 @@
 package at.aau.edu.wizards.gameModel
 
-class GameModelCard(card: String) : GameModelCardInterface {
+sealed class GameModelCard {
 
-    override val value = card[0].code
-    override val color = card[1].code
-    override val id = card[2].code
+    data class Normal(
+        val color: Color,
+        val value: Int
+    ) : GameModelCard()
 
-    override fun getString(): String {
-        return buildString {
-            append(value.toChar())
-            append(color.toChar())
-            append(id.toChar())
-        }
+    data class Jester(
+        val color: Color
+    ) : GameModelCard()
+
+    data class Wizard(
+        val color: Color
+    ) : GameModelCard()
+
+    object NoCard : GameModelCard()
+
+    sealed class Color {
+        object Blue : Color()
+        object Green : Color()
+        object Orange : Color()
+        object Red : Color()
     }
 
-    override fun isLegal(): Boolean {
-        if (value < 15 && color in 1..4) {
-            return true
-        }
-        return false
-    }
 }

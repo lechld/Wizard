@@ -1,275 +1,192 @@
 package at.aau.edu.wizards.gameModel
 
-class GameModelRules(private val parent: GameModel) : GameModelRulesInterface {
-    var id = 0
-    private val board = GameModelBoard()
-    private val hasCheatedId = ArrayList<Int>()
-    private var turn = 0
-    private var dealer = 0
+class GameModelRules(
+    private val players: ArrayList<GameModelPlayer>,
+    val id: Int,
+    private val cardDealer: GameModelDealer
+) {
+
+    private val board = ArrayList<GameModelCard>()
+    val wins = ArrayList<Int>()
+    private var trump: GameModelCard = GameModelCard.NoCard
+    private var round = 0
     private var currentPlayer = 0
+    private var dealer = 0
+    private var winningPlayer = 0
+    private var winningCard: GameModelCard = GameModelCard.NoCard
 
-    override fun checkMoveLegal(move: String): Boolean {
-        if (!parent.legalMessageCard(move, parent.listOfPlayers.size)) {
-            return false
+    fun nextRound() {
+        board.clear()
+        if (round == 10) {
+            return endGame()
         }
-        return when (val winningCard = board.getWinningCard()) {
-            is GameModelResult.Failure -> {
-                if (currentPlayer == id &&
-                    id == move[2].code
-                    && parent.listOfPlayers[id].cardsContain(move)
+        round++
+        for (player in players) {
+            player.dealCards(round)
+        }
+        trump = cardDealer.dealCardInSet()
+        dealer++
+        currentPlayer = dealer
+        cardDealer.resetSet()
+    }
+
+
+    private fun endGame() {
+        //TODO
+    }
+
+    fun playCard(card: GameModelCard) {
+        if (card is GameModelCard.NoCard) {
+            throw (Exception("Failed to play card: It is of type NoCard!"))
+        } else if (winningCard is GameModelCard.NoCard) {
+            addWinningCard(card)
+        } else {
+            when (card) {
+                is GameModelCard.Jester -> {
+                    addJester(card)
+                }
+                is GameModelCard.Wizard -> {
+                    addWizard(card)
+                }
+                else -> {
+                    checkNormal(card)
+                }
+            }
+        }
+    }
+
+    private fun checkNormal(card: GameModelCard) {
+        when (winningCard) {
+            is GameModelCard.Normal -> {
+                if ((winningCard as GameModelCard.Normal).color == (card as GameModelCard.Normal).color || !players[currentPlayer].hasColor(
+                        (winningCard as GameModelCard.Normal).color
+                    )
                 ) {
-                    return true
+                    addNormal(card)
                 }
-                false
             }
-            is GameModelResult.Success -> {
-                if (currentPlayer == id
-                    &&
-                    id == move[2].code
-                    && parent.listOfPlayers[id].cardsContain(move)
-                    && (move[0].code !in 1..13
-                            || winningCard.output.value !in 1..13
-                            || winningCard.output.color == move[1].code
-                            || !(parent.listOfPlayers[id].cardsContainColor(
-                        winningCard.output.color
-                    )))
-                ) {
-                    return true
-                }
-                false
+            else -> {
+                addNormal(card)
             }
         }
     }
 
-    override fun checkMoveLegalCheat(move: String): Boolean {
-        if (!checkMoveLegal(move) && parent.legalMessageCard(move, parent.listOfPlayers.size)) {
-            return when (board.getWinningCard()) {
-                is GameModelResult.Failure -> {
-                    false
-                }
-                is GameModelResult.Success -> {
-                    if (currentPlayer == id
-                        && parent.listOfPlayers[id].cardsContain(move)
-                    ) {
-                        return true
-                    }
-                    false
-                }
-            }
-        }
-        return false
+    private fun addJester(card: GameModelCard) {
+        addLoosingCard(card)
     }
 
-    /**
-     * Checks if a move is either a legal or legalCheat move.
-     * Returns true for legal, false for legalCheat.
-     * !Be careful when using, as it cannot process illegal moves improper usage can lead to program termination!
-     * This does not check if the local player is performing the move.
-     */
-    private fun checkIsMoveLegalOrCheat(move: String): GameModelResult<Boolean> {
-
-        return when (val trump = board.getTrump()) {
-            is GameModelResult.Failure -> {
-                GameModelResult.Failure(trump.throwable)
+    private fun addWizard(card: GameModelCard) {
+        when (winningCard) {
+            is GameModelCard.Wizard -> {
+                addLoosingCard(card)
             }
-            is GameModelResult.Success -> {
-                when (val winningCard = board.getWinningCard()) {
-                    is GameModelResult.Failure -> {
-                        GameModelResult.Success(true)
+            else -> {
+                addWinningCard(card)
+            }
+        }
+    }
+
+    private fun addNormal(card: GameModelCard) {
+        when (winningCard) {
+            is GameModelCard.Jester -> {
+                addWinningCard(card)
+            }
+            is GameModelCard.Wizard -> {
+                addLoosingCard(card)
+            }
+            else -> {
+                if ((card as GameModelCard.Normal).color == (winningCard as GameModelCard.Normal).color) {
+                    if (card.value > (winningCard as GameModelCard.Normal).value) {
+                        addWinningCard(card)
+                    } else {
+                        addLoosingCard(card)
                     }
-                    is GameModelResult.Success -> {
-                        if (move[0].code !in 1..13
-                            || winningCard.output.value !in 1..13
-                            || winningCard.output.color == move[1].code
-                            || !(parent.listOfPlayers[id].cardsContainColor(
-                                trump.output
-                            ))
-                        ) {
-                            GameModelResult.Success(true)
-                        } else {
-                            GameModelResult.Success(false)
-                        }
-                    }
+                } else {
+                    addNormalCompareToTrump(card)
                 }
             }
         }
     }
 
-    override fun isActivePlayer(id: Int): Boolean {
-        if (id == currentPlayer) {
+    private fun addNormalCompareToTrump(card: GameModelCard) {
+        when (trump) {
+            is GameModelCard.Normal -> {
+                if ((card as GameModelCard.Normal).color == (trump as GameModelCard.Normal).color) {
+                    addWinningCard(card)
+                } else {
+                    addLoosingCard(card)
+                }
+            }
+            is GameModelCard.Wizard -> {
+                if ((card as GameModelCard.Normal).color == (trump as GameModelCard.Wizard).color) {
+                    addWinningCard(card)
+                } else {
+                    addLoosingCard(card)
+                }
+            }
+            else -> {
+                addLoosingCard(card)
+            }
+        }
+    }
+
+    private fun addWinningCard(card: GameModelCard) {
+        winningPlayer = currentPlayer
+        if (winningCard !is GameModelCard.NoCard) {
+            board.add(winningCard)
+        }
+        winningCard = card
+        nextSet()
+    }
+
+    private fun addLoosingCard(card: GameModelCard) {
+        board.add(card)
+        nextSet()
+    }
+
+    private fun nextSet() {
+        wins.add(winningPlayer)
+        if (++currentPlayer == players.size) {
+            currentPlayer = 0
+        }
+        winningCard = GameModelCard.NoCard
+        if (currentPlayer == dealer) {
+            for (player in players) {
+                player.score(getPlayerWins(player.id))
+            }
+            nextRound()
+        }
+    }
+
+    private fun getPlayerWins(id: Int): Int {
+        var amount = 0
+        for (win in wins) {
+            if (win == id) {
+                amount++
+            }
+        }
+        return amount
+    }
+
+    fun currentPlayerOwns(card: GameModelCard): Boolean {
+        if (players[currentPlayer].cards.contains(card)) {
             return true
         }
         return false
     }
 
-    override fun initFirstRound(): GameModelResult<Unit> {
-        if (turn != 0) {
-            return GameModelResult.Failure(Exception("Unable to initialize game: Game was already initialized!"))
+    fun localPlayerOwns(card: GameModelCard): Boolean {
+        if (players[id].cards.contains(card)) {
+            return true
         }
-        turn = 1
-        if (id >= parent.listOfPlayers.size) {
-            return GameModelResult.Failure(Exception("Unable to initialize game: Invalid id set for this model!"))
-        }
-        parent.listOfPlayers[id].getGuess()
-        return when (val forErrorHandling = dealCards()) {
-            is GameModelResult.Failure -> {
-                GameModelResult.Failure(forErrorHandling.throwable)
-            }
-            is GameModelResult.Success -> {
-                when (val forErrorHandlingExtra = board.nextTrump()) {
-                    is GameModelResult.Failure -> {
-                        GameModelResult.Failure(forErrorHandlingExtra.throwable)
-                    }
-                    is GameModelResult.Success -> {
-                        GameModelResult.Success(Unit)
-                    }
-                }
-            }
-        }
+        return false
     }
 
-    /**
-     * Deals all players their respective cards.
-     * Failure if it failed to deal cards for one player.
-     */
-    private fun dealCards(): GameModelResult<Unit> {
-        for (player in parent.listOfPlayers) {
-            return when (val forErrorHandling = player.dealHand(turn)) {
-                is GameModelResult.Failure -> {
-                    GameModelResult.Failure(forErrorHandling.throwable)
-                }
-                is GameModelResult.Success -> {
-                    continue
-                }
-            }
-        }
-        return GameModelResult.Success(Unit)
-    }
-
-    override fun playCard(move: String): GameModelResult<Unit> {
-        if (!parent.legalMessageCard(
-                move,
-                parent.listOfPlayers.size
-            ) || currentPlayer != move[2].code || !parent.listOfPlayers[move[2].code].cardsContain(
-                move
-            )
-        ) {
-            return GameModelResult.Failure(Throwable("Failed to play card: Player does not own card and/or is not his/her turn!"))
-        }
-        when (val forErrorHandling = checkIsMoveLegalOrCheat(move)) {
-            is GameModelResult.Failure -> {
-                return GameModelResult.Failure(forErrorHandling.throwable)
-            }
-            is GameModelResult.Success -> {
-                if (!forErrorHandling.output) {
-                    hasCheatedId.add(move[2].code)
-                }
-                addCardToBoard(move)
-                parent.listOfPlayers[move[2].code].removeCardFromHand(GameModelCard(move))
-                if (++currentPlayer == parent.listOfPlayers.size) {
-                    currentPlayer = 0
-                }
-                if (currentPlayer == dealer) {
-                    board.clearGame()
-                    if (parent.listOfPlayers[0].cardsEmpty()) {
-                        if (++dealer == parent.listOfPlayers.size) {
-                            dealer = 0
-                        }
-                        if (++currentPlayer == parent.listOfPlayers.size) {
-                            currentPlayer = 0
-                        }
-                        if (turn == 10) {
-                            //TODO CALL END OF GAME SCREEN
-                            return GameModelResult.Success(Unit)
-                        } else {
-                            for (player in parent.listOfPlayers) {
-                                player.score(board.gamesWon(player.id))
-                            }
-                            parent.listOfPlayers[id].getGuess()
-                            board.clearRound()
-                            turn++
-                            return when (val forErrorHandlingExtra = dealCards()) {
-                                is GameModelResult.Failure -> {
-                                    GameModelResult.Failure(forErrorHandlingExtra.throwable)
-                                }
-                                is GameModelResult.Success -> {
-                                    when (val forErrorHandlingExtraExtra = board.nextTrump()) {
-                                        is GameModelResult.Failure -> {
-                                            GameModelResult.Failure(forErrorHandlingExtraExtra.throwable)
-                                        }
-                                        is GameModelResult.Success -> {
-                                            GameModelResult.Success(Unit)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                return GameModelResult.Success(Unit)
-            }
-        }
-    }
-
-    override fun addTrump(trump: String): GameModelResult<Unit> {
-        return when (val forErrorHandling = board.addTrumpToStack(trump.substring(0, 2))) {
-            is GameModelResult.Failure -> {
-                GameModelResult.Failure(forErrorHandling.throwable)
-            }
-            is GameModelResult.Success -> {
-                GameModelResult.Success(Unit)
-            }
-        }
-    }
-
-    /**
-     * Adds a card to the board. Function was introduced for better coverage + better readability.
-     */
-    private fun addCardToBoard(move: String) {
-        when (val winningCard = board.getWinningCard()) {
-            is GameModelResult.Failure -> {
-                board.addWinningCard(GameModelCard(move))
-                return
-            }
-            is GameModelResult.Success -> {
-                if (winningCard.output.value == 14 || move[0].code == 0) {
-                    board.addNonWinningCard(GameModelCard(move))
-                } else if (move[0].code == 14 || winningCard.output.value == 0) {
-                    board.addWinningCard(GameModelCard(move))
-                } else if (move[1].code == winningCard.output.color) {
-                    if (move[0].code > winningCard.output.value) {
-                        board.addWinningCard(GameModelCard(move))
-                    } else {
-                        board.addNonWinningCard(GameModelCard(move))
-                    }
-                } else {
-                    if (board.getTrumpCantBeNull() == move[1].code) {
-                        board.addWinningCard(GameModelCard(move))
-                    } else {
-                        board.addNonWinningCard(GameModelCard(move))
-                    }
-                }
-                return
-            }
-        }
-    }
-
-    override fun getCurrentPlayer(): Int {
+    fun getActivePlayer(): Int {
         return currentPlayer
     }
 
-    override fun getActiveTrump(): GameModelCard {
-        return when (val trump = board.getTrumpComplete()) {
-            is GameModelResult.Failure -> {
-                GameModelCard(buildString {
-                    append(0.toChar())
-                    append(0.toChar())
-                    append(0.toChar())
-                })
-            }
-            is GameModelResult.Success -> {
-                trump.output
-            }
-        }
+    fun getTrump(): GameModelCard {
+        return trump
     }
 }
