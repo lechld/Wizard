@@ -50,6 +50,7 @@ internal class ServerImplTest {
     @Test
     fun `given server, without starting broadcasting, assert connections are empty`() = runTest {
         Assertions.assertEquals(emptyList<ServerConnection>(), server.connections.first())
+        Assertions.assertEquals(emptyList<ServerConnection>(), server.getConnections())
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -102,6 +103,10 @@ internal class ServerImplTest {
                 listOf(expectedConnectionInit1, expectedConnectionInit2),
                 server.connections.first()
             )
+            Assertions.assertEquals(
+                server.getConnections(),
+                server.connections.first()
+            )
 
             // Test onConnectionResult
             val expectedConnectionResult1 = ServerConnection.Connected(
@@ -119,6 +124,10 @@ internal class ServerImplTest {
 
             Assertions.assertEquals(
                 listOf(expectedConnectionInit2, expectedConnectionResult1),
+                server.connections.first()
+            )
+            Assertions.assertEquals(
+                server.getConnections(),
                 server.connections.first()
             )
 
@@ -139,6 +148,10 @@ internal class ServerImplTest {
                 listOf(expectedConnectionResult1, expectedConnectionResult2),
                 server.connections.first()
             )
+            Assertions.assertEquals(
+                server.getConnections(),
+                server.connections.first()
+            )
 
             // Test onDisconnected
             val expectedDisconnectionResult = ServerConnection.Failure(
@@ -150,6 +163,10 @@ internal class ServerImplTest {
 
             Assertions.assertEquals(
                 listOf(expectedConnectionResult2, expectedDisconnectionResult),
+                server.connections.first()
+            )
+            Assertions.assertEquals(
+                server.getConnections(),
                 server.connections.first()
             )
         }
@@ -181,38 +198,5 @@ internal class ServerImplTest {
         server.declineClientRequest(connection)
 
         then(connectionsClient).should().rejectConnection(endpointId)
-    }
-
-    @Test
-    fun `given server, on getting connections, assert flows value is returned`() {
-        // Initially we expect empty list
-        Assertions.assertEquals(emptyList<ServerConnection>(), server.getConnections())
-
-        val callbackCaptor = ArgumentCaptor.forClass(ConnectionLifecycleCallback::class.java)
-
-        whenever(
-            connectionsClient.startAdvertising(
-                any<String>(),
-                any(),
-                callbackCaptor.capture(),
-                any(),
-            )
-        ).doReturn(mock())
-
-        server.startBroadcasting()
-
-        val callback = callbackCaptor.value
-
-        val expectedConnectionInit1 = ServerConnection.ClientRequest(
-            endpointId = testData1.endpointId,
-            endpointName = testData1.endpointName,
-        )
-
-        callback.onConnectionInitiated(testData1.endpointId, testData1.connectionInfo)
-
-        Assertions.assertEquals(
-            listOf(expectedConnectionInit1),
-            server.getConnections()
-        )
     }
 }
