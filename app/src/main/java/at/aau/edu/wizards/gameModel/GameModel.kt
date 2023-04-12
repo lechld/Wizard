@@ -7,34 +7,61 @@ class GameModel {
     private var rules = GameModelRules(players, 0, dealer)
     private var listener = GameModelListener(rules, players)
 
-    fun sendMessage(move: String): GameModelResult<Unit> {
-        if ((legalMessageGuess(move) && (move[0].code - 60) / 11 == rules.id) || (legalMessageCard(
+    fun sendMessage(move: String): Boolean {
+        if ((legalMessageGuess(move)
+                    && (move[0].code - 60) / 11 == rules.id)
+            || (legalMessageCard(
                 move
             ) && rules.localPlayerOwns(dealer.getCardFromHash(move[0].code)))
         ) {
             //TODO send to network
-            return GameModelResult.Success(Unit)
+            return true
         }
-        return GameModelResult.Failure(Exception("Failed to send message: Not a legal guess/move!"))
+        return false
     }
 
-    fun receiveMessage(move: String) {
-        if (players.isEmpty()) { //Check if game still needs to be initialized, if initialize it / exit
-            if (move.length > 3) {
+    fun receiveMessage(move: String): Boolean {
+        return if (players.isEmpty()) { //Check if game still needs to be initialized, if initialize it / exit
+            if (legalMessageInit(move)) {
                 init(move)
+                listener.update()
+                true
             } else {
-                return
+                false
             }
         } else if (legalMessageCard(move)) { //Check if player is playing a card
             rules.playCard(dealer.getCardFromHash(move[0].code))
+            listener.update()
+            true
         } else if (legalMessageGuess(move)) {
             players[(move[0].code - 60) / 11].guesses.add((move[0].code - 60) % 11)
+            listener.update()
+            true
+        } else {
+            false
         }
-        listener.update()
+    }
+
+    private fun legalMessageInit(move: String): Boolean {
+        return move.length > 3
+                && move[0].code < move[1].code + move[2].code
+                && move[1].code + move[2].code in 3..6
+                && legalIntInStringFormat(move.substring(3, move.length))
+    }
+
+    private fun legalIntInStringFormat(int: String): Boolean {
+        return try {
+            int.toInt()
+            true
+        } catch (e: NumberFormatException) {
+            false
+        }
     }
 
     private fun legalMessageCard(move: String): Boolean {
-        if (move.length == 1 && move[0].code < 60 && rules.currentPlayerOwns(
+        if (move.length == 1
+            && move[0].code < 60
+            && rules.currentPlayerOwns(
                 dealer.getCardFromHash(
                     move[0].code
                 )
@@ -46,27 +73,23 @@ class GameModel {
     }
 
     private fun legalMessageGuess(move: String): Boolean {
-        if (move.length == 1 && move.length < (60 + players.size * 11)) {
+        if (move.length == 1 && move[0].code in 60..(59 + players.size * 11)) {
             return true
         }
         return false
     }
 
     private fun init(move: String) {
-        try {
-            dealer = GameModelDealer(move.substring(3, move.length).toInt())
-        } catch (error: NumberFormatException) {
-            return
-        }
+        dealer = GameModelDealer(move.substring(3, move.length).toInt())
         rules = GameModelRules(players, move[0].code, dealer)
         listener = GameModelListener(rules, players)
         for (player in 1..move[1].code) {
-            players.add(GameModelPlayer(players.size - 1, dealer, true))
+            players.add(GameModelPlayer(players.size, dealer, true))
         }
         for (cpu in 1..move[2].code) {
-            players.add(GameModelPlayer(players.size - 1, dealer, false))
+            players.add(GameModelPlayer(players.size, dealer, false))
         }
-        rules.nextRound()
+        rules.init()
     }
 
     fun getListener(): GameModelListener {

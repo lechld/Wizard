@@ -6,10 +6,12 @@ class GameModelListener(
 ) {
     private var activePlayer = 0
     private var numberOfPlayers = 0
-    private var hands = ArrayList<Card>()
+    private val hands = ArrayList<Card>()
     private var trump: GameModelCard = GameModelCard.NoCard
-    private var guesses = ArrayList<Guess>()
-    private var scores = ArrayList<Score>()
+    private val guesses = ArrayList<Guess>()
+    private val scores = ArrayList<Score>()
+    private val board = ArrayList<GameModelCard>()
+    private var winningCard: GameModelCard = GameModelCard.NoCard
 
     data class Card(val card: GameModelCard, val playerId: Int)
     data class Guess(val guess: Int, val playerId: Int)
@@ -38,9 +40,9 @@ class GameModelListener(
     }
 
     fun getCurrentGuessOfPlayer(id: Int): Int {
-        for (i in guesses.size - 1..0) {
-            if (guesses[i].playerId == id) {
-                return guesses[i].guess
+        for (i in 1..guesses.size) {
+            if (guesses[guesses.size - i].playerId == id) {
+                return guesses[guesses.size - i].guess
             }
         }
         return 0
@@ -66,10 +68,23 @@ class GameModelListener(
         return returnScore
     }
 
+    fun getWinningCard(): GameModelCard {
+        return winningCard
+    }
+
+    fun getBoard(): ArrayList<GameModelCard> {
+        return board
+    }
+
     fun update() {
         activePlayer = rules.getActivePlayer()
         numberOfPlayers = players.size
         trump = rules.getTrump()
+        winningCard = rules.winningCard
+        board.clear()
+        for (card in rules.board) {
+            board.add(card)
+        }
         hands.clear()
         guesses.clear()
         scores.clear()

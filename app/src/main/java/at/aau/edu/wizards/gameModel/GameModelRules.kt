@@ -6,26 +6,44 @@ class GameModelRules(
     private val cardDealer: GameModelDealer
 ) {
 
-    private val board = ArrayList<GameModelCard>()
-    val wins = ArrayList<Int>()
+    val board = ArrayList<GameModelCard>()
+    private val wins = ArrayList<Int>()
     private var trump: GameModelCard = GameModelCard.NoCard
     private var round = 0
     private var currentPlayer = 0
     private var dealer = 0
     private var winningPlayer = 0
-    private var winningCard: GameModelCard = GameModelCard.NoCard
+    var winningCard: GameModelCard = GameModelCard.NoCard
 
-    fun nextRound() {
-        board.clear()
+    fun init() {
+        if (round == 0) {
+            round++
+            for (player in players) {
+                player.dealCards(round)
+            }
+            trump = cardDealer.dealCardInSet()
+            dealer = 0
+            currentPlayer = 0
+            cardDealer.resetSet()
+        }
+    }
+
+    private fun nextRound() {
         if (round == 10) {
             return endGame()
         }
+        for (player in players) {
+            player.score(getAmountWon(player.id))
+        }
+        wins.clear()
         round++
         for (player in players) {
             player.dealCards(round)
         }
         trump = cardDealer.dealCardInSet()
-        dealer++
+        if (++dealer >= players.size) {
+            dealer = 0
+        }
         currentPlayer = dealer
         cardDealer.resetSet()
     }
@@ -58,7 +76,8 @@ class GameModelRules(
     private fun checkNormal(card: GameModelCard) {
         when (winningCard) {
             is GameModelCard.Normal -> {
-                if ((winningCard as GameModelCard.Normal).color == (card as GameModelCard.Normal).color || !players[currentPlayer].hasColor(
+                if ((winningCard as GameModelCard.Normal).color == (card as GameModelCard.Normal).color
+                    || !players[currentPlayer].hasColor(
                         (winningCard as GameModelCard.Normal).color
                     )
                 ) {
@@ -136,36 +155,32 @@ class GameModelRules(
             board.add(winningCard)
         }
         winningCard = card
-        nextSet()
+        players[currentPlayer].cards.remove(card)
+        nextPlayer()
     }
 
     private fun addLoosingCard(card: GameModelCard) {
         board.add(card)
-        nextSet()
+        players[currentPlayer].cards.remove(card)
+        nextPlayer()
+    }
+
+    private fun nextPlayer() {
+        if (++currentPlayer >= players.size) {
+            currentPlayer = 0
+        }
+        if (currentPlayer == dealer) {
+            nextSet()
+        }
     }
 
     private fun nextSet() {
         wins.add(winningPlayer)
-        if (++currentPlayer == players.size) {
-            currentPlayer = 0
-        }
         winningCard = GameModelCard.NoCard
-        if (currentPlayer == dealer) {
-            for (player in players) {
-                player.score(getPlayerWins(player.id))
-            }
+        board.clear()
+        if (players[0].cards.isEmpty()) {
             nextRound()
         }
-    }
-
-    private fun getPlayerWins(id: Int): Int {
-        var amount = 0
-        for (win in wins) {
-            if (win == id) {
-                amount++
-            }
-        }
-        return amount
     }
 
     fun currentPlayerOwns(card: GameModelCard): Boolean {
@@ -188,5 +203,15 @@ class GameModelRules(
 
     fun getTrump(): GameModelCard {
         return trump
+    }
+
+    private fun getAmountWon(id: Int): Int {
+        var amount = 0
+        for (win in wins) {
+            if (win == id) {
+                amount++
+            }
+        }
+        return amount
     }
 }
