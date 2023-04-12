@@ -5,7 +5,8 @@ class GameModel {
     private val players = ArrayList<GameModelPlayer>()
     private var dealer = GameModelDealer(0)
     private var rules = GameModelRules(players, 0, dealer)
-    private var listener = GameModelListener(rules, players)
+    var listener = GameModelListener(rules, players)
+        private set
 
     fun sendMessage(move: String): Boolean {
         if ((legalMessageGuess(move)
@@ -92,7 +93,4 @@ class GameModel {
         rules.init()
     }
 
-    fun getListener(): GameModelListener {
-        return listener
-    }
 }

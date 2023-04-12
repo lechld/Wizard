@@ -4,26 +4,22 @@ class GameModelListener(
     private val rules: GameModelRules,
     private val players: ArrayList<GameModelPlayer>
 ) {
-    private var activePlayer = 0
-    private var numberOfPlayers = 0
+    var activePlayer = 0
+        private set
+    var numberOfPlayers = 0
+        private set
     private val hands = ArrayList<Card>()
-    private var trump: GameModelCard = GameModelCard.NoCard
+    var trump: GameModelCard = GameModelCard.NoCard
+        private set
     private val guesses = ArrayList<Guess>()
     private val scores = ArrayList<Score>()
-    private val board = ArrayList<GameModelCard>()
-    private var winningCard: GameModelCard = GameModelCard.NoCard
+    val board = ArrayList<GameModelCard>()
+    var winningCard: GameModelCard = GameModelCard.NoCard
+        private set
 
     data class Card(val card: GameModelCard, val playerId: Int)
     data class Guess(val guess: Int, val playerId: Int)
     data class Score(val score: Int, val playerId: Int)
-
-    fun getActivePlayer(): Int {
-        return activePlayer
-    }
-
-    fun getTotalNumberOfPlayers(): Int {
-        return numberOfPlayers
-    }
 
     fun getHandOfPlayer(id: Int): ArrayList<GameModelCard> {
         val hand = ArrayList<GameModelCard>()
@@ -33,10 +29,6 @@ class GameModelListener(
             }
         }
         return hand
-    }
-
-    fun getTrump(): GameModelCard {
-        return trump
     }
 
     fun getCurrentGuessOfPlayer(id: Int): Int {
@@ -68,18 +60,10 @@ class GameModelListener(
         return returnScore
     }
 
-    fun getWinningCard(): GameModelCard {
-        return winningCard
-    }
-
-    fun getBoard(): ArrayList<GameModelCard> {
-        return board
-    }
-
     fun update() {
-        activePlayer = rules.getActivePlayer()
+        activePlayer = rules.currentPlayer
         numberOfPlayers = players.size
-        trump = rules.getTrump()
+        trump = rules.trump
         winningCard = rules.winningCard
         board.clear()
         for (card in rules.board) {

@@ -8,10 +8,11 @@ class GameModelListenerUnitTest {
     @Test
     fun test() {
         val model = GameModel()
-        var listener = model.getListener()
+        var listener = model.listener
 
-        assertEquals(GameModelCard.NoCard, listener.getTrump())
-        assertEquals(0, listener.getTotalNumberOfPlayers())
+        assertEquals(GameModelCard.NoCard, listener.trump)
+        assertEquals(0, listener.numberOfPlayers)
+        assertEquals(GameModelCard.NoCard, listener.winningCard)
         assert(listener.getHandOfPlayer(0).isEmpty())
 
         assert(model.receiveMessage(buildString {
@@ -20,10 +21,10 @@ class GameModelListenerUnitTest {
             append(0.toChar())
             append(420420.toString())
         }))
-        listener = model.getListener()
+        listener = model.listener
 
-        assertEquals(6, listener.getTotalNumberOfPlayers())
-        assertEquals(GameModelCard.Normal(GameModelCard.Color.Orange, 11), listener.getTrump())
+        assertEquals(6, listener.numberOfPlayers)
+        assertEquals(GameModelCard.Normal(GameModelCard.Color.Orange, 11), listener.trump)
 
 
         assertEquals(0, listener.getCurrentGuessOfPlayer(0))
@@ -37,9 +38,9 @@ class GameModelListenerUnitTest {
         assert(model.receiveMessage((60 + 55).toChar().toString()))
 
 
-        assertEquals(0, listener.getActivePlayer())
-        assert(listener.getBoard().isEmpty())
-        assertEquals(GameModelCard.NoCard, listener.getWinningCard())
+        assertEquals(0, listener.activePlayer)
+        assert(listener.board.isEmpty())
+        assertEquals(GameModelCard.Normal(GameModelCard.Color.Orange, 11), listener.trump)
         assert(listener.getAllScoresOfPlayer(0).isEmpty())
         assertEquals(0, listener.getCurrentGuessOfPlayer(0))
         assertEquals(0, listener.getCurrentGuessOfPlayer(6))
@@ -80,6 +81,7 @@ class GameModelListenerUnitTest {
         assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Blue, 6).getString()))
         assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Red, 3).getString()))
         assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Red, 13).getString()))
+        assertEquals(GameModelCard.Normal(GameModelCard.Color.Red, 13), listener.winningCard)
         assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Red, 9).getString()))
 
         assert(

@@ -8,9 +8,11 @@ class GameModelRules(
 
     val board = ArrayList<GameModelCard>()
     private val wins = ArrayList<Int>()
-    private var trump: GameModelCard = GameModelCard.NoCard
+    var trump: GameModelCard = GameModelCard.NoCard
+        private set
     private var round = 0
-    private var currentPlayer = 0
+    var currentPlayer = 0
+        private set
     private var dealer = 0
     private var winningPlayer = 0
     var winningCard: GameModelCard = GameModelCard.NoCard
@@ -197,18 +199,10 @@ class GameModelRules(
         return false
     }
 
-    fun getActivePlayer(): Int {
-        return currentPlayer
-    }
-
-    fun getTrump(): GameModelCard {
-        return trump
-    }
-
     private fun getAmountWon(id: Int): Int {
         var amount = 0
         for (win in wins) {
-            if (win == id) {
+            if (id in win..win) { //this is essentially a if id == win operation, but it is written in this form because id == win does not give complete coverage
                 amount++
             }
         }

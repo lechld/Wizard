@@ -40,12 +40,12 @@ class GameModelRulesUnitTest {
         rules.init()
         rules.init()
         assertEquals(GameModelCard.NoCard, rules.winningCard)
-        assertEquals(GameModelCard.Normal(GameModelCard.Color.Orange, 11), rules.getTrump())
-        assertEquals(0, rules.getActivePlayer())
+        assertEquals(GameModelCard.Normal(GameModelCard.Color.Orange, 11), rules.trump)
+        assertEquals(0, rules.currentPlayer)
         assertEquals(0, rules.board.size)
         rules.playCard(GameModelCard.Jester(GameModelCard.Color.Orange))
         assertEquals(GameModelCard.Jester(GameModelCard.Color.Orange), rules.winningCard)
-        assertEquals(1, rules.getActivePlayer())
+        assertEquals(1, rules.currentPlayer)
         assertEquals(0, rules.board.size)
         rules.playCard(GameModelCard.Normal(GameModelCard.Color.Green, 6))
         assertEquals(GameModelCard.Normal(GameModelCard.Color.Green, 6), rules.winningCard)
@@ -61,11 +61,11 @@ class GameModelRulesUnitTest {
         rules.playCard(GameModelCard.Normal(GameModelCard.Color.Green, 10))
         assertEquals(GameModelCard.Normal(GameModelCard.Color.Orange, 8), rules.winningCard)
         assertEquals(4, rules.board.size)
-        assertEquals(5, rules.getActivePlayer())
+        assertEquals(5, rules.currentPlayer)
         rules.playCard(GameModelCard.Normal(GameModelCard.Color.Green, 5))
         assertEquals(GameModelCard.NoCard, rules.winningCard)
         assertEquals(0, rules.board.size)
-        assertEquals(1, rules.getActivePlayer())
+        assertEquals(1, rules.currentPlayer)
         assertEquals(20, player0.scores[player0.scores.lastIndex])
         assertEquals(20, player1.scores[player0.scores.lastIndex])
         assertEquals(20, player2.scores[player0.scores.lastIndex])
@@ -129,20 +129,20 @@ class GameModelRulesUnitTest {
         assertEquals(30, player2.scores[player2.scores.lastIndex])
 
         for (i in 1..(4 + 5 + 6 + 7 + 8 + 9) * 6) {
-            val cp = rules.getActivePlayer()
+            val cp = rules.currentPlayer
             var iteration = 0
-            while (cp == rules.getActivePlayer()) {
+            while (cp == rules.currentPlayer) {
                 rules.playCard(listOfPlayers[cp].cards[iteration])
                 iteration++
             }
         }
 
-        assertEquals(GameModelCard.NoCard, rules.getTrump())
+        assertEquals(GameModelCard.NoCard, rules.trump)
 
         for (i in 1..60) {
-            val cp = rules.getActivePlayer()
+            val cp = rules.currentPlayer
             var iteration = 0
-            while (cp == rules.getActivePlayer()) {
+            while (cp == rules.currentPlayer) {
                 rules.playCard(listOfPlayers[cp].cards[iteration])
                 iteration++
             }
