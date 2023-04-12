@@ -12,7 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.R
-import at.aau.edu.wizards.databinding.FragmentSampleBinding
+//import at.aau.edu.wizards.databinding.FragmentSampleBinding
 import at.aau.edu.wizards.sample.SampleDataSourceImpl
 
 class DragAndDrop_Fragment : Fragment() {
@@ -101,16 +101,18 @@ class DragAndDrop_Fragment : Fragment() {
                     }
                     DragEvent.ACTION_DRAG_LOCATION -> {
                         // Positioniere die View entsprechend der aktuellen Position des Fingers des Benutzers
-                        val x = event.x - offsetX
-                        val y = event.y - offsetY
+                        val x = event.x
+                        val y = event.y
                         draggedView?.animate()?.x(x)?.y(y)?.setDuration(0)?.start()
+
                         true
                     }
                     DragEvent.ACTION_DROP -> {
                         // Setze die View an die neue Position
-                        val x = event.x - offsetX
-                        val y = event.y - offsetY
-                        draggedView?.animate()?.x(x)?.y(y)?.setDuration(0)?.start()
+                       val x = event.x
+                       val y = event.y
+                      draggedView?.animate()?.x(x)?.y(y)?.setDuration(0)?.start()
+
                         true
                     }
                     DragEvent.ACTION_DRAG_EXITED -> {
@@ -133,7 +135,4 @@ class DragAndDrop_Fragment : Fragment() {
 
 
     }
-
-
-        // binding.someTextView.text = "something" to update the text of the textview
 }
