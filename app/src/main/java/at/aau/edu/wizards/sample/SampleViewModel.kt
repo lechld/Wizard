@@ -1,7 +1,7 @@
 package at.aau.edu.wizards.sample
 
 import androidx.lifecycle.*
-//import kotlinx.coroutines.launch
+import kotlinx.coroutines.launch
 
 class SampleViewModel(
     private val someDependency: String, // can be anything, whatever we need
@@ -16,11 +16,11 @@ class SampleViewModel(
 
     init {
         // that launch allows us to call a function with "suspend"
-        //SampleViewModel.launch {
-        //    val receivedData = dataSource.provideData(someDependency)
+        SampleViewModel.launch {
+            val receivedData = dataSource.provideData(someDependency)
 
-        //    _dataToBeObservedInFragment.postValue(receivedData) // update the observable value. Fragment will receive that value if it observes
-        //}
+            _dataToBeObservedInFragment.postValue(receivedData) // update the observable value. Fragment will receive that value if it observes
+        }
     }
 
     // Every ViewModel needs to be created by some Factory
