@@ -19,19 +19,7 @@ class GameModelPlayer(
     }
 
     fun hasColor(color: GameModelCard.Color): Boolean {
-        for (card in cards) {
-            when (card) {
-                is GameModelCard.Normal -> {
-                    if (card.color == color) {
-                        return true
-                    }
-                }
-                else -> {
-                    continue
-                }
-            }
-        }
-        return false
+        return cards.any { it is GameModelCard.Normal && it.color == color }
     }
 
     fun score(wins: Int) {

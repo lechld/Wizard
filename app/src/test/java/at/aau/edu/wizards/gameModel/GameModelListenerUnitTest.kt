@@ -102,6 +102,8 @@ class GameModelListenerUnitTest {
         assertEquals(2, listener.getAllScoresOfPlayer(4).size)
         assertEquals(2, listener.getAllScoresOfPlayer(5).size)
 
+
+
         assertEquals(40, listener.getCurrentScoreOfPlayer(0))
         assertEquals(40, listener.getCurrentScoreOfPlayer(1))
         assertEquals(10, listener.getCurrentScoreOfPlayer(2))

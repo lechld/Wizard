@@ -4,16 +4,14 @@ class GameModel {
 
     private val players = ArrayList<GameModelPlayer>()
     private var dealer = GameModelDealer(0)
-    private var rules = GameModelRules(players, 0, dealer)
+    private var rules = GameModelRules(players, 0, dealer, this)
     var listener = GameModelListener(rules, players)
         private set
 
     fun sendMessage(move: String): Boolean {
-        if ((legalMessageGuess(move)
-                    && (move[0].code - 60) / 11 == rules.id)
-            || (legalMessageCard(
+        if ((legalMessageGuess(move) && (move[0].code - 60) / 11 == rules.id) || (legalMessageCard(
                 move
-            ) && rules.localPlayerOwns(dealer.getCardFromHash(move[0].code)))
+            ) && rules.localPlayerOwns(dealer.getCardFromHash(move[0].code))) || move == "EndGame"
         ) {
             //TODO send to network
             return true
@@ -82,7 +80,7 @@ class GameModel {
 
     private fun init(move: String) {
         dealer = GameModelDealer(move.substring(3, move.length).toInt())
-        rules = GameModelRules(players, move[0].code, dealer)
+        rules = GameModelRules(players, move[0].code, dealer, this)
         listener = GameModelListener(rules, players)
         for (player in 1..move[1].code) {
             players.add(GameModelPlayer(players.size, dealer, true))

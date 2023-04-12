@@ -3,7 +3,8 @@ package at.aau.edu.wizards.gameModel
 class GameModelRules(
     private val players: ArrayList<GameModelPlayer>,
     val id: Int,
-    private val cardDealer: GameModelDealer
+    private val cardDealer: GameModelDealer,
+    private val parent: GameModel
 ) {
 
     val board = ArrayList<GameModelCard>()
@@ -52,7 +53,7 @@ class GameModelRules(
 
 
     private fun endGame() {
-        //TODO
+        parent.sendMessage("EndGame")
     }
 
     fun playCard(card: GameModelCard) {
@@ -186,17 +187,11 @@ class GameModelRules(
     }
 
     fun currentPlayerOwns(card: GameModelCard): Boolean {
-        if (players[currentPlayer].cards.contains(card)) {
-            return true
-        }
-        return false
+        return players[currentPlayer].cards.any {it == card}
     }
 
     fun localPlayerOwns(card: GameModelCard): Boolean {
-        if (players[id].cards.contains(card)) {
-            return true
-        }
-        return false
+        return players[id].cards.any {it == card}
     }
 
     private fun getAmountWon(id: Int): Int {
