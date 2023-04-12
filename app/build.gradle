@@ -150,6 +150,9 @@ dependencies {
     // https://github.com/Kotlin/kotlinx.coroutines/tree/master/kotlinx-coroutines-test
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
 
+    // https://developer.android.com/jetpack/androidx/releases/lifecycle
+    testImplementation 'androidx.lifecycle:lifecycle-runtime-testing:2.6.1'
+
     // TODO: Think about removing, we won't write UI tests anyway. If we require Android dependencies let's think about Robolectric.
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
