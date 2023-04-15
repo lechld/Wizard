@@ -1,48 +1,45 @@
-package at.aau.edu.wizards.DragAndDrop;
+package at.aau.edu.wizards.draganddrop
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.R
-//import at.aau.edu.wizards.databinding.FragmentSampleBinding
-import at.aau.edu.wizards.sample.SampleDataSourceImpl
+import at.aau.edu.wizards.databinding.FragmentDraganddropBinding
 
-class DragAndDrop_Fragment : Fragment() {
+class DragAndDropFragment : Fragment() {
 
     // Create instance of view model once fragment is created
     private val viewModel by lazy {
         ViewModelProvider(
             this,
-            DragAndDrop_ViewModel.Factory("some input", SampleDataSourceImpl())
-        )[DragAndDrop_ViewModel::class.java]
+                DragAndDropViewModel.Factory("some input", DragAndDrop_DataSourceImpl())
+        )[DragAndDropViewModel::class.java]
     }
 
-    private var binding: View? = null
+    private var binding: FragmentDraganddropBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = inflater.inflate(R.layout.draganddrop_sample, container, false)
+        val binding = FragmentDraganddropBinding.inflate(inflater, container, false)
+
         this.binding = binding
 
-        //val binding = this.binding ?: return
-
-        return binding
+        return binding.root
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setupUI()
     }
 
@@ -62,14 +59,12 @@ class DragAndDrop_Fragment : Fragment() {
         val binding = this.binding ?: return
 
         viewModel.dataToBeObservedInFragment.observe(viewLifecycleOwner) { newData ->
-            println("Received new data from view model. Do something with it.")
-            println(newData)
+
             // could use
             // binding.someTextView.text = "something" to update the text of the textview
-            val dragView = binding.findViewById<View>(R.id.dragview)
-            val dropView = binding.findViewById<View>(R.id.dropview)
+            val dragView = binding.root.findViewById<View>(R.id.dragview)
+            val dropView = binding.root.findViewById<View>(R.id.dropview)
             //Log.d("Test", dragView.toString())
-
 
             dragView.setOnLongClickListener {
                 // Speichere die gezogene View und ihre ursprüngliche Position
@@ -109,9 +104,9 @@ class DragAndDrop_Fragment : Fragment() {
                     }
                     DragEvent.ACTION_DROP -> {
                         // Setze die View an die neue Position
-                       val x = event.x
-                       val y = event.y
-                      draggedView?.animate()?.x(x)?.y(y)?.setDuration(0)?.start()
+                        val x = event.x
+                        val y = event.y
+                        draggedView?.animate()?.x(x)?.y(y)?.setDuration(0)?.start()
 
                         true
                     }
@@ -133,6 +128,6 @@ class DragAndDrop_Fragment : Fragment() {
             }
         }
 
-
+        // binding.someTextView.text = "something" to update the text of the textview
     }
 }
