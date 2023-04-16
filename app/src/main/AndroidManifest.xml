@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Wizards"
         tools:targetApi="31">
         <activity
-            android:name=".OwnHand"
+            android:name=".ownHand.OwnHand"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -1,8 +1,10 @@
-package at.aau.edu.wizards;
+package at.aau.edu.wizards.ownHand;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import at.aau.edu.wizards.R;
 
 public class OwnHand extends AppCompatActivity {
 

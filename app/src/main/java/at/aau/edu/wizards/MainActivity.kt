@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.aau.edu.wizards.databinding.ActivityMainBinding
+import at.aau.edu.wizards.ownHand.CardAdapter
+import at.aau.edu.wizards.ownHand.Cards
+import at.aau.edu.wizards.ownHand.cardList
 
 
 class MainActivity : AppCompatActivity() {

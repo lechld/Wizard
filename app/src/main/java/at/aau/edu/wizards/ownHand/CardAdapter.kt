@@ -1,4 +1,4 @@
-package at.aau.edu.wizards
+package at.aau.edu.wizards.ownHand
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -1,4 +1,4 @@
-package at.aau.edu.wizards
+package at.aau.edu.wizards.ownHand
 
 var cardList =  mutableListOf<Cards>()
 

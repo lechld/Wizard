@@ -1,4 +1,4 @@
-package at.aau.edu.wizards
+package at.aau.edu.wizards.ownHand
 
 
 import androidx.recyclerview.widget.RecyclerView
