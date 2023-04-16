@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import at.aau.edu.wizards.draganddrop.DragAndDropFragment
+import at.aau.edu.wizards.mainscreen.MainscreenFragment
 import at.aau.edu.wizards.sample.SampleFragment
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +22,11 @@ class MainActivity : AppCompatActivity() {
                 showDragAndDrop()
             }
         }
+        findViewById<Button>(R.id.mainscreen_button)?.let { sampleButton ->
+            sampleButton.setOnClickListener {
+                showMainscreen()
+            }
+        }
     }
 
     private fun showSampleFragment() {
@@ -32,6 +38,11 @@ class MainActivity : AppCompatActivity() {
     private fun showDragAndDrop(){
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container, DragAndDropFragment(),"TAG")
+            .commit()
+    }
+    private fun showMainscreen(){
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_container, MainscreenFragment(),"TAG")
             .commit()
     }
 

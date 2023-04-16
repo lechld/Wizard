@@ -1,4 +1,4 @@
-package at.aau.edu.wizards.Mainscreen
+package at.aau.edu.wizards.mainscreen
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
