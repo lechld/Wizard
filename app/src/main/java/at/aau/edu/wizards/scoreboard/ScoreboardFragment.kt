@@ -1,4 +1,4 @@
-package at.aau.edu.wizards.sample
+package at.aau.edu.wizards.scoreboard
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,26 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import at.aau.edu.wizards.databinding.FragmentSampleBinding
+import at.aau.edu.wizards.databinding.FragmentScoreboardBinding
 
-class SampleFragment : Fragment() {
+class ScoreboardFragment : Fragment() {
 
     // Create instance of view model once fragment is created
     private val viewModel by lazy {
         ViewModelProvider(
             this,
-            SampleViewModel.Factory("some input", SampleDataSourceImpl())
-        )[SampleViewModel::class.java]
+            ScoreboardViewModel.Factory("some input", ScoreboardDataSourceImpl())
+        )[ScoreboardViewModel::class.java]
     }
 
-    private var binding: FragmentSampleBinding? = null
+    private var binding: FragmentScoreboardBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentSampleBinding.inflate(inflater, container, false)
+        val binding = FragmentScoreboardBinding.inflate(inflater, container, false)
 
         this.binding = binding
 
