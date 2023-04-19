@@ -1,12 +1,14 @@
 package at.aau.edu.wizards.gameModel
 
 class GameModelRules(
-    private val players: ArrayList<GameModelPlayer>,
+    val players: ArrayList<GameModelPlayer>,
     val id: Int,
     private val cardDealer: GameModelDealer,
-    private val parent: GameModel
+    private val parent: GameModel,
+    seed: Int
 ) {
 
+    private val cpu = GameModelCpu(seed, this)
     val board = ArrayList<GameModelCard>()
     private val wins = ArrayList<Int>()
     var trump: GameModelCard = GameModelCard.NoCard
@@ -28,7 +30,18 @@ class GameModelRules(
             dealer = 0
             currentPlayer = 0
             cardDealer.resetSet()
+            for (player in players) {
+                if (!player.isHuman) {
+                    player.guesses.add(cpu.getGuess(player))
+                }
+            }
+            getGuess()
         }
+    }
+
+    private fun getGuess() {
+        players[id].guesses.add(1)
+        //Todo
     }
 
     private fun nextRound() {
@@ -49,6 +62,12 @@ class GameModelRules(
         }
         currentPlayer = dealer
         cardDealer.resetSet()
+        for (player in players) {
+            if (!player.isHuman) {
+                player.guesses.add(cpu.getGuess(player))
+            }
+        }
+        getGuess()
     }
 
 
@@ -175,6 +194,9 @@ class GameModelRules(
         if (currentPlayer == dealer) {
             nextSet()
         }
+        if (!players[currentPlayer].isHuman) {
+            playCard(cpu.getMove(players[currentPlayer]))
+        }
     }
 
     private fun nextSet() {
@@ -187,14 +209,14 @@ class GameModelRules(
     }
 
     fun currentPlayerOwns(card: GameModelCard): Boolean {
-        return players[currentPlayer].cards.any {it == card}
+        return players[currentPlayer].cards.any { it == card }
     }
 
     fun localPlayerOwns(card: GameModelCard): Boolean {
-        return players[id].cards.any {it == card}
+        return players[id].cards.any { it == card }
     }
 
-    private fun getAmountWon(id: Int): Int {
+    fun getAmountWon(id: Int): Int {
         var amount = 0
         for (win in wins) {
             if (id in win..win) { //this is essentially a if id == win operation, but it is written in this form because id == win does not give complete coverage

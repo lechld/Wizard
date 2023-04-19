@@ -8,6 +8,8 @@ import org.junit.jupiter.api.assertThrows
 
 class GameModelRulesUnitTest {
 
+    val cpu = GameModelCpu(420420)
+
     @Test
     fun test() {
         val model = GameModel()
@@ -25,7 +27,7 @@ class GameModelRulesUnitTest {
         listOfPlayers.add(player3)
         listOfPlayers.add(player4)
         listOfPlayers.add(player5)
-        val rules = GameModelRules(listOfPlayers, 0, dealer, model)
+        val rules = GameModelRules(listOfPlayers, 0, dealer, model, cpu)
 
         assertThrows<Exception> { rules.playCard(GameModelCard.NoCard) }
         player0.guesses.add(0)
@@ -168,7 +170,7 @@ class GameModelRulesUnitTest {
         listOfPlayers.add(player3)
         listOfPlayers.add(player4)
         listOfPlayers.add(player5)
-        val rules = GameModelRules(listOfPlayers, 0, dealer, model)
+        val rules = GameModelRules(listOfPlayers, 0, dealer, model, cpu)
 
         player0.guesses.add(1)
         player1.guesses.add(0)
@@ -216,7 +218,7 @@ class GameModelRulesUnitTest {
         listOfPlayers.add(player3)
         listOfPlayers.add(player4)
         listOfPlayers.add(player5)
-        val rules = GameModelRules(listOfPlayers, 0, dealer, model)
+        val rules = GameModelRules(listOfPlayers, 0, dealer, model, cpu)
 
         player0.guesses.add(1)
         player1.guesses.add(0)
@@ -257,7 +259,7 @@ class GameModelRulesUnitTest {
         listOfPlayers.add(player3)
         listOfPlayers.add(player4)
         listOfPlayers.add(player5)
-        val rules = GameModelRules(listOfPlayers, 0, dealer, model)
+        val rules = GameModelRules(listOfPlayers, 0, dealer, model, cpu)
 
         player0.guesses.add(1)
         player1.guesses.add(0)

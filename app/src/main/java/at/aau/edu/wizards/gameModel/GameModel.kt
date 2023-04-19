@@ -4,7 +4,7 @@ class GameModel {
 
     private val players = ArrayList<GameModelPlayer>()
     private var dealer = GameModelDealer(0)
-    private var rules = GameModelRules(players, 0, dealer, this)
+    private var rules = GameModelRules(players, 0, dealer, this, 0)
     var listener = GameModelListener(rules, players)
         private set
 
@@ -80,7 +80,13 @@ class GameModel {
 
     private fun init(move: String) {
         dealer = GameModelDealer(move.substring(3, move.length).toInt())
-        rules = GameModelRules(players, move[0].code, dealer, this)
+        rules = GameModelRules(
+            players,
+            move[0].code,
+            dealer,
+            this,
+            move.substring(3, move.length).toInt()
+        )
         listener = GameModelListener(rules, players)
         for (player in 1..move[1].code) {
             players.add(GameModelPlayer(players.size, dealer, true))
