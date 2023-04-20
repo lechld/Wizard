@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import at.aau.edu.wizards.*
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.api.model.ServerConnection
-import at.aau.edu.wizards.ui.util.LiveEvent
+//import at.aau.edu.wizards.ui.util.LiveEvent
 import kotlinx.coroutines.flow.map
 
 class LobbyViewModel(
@@ -16,8 +16,8 @@ class LobbyViewModel(
         lobbyItemFactory.create(connections)
     }.asLiveData()
 
-    private val _gameStart = LiveEvent<Unit>()
-    val gameStart: LiveData<Unit> = _gameStart
+  /*  private val _gameStart = LiveEvent<Unit>()
+    val gameStart: LiveData<Unit> = _gameStart*/
 
     fun startAdvertising() {
         server.startBroadcasting()
@@ -43,7 +43,7 @@ class LobbyViewModel(
             server.send(it, "START")
         }
 
-        _gameStart.postValue(Unit)
+//        _gameStart.postValue(Unit)
     }
 
     class Factory(

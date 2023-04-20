@@ -62,11 +62,11 @@ class LobbyFragment : Fragment() {
             viewModel.startGame()
         }
 
-        viewModel.gameStart.observe(viewLifecycleOwner) {
+     /*   viewModel.gameStart.observe(viewLifecycleOwner) {
             val main = activity as? MainActivity ?: return@observe
 
             main.showGame(asClient = false)
-        }
+        }*/
 
         viewModel.startAdvertising()
     }
