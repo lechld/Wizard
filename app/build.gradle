@@ -145,6 +145,7 @@ dependencies {
 
     // https://developers.google.com/nearby
     implementation 'com.google.android.gms:play-services-nearby:18.5.0'
+    implementation 'androidx.test:core-ktx:1.4.0'
 
 
     // https://github.com/junit-team/junit5
