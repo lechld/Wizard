@@ -5,7 +5,6 @@ import at.aau.edu.wizards.*
 import at.aau.edu.wizards.api.Client
 import com.google.android.gms.nearby.connection.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import java.util.*
 
 class DiscoverViewModel(

@@ -2,8 +2,6 @@ package at.aau.edu.wizards.ui.discover.recycler
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.MainThread
-import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import at.aau.edu.wizards.databinding.ItemDiscoverApprovedBinding
@@ -11,7 +9,6 @@ import at.aau.edu.wizards.databinding.ItemDiscoverHeaderBinding
 import at.aau.edu.wizards.databinding.ItemDiscoverPendingBinding
 import at.aau.edu.wizards.databinding.ItemDiscoverRequestedBinding
 import at.aau.edu.wizards.ui.discover.DiscoverItem
-import java.util.concurrent.Executor
 
 private const val HEADER_VIEW_TYPE = 0
 private const val PENDING_VIEW_TYPE = 1
