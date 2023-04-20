@@ -16,9 +16,6 @@ class LobbyViewModel(
         lobbyItemFactory.create(connections)
     }.asLiveData()
 
-  /*  private val _gameStart = LiveEvent<Unit>()
-    val gameStart: LiveData<Unit> = _gameStart*/
-
     fun startAdvertising() {
         server.startBroadcasting()
     }
@@ -43,7 +40,6 @@ class LobbyViewModel(
             server.send(it, "START")
         }
 
-//        _gameStart.postValue(Unit)
     }
 
     class Factory(
