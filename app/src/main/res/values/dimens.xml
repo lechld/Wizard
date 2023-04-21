@@ -6,7 +6,6 @@
     <dimen name="default_margin">16dp</dimen>
     <!-- Half margin of default_margin. Can be helpful if we items next to each other. Eg: RecyclerView. -->
     <dimen name="default_margin_half">8dp</dimen>
-    <dimen name="text_margin">16dp</dimen>
 
     <!-- Define useful dimension here-->
 </resources>
