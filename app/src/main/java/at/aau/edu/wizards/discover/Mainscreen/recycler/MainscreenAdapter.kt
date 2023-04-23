@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import at.aau.edu.wizards.databinding.ItemDiscoverApprovedBinding
-import at.aau.edu.wizards.databinding.ItemDiscoverHeaderBinding
-import at.aau.edu.wizards.databinding.ItemDiscoverPendingBinding
-import at.aau.edu.wizards.databinding.ItemDiscoverRequestedBinding
+import at.aau.edu.wizards.databinding.ItemMainscreenApprovedBinding
+import at.aau.edu.wizards.databinding.ItemMainscreenHeaderBinding
+import at.aau.edu.wizards.databinding.ItemMainscreenPendingBinding
+import at.aau.edu.wizards.databinding.ItemMainscreenRequestedBinding
 import at.aau.edu.wizards.ui.discover.MainscreenItem
 
 private const val HEADER_VIEW_TYPE = 0
@@ -34,22 +34,22 @@ class MainscreenAdapter(
 
         return when (viewType) {
             HEADER_VIEW_TYPE -> {
-                val binding = ItemDiscoverHeaderBinding.inflate(inflater, parent, false)
+                val binding = ItemMainscreenHeaderBinding.inflate(inflater, parent, false)
 
                 MainscreenItemViewHolder.Header(binding)
             }
             PENDING_VIEW_TYPE -> {
-                val binding = ItemDiscoverPendingBinding.inflate(inflater, parent, false)
+                val binding = ItemMainscreenPendingBinding.inflate(inflater, parent, false)
 
                 MainscreenItemViewHolder.Pending(binding, onClick)
             }
             REQUESTED_VIEW_TYPE -> {
-                val binding = ItemDiscoverRequestedBinding.inflate(inflater, parent, false)
+                val binding = ItemMainscreenRequestedBinding.inflate(inflater, parent, false)
 
                 MainscreenItemViewHolder.Requested(binding)
             }
             APPROVED_VIEW_TYPE -> {
-                val binding = ItemDiscoverApprovedBinding.inflate(inflater, parent, false)
+                val binding = ItemMainscreenApprovedBinding.inflate(inflater, parent, false)
 
                 MainscreenItemViewHolder.Approved(binding)
 

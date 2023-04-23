@@ -3,16 +3,13 @@ package at.aau.edu.wizards.ui.discover.recycler
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import at.aau.edu.wizards.databinding.ItemDiscoverApprovedBinding
-import at.aau.edu.wizards.databinding.ItemDiscoverHeaderBinding
-import at.aau.edu.wizards.databinding.ItemDiscoverPendingBinding
-import at.aau.edu.wizards.databinding.ItemDiscoverRequestedBinding
+import at.aau.edu.wizards.databinding.*
 import at.aau.edu.wizards.ui.discover.MainscreenItem
 
 sealed class MainscreenItemViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
     class Approved(
-        private val binding: ItemDiscoverApprovedBinding,
+        private val binding: ItemMainscreenApprovedBinding,
     ) : MainscreenItemViewHolder(binding) {
 
         @SuppressLint("SetTextI18n")
@@ -23,7 +20,7 @@ sealed class MainscreenItemViewHolder(binding: ViewBinding) : RecyclerView.ViewH
     }
 
     class Header(
-        private val binding: ItemDiscoverHeaderBinding,
+        private val binding: ItemMainscreenHeaderBinding,
     ) : MainscreenItemViewHolder(binding) {
 
         fun bind(item: MainscreenItem.Header) {
@@ -32,7 +29,7 @@ sealed class MainscreenItemViewHolder(binding: ViewBinding) : RecyclerView.ViewH
     }
 
     class Pending(
-        private val binding: ItemDiscoverPendingBinding,
+        private val binding: ItemMainscreenPendingBinding,
         private val onClick: (MainscreenItem.Pending) -> Unit,
     ) : MainscreenItemViewHolder(binding) {
 
@@ -47,7 +44,7 @@ sealed class MainscreenItemViewHolder(binding: ViewBinding) : RecyclerView.ViewH
     }
 
     class Requested(
-        private val binding: ItemDiscoverRequestedBinding,
+        private val binding: ItemMainscreenRequestedBinding,
     ) : MainscreenItemViewHolder(binding) {
 
         @SuppressLint("SetTextI18n")

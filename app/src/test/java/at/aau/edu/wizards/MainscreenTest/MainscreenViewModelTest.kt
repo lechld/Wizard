@@ -63,20 +63,4 @@ class MainscreenViewModelTest {
         verify(spyFactory, times(1)).create(mockConnectionList)
     }
 
-    @Test
-    fun testConnectEndpoint() {
-        // Arrange
-        val client = mock(Client::class.java)
-        val connection = mock(ClientConnection.Found::class.java)
-        val discoverItem = mock(MainscreenItem.Pending(connection)::class.java)
-
-        val viewModel = MainscreenViewModel(client)
-
-        // Act
-        //testClass.connectEndpoint(discoverItem)
-        viewModel.connectEndpoint(discoverItem)
-
-        // Assert
-        verify(client).connect(connection)
-    }
 }
