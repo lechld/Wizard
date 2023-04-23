@@ -7,12 +7,12 @@ import com.google.android.gms.nearby.connection.*
 import kotlinx.coroutines.flow.*
 import java.util.*
 
-class DiscoverViewModel(
+class MainscreenViewModel(
     private val client: Client,
-    private val discoverItemFactory: DiscoverItemFactory = DiscoverItemFactory()
+    private val discoverItemFactory: MainscreenItemFactory = MainscreenItemFactory()
 ) : ViewModel() {
 
-    val items: LiveData<List<DiscoverItem>> = client.connections.map { connections ->
+    val items: LiveData<List<MainscreenItem>> = client.connections.map { connections ->
         discoverItemFactory.create(connections)
     }.asLiveData()
 
@@ -24,7 +24,7 @@ class DiscoverViewModel(
         client.stopDiscovery()
     }
 
-    fun connectEndpoint(discoverItem: DiscoverItem.Pending) {
+    fun connectEndpoint(discoverItem: MainscreenItem.Pending) {
         client.connect(discoverItem.connection)
     }
 
@@ -33,8 +33,8 @@ class DiscoverViewModel(
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return if (modelClass.isAssignableFrom(DiscoverViewModel::class.java)) {
-                DiscoverViewModel(client) as T
+            return if (modelClass.isAssignableFrom(MainscreenViewModel::class.java)) {
+                MainscreenViewModel(client) as T
             } else throw IllegalStateException("Wrong Factory for instantiating ${modelClass::class.java.canonicalName}")
         }
     }

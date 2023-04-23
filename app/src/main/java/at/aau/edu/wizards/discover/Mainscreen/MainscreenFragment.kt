@@ -8,15 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.databinding.FragmentDiscoverBinding
-import at.aau.edu.wizards.ui.discover.recycler.DiscoverAdapter
+import at.aau.edu.wizards.ui.discover.recycler.MainscreenAdapter
 
-class DiscoverFragment : Fragment() {
+class MainscreenFragment : Fragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(
             this,
-            DiscoverViewModel.Factory(Client.getInstance(requireContext()))
-        )[DiscoverViewModel::class.java]
+            MainscreenViewModel.Factory(Client.getInstance(requireContext()))
+        )[MainscreenViewModel::class.java]
     }
 
     private var binding: FragmentDiscoverBinding? = null
@@ -47,7 +47,7 @@ class DiscoverFragment : Fragment() {
 
     private fun setupUI() {
         val binding = this.binding ?: return
-        val adapter = DiscoverAdapter { clickedPending ->
+        val adapter = MainscreenAdapter { clickedPending ->
             viewModel.connectEndpoint(clickedPending)
         }
 

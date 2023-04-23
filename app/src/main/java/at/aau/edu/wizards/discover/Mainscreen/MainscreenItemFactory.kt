@@ -2,11 +2,11 @@ package at.aau.edu.wizards.ui.discover
 
 import at.aau.edu.wizards.api.model.ClientConnection
 
-class DiscoverItemFactory {
+class MainscreenItemFactory {
 
     fun create(
         connections: List<ClientConnection>
-    ): List<DiscoverItem> {
+    ): List<MainscreenItem> {
         val found = connections.filterIsInstance(
             ClientConnection.Found::class.java
         )
@@ -17,34 +17,34 @@ class DiscoverItemFactory {
             ClientConnection.Connected::class.java
         )
 
-        val result = mutableListOf<DiscoverItem>()
+        val result = mutableListOf<MainscreenItem>()
 
         if (found.isNotEmpty()) {
-            result.add(DiscoverItem.Header("Open Games"))
+            result.add(MainscreenItem.Header("Open Games"))
 
             result.addAll(
-                found.map { DiscoverItem.Pending(it) }
+                found.map { MainscreenItem.Pending(it) }
             )
         }
 
         if (requested.isNotEmpty()) {
-            result.add(DiscoverItem.Header("Requested Games"))
+            result.add(MainscreenItem.Header("Requested Games"))
 
             result.addAll(
-                requested.map { DiscoverItem.Requested(it) }
+                requested.map { MainscreenItem.Requested(it) }
             )
         }
 
         if (connected.isNotEmpty()) {
-            result.add(DiscoverItem.Header("Approved. Waiting for Game to start"))
+            result.add(MainscreenItem.Header("Approved. Waiting for Game to start"))
 
             result.addAll(
-                connected.map { DiscoverItem.Approved(it) }
+                connected.map { MainscreenItem.Approved(it) }
             )
         }
 
         if (found.isEmpty() && requested.isEmpty() && connected.isEmpty()) {
-            result.add(DiscoverItem.Header("Currently searching for games to join"))
+            result.add(MainscreenItem.Header("Currently searching for games to join"))
         }
 
         return result

@@ -7,16 +7,16 @@ import at.aau.edu.wizards.databinding.ItemDiscoverApprovedBinding
 import at.aau.edu.wizards.databinding.ItemDiscoverHeaderBinding
 import at.aau.edu.wizards.databinding.ItemDiscoverPendingBinding
 import at.aau.edu.wizards.databinding.ItemDiscoverRequestedBinding
-import at.aau.edu.wizards.ui.discover.DiscoverItem
+import at.aau.edu.wizards.ui.discover.MainscreenItem
 
-sealed class DiscoverItemViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
+sealed class MainscreenItemViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
     class Approved(
         private val binding: ItemDiscoverApprovedBinding,
-    ) : DiscoverItemViewHolder(binding) {
+    ) : MainscreenItemViewHolder(binding) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(item: DiscoverItem.Approved) {
+        fun bind(item: MainscreenItem.Approved) {
             binding.approvedText.text =
                 item.connection.endpointId + " - " + item.connection.endpointName
         }
@@ -24,20 +24,20 @@ sealed class DiscoverItemViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
 
     class Header(
         private val binding: ItemDiscoverHeaderBinding,
-    ) : DiscoverItemViewHolder(binding) {
+    ) : MainscreenItemViewHolder(binding) {
 
-        fun bind(item: DiscoverItem.Header) {
+        fun bind(item: MainscreenItem.Header) {
             binding.root.text = item.text
         }
     }
 
     class Pending(
         private val binding: ItemDiscoverPendingBinding,
-        private val onClick: (DiscoverItem.Pending) -> Unit,
-    ) : DiscoverItemViewHolder(binding) {
+        private val onClick: (MainscreenItem.Pending) -> Unit,
+    ) : MainscreenItemViewHolder(binding) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(item: DiscoverItem.Pending) {
+        fun bind(item: MainscreenItem.Pending) {
             binding.pendingText.text =
                 item.connection.endpointId + " - " + item.connection.endpointName
             binding.root.setOnClickListener {
@@ -48,10 +48,10 @@ sealed class DiscoverItemViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
 
     class Requested(
         private val binding: ItemDiscoverRequestedBinding,
-    ) : DiscoverItemViewHolder(binding) {
+    ) : MainscreenItemViewHolder(binding) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(item: DiscoverItem.Requested) {
+        fun bind(item: MainscreenItem.Requested) {
             binding.requestedText.text =
                 item.connection.endpointId + " - " + item.connection.endpointName
         }
