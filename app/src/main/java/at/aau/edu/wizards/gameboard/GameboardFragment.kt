@@ -5,41 +5,42 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+
 
 import at.aau.edu.wizards.R
+import at.aau.edu.wizards.api.Client
+import at.aau.edu.wizards.databinding.FragmentGameboardBinding
 
 
 class GameboardFragment : Fragment() {
 
-    private lateinit var adapter: GameboardAdapter
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var cardsArrayList: ArrayList<Cards>
 
-    lateinit var imageId : Array<Int>
+    private var binding: FragmentGameboardBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_gameboard, container, false)
-    }
+        val binding = FragmentGameboardBinding.inflate(inflater, container, false)
+
+        this.binding = binding
+
+        return binding.root    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dataInitialize()
 
-        val layoutManager = GridLayoutManager(context, 1,
-                LinearLayoutManager.HORIZONTAL, true)
-        recyclerView = view.findViewById(R.id.gameboard_recycler_view)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.setHasFixedSize(true)
-        adapter = GameboardAdapter(cardsArrayList)
-        recyclerView.adapter = adapter
+        setupUI()
+    }
+
+    override fun onDestroyView() {
+
+    }
+
+    private fun setupUI() {
+
     }
 
     private fun dataInitialize() {

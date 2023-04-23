@@ -1,3 +1,3 @@
 package at.aau.edu.wizards.gameboard
 
-data class Cards(var cardsImage : Int)
+data class Cards(val cardsImage : Int)
