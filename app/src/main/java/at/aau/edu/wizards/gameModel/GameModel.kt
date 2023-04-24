@@ -32,14 +32,14 @@ class GameModel {
                     false
                 }
             }
-            false -> {
+            else -> {
                 when (legalMessageCard(move)) {
                     true -> {
                         rules.playCard(dealer.getCardFromHash(move[0].code))
                         listener.update()
                         true
                     }
-                    false -> {
+                    else -> {
                         if (legalMessageGuess(move)) {
                             players[(move[0].code - 60) / 11].guesses.add((move[0].code - 60) % 11)
                             listener.update()
