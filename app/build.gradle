@@ -3,7 +3,6 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'jacoco'
     id 'org.sonarqube'
-    id 'androidx.navigation.safeargs'
 }
 
 android {
