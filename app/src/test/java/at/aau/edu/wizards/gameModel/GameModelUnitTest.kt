@@ -2,6 +2,7 @@ package at.aau.edu.wizards.gameModel
 
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
+import kotlin.random.Random
 
 
 class GameModelUnitTest {
@@ -106,5 +107,41 @@ class GameModelUnitTest {
             append(6.toChar())
             append(420420.toString())
         }))
+    }
+
+    @Test
+    fun sendUpdate() {
+        val ran = Random(420420)
+        val model = GameModel()
+        model.receiveMessage(buildString {
+            append(0.toChar())
+            append(1.toChar())
+            append(5.toChar())
+            append(420420.toString())
+        })
+        for (k in 1..10) {
+
+            val guess = ran.nextInt(0, k)
+            model.receiveMessage(buildString {
+                append((60 + guess).toChar())
+            })
+            for (j in 1..k) {
+                var sent = false
+                for (i in 1..5) {
+                    for (card in model.listener.getHandOfPlayer(i)) {
+                        assertFalse(model.sendMessage(card.getString()))
+                    }
+                }
+                for (card in model.listener.getHandOfPlayer(0)) {
+                    if (!sent && model.sendMessage(card.getString())) {
+                        model.receiveMessage(card.getString())
+                        sent = true
+                    }
+                }
+                if (!sent) {
+                    continue
+                }
+            }
+        }
     }
 }

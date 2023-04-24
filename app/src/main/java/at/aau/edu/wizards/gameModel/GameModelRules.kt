@@ -13,7 +13,8 @@ class GameModelRules(
     private val wins = ArrayList<Int>()
     var trump: GameModelCard = GameModelCard.NoCard
         private set
-    private var round = 0
+    var round = 0
+        private set
     var currentPlayer = 0
         private set
     private var dealer = 0
@@ -40,19 +41,19 @@ class GameModelRules(
     }
 
     private fun getGuess() {
-        players[id].guesses.add(1)
+        players[id].guesses.add(0)
         //Todo
     }
 
     private fun nextRound() {
-        if (round == 10) {
-            return endGame()
-        }
         for (player in players) {
             player.score(getAmountWon(player.id))
         }
         wins.clear()
         round++
+        if (round == 11) {
+            return endGame()
+        }
         for (player in players) {
             player.dealCards(round)
         }
@@ -194,8 +195,8 @@ class GameModelRules(
         if (currentPlayer == dealer) {
             nextSet()
         }
-        if (!players[currentPlayer].isHuman) {
-            playCard(cpu.getMove(players[currentPlayer]))
+        if (!players[currentPlayer].isHuman && round < 11) {
+            parent.receiveMessage(cpu.getMove(players[currentPlayer]).getString())
         }
     }
 

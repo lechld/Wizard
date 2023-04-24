@@ -12,12 +12,8 @@ class GameModelCpu(seed: Int, private val rules: GameModelRules) {
                 guess++
             }
         }
-        when (val riskLevel = random.nextInt(0, player.cards.size - guess / 3)) {
-            else -> {
-                guess += riskLevel
-            }
-        }
-        return guess
+
+        return guess + ((player.cards.size - guess) / 8)
     }
 
 
@@ -34,27 +30,28 @@ class GameModelCpu(seed: Int, private val rules: GameModelRules) {
                 playableCards.add(card)
             }
         }
+        if (playableCards.isEmpty()) {
+            return GameModelCard.NoCard
+        } else if (playableCards.lastIndex == 0) {
+            return playableCards[0]
+        }
         return playableCards[random.nextInt(0, playableCards.lastIndex)]
     }
 
     private fun willWinTotal(card: GameModelCard, player: GameModelPlayer): Boolean {
-        if (legalCard(rules.winningCard, card, player) && cardBeatsCard(rules.winningCard, card)) {
-            for (playerId in 0 until rules.players.size) {
-                if (playerId == player.id) {
-                    continue
-                }
-                for (cardNew in rules.players[playerId].cards) {
-                    if (legalCard(card, cardNew, rules.players[playerId]) && cardBeatsCard(
-                            card,
-                            cardNew
-                        )
-                    ) {
-                        return false
-                    }
+        for (playerId in 0 until rules.players.size) {
+            if (playerId == player.id) {
+                continue
+            }
+            for (cardNew in rules.players[playerId].cards) {
+                if (legalCard(card, cardNew, rules.players[playerId]) && cardBeatsCard(
+                        card,
+                        cardNew
+                    )
+                ) {
+                    return false
                 }
             }
-        } else {
-            return false
         }
         return true
     }
@@ -89,8 +86,6 @@ class GameModelCpu(seed: Int, private val rules: GameModelRules) {
             GameModelCard.NoCard -> true
             is GameModelCard.Normal -> {
                 when (card) {
-                    is GameModelCard.Jester -> false
-                    GameModelCard.NoCard -> false
                     is GameModelCard.Normal -> {
                         when (val trump = rules.trump) {
                             is GameModelCard.Normal -> {
@@ -105,6 +100,7 @@ class GameModelCpu(seed: Int, private val rules: GameModelRules) {
                         }
                     }
                     is GameModelCard.Wizard -> true
+                    else -> false
                 }
             }
             is GameModelCard.Wizard -> false
@@ -121,12 +117,10 @@ class GameModelCpu(seed: Int, private val rules: GameModelRules) {
             GameModelCard.NoCard -> true
             is GameModelCard.Normal -> {
                 when (card) {
-                    is GameModelCard.Jester -> true
-                    GameModelCard.NoCard -> false
                     is GameModelCard.Normal -> {
                         (cardToBeat.color == card.color || !player.hasColor(cardToBeat.color))
                     }
-                    is GameModelCard.Wizard -> true
+                    else -> true
                 }
             }
             is GameModelCard.Wizard -> true

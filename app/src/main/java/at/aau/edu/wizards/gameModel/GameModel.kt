@@ -11,7 +11,9 @@ class GameModel {
     fun sendMessage(move: String): Boolean {
         if ((legalMessageGuess(move) && (move[0].code - 60) / 11 == rules.id) || (legalMessageCard(
                 move
-            ) && rules.localPlayerOwns(dealer.getCardFromHash(move[0].code))) || move == "EndGame"
+            ) && rules.localPlayerOwns(dealer.getCardFromHash(move[0].code)) && (rules.winningCard !is GameModelCard.Normal || ((rules.winningCard as GameModelCard.Normal).color == getColor(
+                move
+            )) || !players[rules.currentPlayer].hasColor((rules.winningCard as GameModelCard.Normal).color))) || move == "EndGame"
         ) {
             //TODO send to network
             return true
@@ -95,6 +97,15 @@ class GameModel {
             players.add(GameModelPlayer(players.size, dealer, false))
         }
         rules.init()
+    }
+
+    private fun getColor(hash: String): GameModelCard.Color {
+        return when (hash[0].code / 15) {
+            0 -> GameModelCard.Color.Blue
+            1 -> GameModelCard.Color.Green
+            2 -> GameModelCard.Color.Orange
+            else -> GameModelCard.Color.Red
+        }
     }
 
 }
