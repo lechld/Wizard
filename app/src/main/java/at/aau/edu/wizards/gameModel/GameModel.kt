@@ -22,24 +22,34 @@ class GameModel {
     }
 
     fun receiveMessage(move: String): Boolean {
-        return if (players.isEmpty()) { //Check if game still needs to be initialized, if initialize it / exit
-            if (legalMessageInit(move)) {
-                init(move)
-                listener.update()
-                true
-            } else {
-                false
+        return when (players.isEmpty()) {
+            true -> {
+                if (legalMessageInit(move)) {
+                    init(move)
+                    listener.update()
+                    true
+                } else {
+                    false
+                }
             }
-        } else if (legalMessageCard(move)) { //Check if player is playing a card
-            rules.playCard(dealer.getCardFromHash(move[0].code))
-            listener.update()
-            true
-        } else if (legalMessageGuess(move)) {
-            players[(move[0].code - 60) / 11].guesses.add((move[0].code - 60) % 11)
-            listener.update()
-            true
-        } else {
-            false
+            false -> {
+                when (legalMessageCard(move)) {
+                    true -> {
+                        rules.playCard(dealer.getCardFromHash(move[0].code))
+                        listener.update()
+                        true
+                    }
+                    false -> {
+                        if (legalMessageGuess(move)) {
+                            players[(move[0].code - 60) / 11].guesses.add((move[0].code - 60) % 11)
+                            listener.update()
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                }
+            }
         }
     }
 
