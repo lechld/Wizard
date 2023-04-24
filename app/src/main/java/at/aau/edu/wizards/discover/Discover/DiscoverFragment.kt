@@ -7,26 +7,26 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.api.Client
-import at.aau.edu.wizards.databinding.FragmentMainscreenBinding
-import at.aau.edu.wizards.ui.discover.recycler.MainscreenAdapter
+import at.aau.edu.wizards.databinding.FragmentDiscoverBinding
+import at.aau.edu.wizards.ui.discover.recycler.DiscoverAdapter
 
-class MainscreenFragment : Fragment() {
+class DiscoverFragment : Fragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(
             this,
-            MainscreenViewModel.Factory(Client.getInstance(requireContext()))
-        )[MainscreenViewModel::class.java]
+            DiscoverViewModel.Factory(Client.getInstance(requireContext()))
+        )[DiscoverViewModel::class.java]
     }
 
-    private var binding: FragmentMainscreenBinding? = null
+    private var binding: FragmentDiscoverBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentMainscreenBinding.inflate(inflater, container, false)
+        val binding = FragmentDiscoverBinding.inflate(inflater, container, false)
 
         this.binding = binding
 
@@ -47,7 +47,7 @@ class MainscreenFragment : Fragment() {
 
     private fun setupUI() {
         val binding = this.binding ?: return
-        val adapter = MainscreenAdapter { clickedPending ->
+        val adapter = DiscoverAdapter { clickedPending ->
             viewModel.connectEndpoint(clickedPending)
         }
 

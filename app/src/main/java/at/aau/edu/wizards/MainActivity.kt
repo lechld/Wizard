@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import at.aau.edu.wizards.api.impl.REQUIRED_PERMISSIONS
 import at.aau.edu.wizards.databinding.ActivityMainBinding
-import at.aau.edu.wizards.ui.discover.MainscreenFragment
+import at.aau.edu.wizards.ui.discover.DiscoverFragment
 import at.aau.edu.wizards.util.permission.PermissionHandler
 
 private const val DISCOVER_FRAGMENT_TAG = "DISCOVER_FRAGMENT_TAG"
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showDiscoverFragment() {
         val fragment = supportFragmentManager.findFragmentByTag(DISCOVER_FRAGMENT_TAG)
-            ?: MainscreenFragment()
+            ?: DiscoverFragment()
 
         if (fragment.isAdded) {
             return

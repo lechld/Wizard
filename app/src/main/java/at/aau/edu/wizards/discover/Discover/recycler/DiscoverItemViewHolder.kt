@@ -4,37 +4,37 @@ import android.annotation.SuppressLint
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import at.aau.edu.wizards.databinding.*
-import at.aau.edu.wizards.ui.discover.MainscreenItem
+import at.aau.edu.wizards.ui.discover.DiscoverItem
 
-sealed class MainscreenItemViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
+sealed class DiscoverItemViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
     class Approved(
-        private val binding: ItemMainscreenApprovedBinding,
-    ) : MainscreenItemViewHolder(binding) {
+        private val binding: ItemDiscoverApprovedBinding,
+    ) : DiscoverItemViewHolder(binding) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(item: MainscreenItem.Approved) {
+        fun bind(item: DiscoverItem.Approved) {
             binding.approvedText.text =
                 item.connection.endpointId + " - " + item.connection.endpointName
         }
     }
 
     class Header(
-        private val binding: ItemMainscreenHeaderBinding,
-    ) : MainscreenItemViewHolder(binding) {
+        private val binding: ItemDiscoverHeaderBinding,
+    ) : DiscoverItemViewHolder(binding) {
 
-        fun bind(item: MainscreenItem.Header) {
+        fun bind(item: DiscoverItem.Header) {
             binding.root.text = item.text
         }
     }
 
     class Pending(
-        private val binding: ItemMainscreenPendingBinding,
-        private val onClick: (MainscreenItem.Pending) -> Unit,
-    ) : MainscreenItemViewHolder(binding) {
+        private val binding: ItemDiscoverPendingBinding,
+        private val onClick: (DiscoverItem.Pending) -> Unit,
+    ) : DiscoverItemViewHolder(binding) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(item: MainscreenItem.Pending) {
+        fun bind(item: DiscoverItem.Pending) {
             binding.pendingText.text =
                 item.connection.endpointId + " - " + item.connection.endpointName
             binding.root.setOnClickListener {
@@ -44,11 +44,11 @@ sealed class MainscreenItemViewHolder(binding: ViewBinding) : RecyclerView.ViewH
     }
 
     class Requested(
-        private val binding: ItemMainscreenRequestedBinding,
-    ) : MainscreenItemViewHolder(binding) {
+        private val binding: ItemDiscoverRequestedBinding,
+    ) : DiscoverItemViewHolder(binding) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(item: MainscreenItem.Requested) {
+        fun bind(item: DiscoverItem.Requested) {
             binding.requestedText.text =
                 item.connection.endpointId + " - " + item.connection.endpointName
         }
