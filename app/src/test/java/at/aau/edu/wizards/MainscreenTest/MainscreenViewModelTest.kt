@@ -1,15 +1,13 @@
-package at.aau.edu.wizards.DiscoverTest
+package at.aau.edu.wizards.MainscreenTest
 
-import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.impl.ClientImpl
 import at.aau.edu.wizards.api.impl.MessageDelegate
 import at.aau.edu.wizards.api.model.ClientConnection
-import at.aau.edu.wizards.ui.discover.MainscreenItem
 import at.aau.edu.wizards.ui.discover.MainscreenItemFactory
 import at.aau.edu.wizards.ui.discover.MainscreenViewModel
 import com.google.android.gms.nearby.connection.ConnectionsClient
-import junit.framework.TestCase.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
 

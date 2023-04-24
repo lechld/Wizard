@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.api.Client
-import at.aau.edu.wizards.databinding.FragmentDiscoverBinding
+import at.aau.edu.wizards.databinding.FragmentMainscreenBinding
 import at.aau.edu.wizards.ui.discover.recycler.MainscreenAdapter
 
 class MainscreenFragment : Fragment() {
@@ -19,14 +19,14 @@ class MainscreenFragment : Fragment() {
         )[MainscreenViewModel::class.java]
     }
 
-    private var binding: FragmentDiscoverBinding? = null
+    private var binding: FragmentMainscreenBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentDiscoverBinding.inflate(inflater, container, false)
+        val binding = FragmentMainscreenBinding.inflate(inflater, container, false)
 
         this.binding = binding
 
