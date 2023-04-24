@@ -5,17 +5,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 
 
 import at.aau.edu.wizards.R
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
+import at.aau.edu.wizards.sample.SampleDataSourceImpl
+import at.aau.edu.wizards.sample.SampleViewModel
 
 
 class GameboardFragment : Fragment() {
 
-
     private var binding: FragmentGameboardBinding? = null
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            GameboardViewModel.Factory("") //WAS KOMMT HIER
+        )[GameboardViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,7 +35,8 @@ class GameboardFragment : Fragment() {
 
         this.binding = binding
 
-        return binding.root    }
+        return binding.root
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,34 +46,27 @@ class GameboardFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-
+        binding = null
+        super.onDestroyView()
     }
 
-    private fun setupUI() {
+    // WIE FUNKTIONIERT DER SETUPUI AUFBAU
+    private fun setupUI(binding: FragmentGameboardBinding) {
 
-    }
-
-    private fun dataInitialize() {
-
-        cardsArrayList = arrayListOf<Cards>()
-
-        imageId = arrayOf(
-            R.drawable.card,
-            R.drawable.card,
-            R.drawable.card,
-            R.drawable.card,
-            R.drawable.card,
-            R.drawable.card,
-            R.drawable.card,
-            R.drawable.card,
-            R.drawable.card
-        )
-
-
-        for (i in imageId.indices){
-            val news = Cards(imageId[i])
-            cardsArrayList.add(news)
+        val binding = this.binding ?: return
+        val adapter = GameboardAdapter {
         }
+
+        binding.gameboardRecyclerView.adapter = adapter
+
+        viewModel.items.observe(viewLifecycleOwner) { endpoints ->
+            adapter.submitList(endpoints)
+        }
+
+        viewModel.()
+
     }
+
+
 }
 

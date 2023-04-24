@@ -5,18 +5,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import at.aau.edu.wizards.R
+import at.aau.edu.wizards.databinding.CardBinding
 
 
 class GameboardAdapter(private val cardList: ArrayList<Cards>) :
-        ListAdapter<Cards, ItemCardViewHolder>(DiffUtlCallback) {
+        ListAdapter<Cards, ItemCardViewHolder>(DiffUtlCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemCardViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(
-            R.layout.card,
-            parent, false
-        )
-
-        return ItemCardViewHolder(itemView)
+        val from = LayoutInflater.from(parent.context)
+        val binding = CardBinding.inflate(from, parent, false)
+        return ItemCardViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -24,14 +22,13 @@ class GameboardAdapter(private val cardList: ArrayList<Cards>) :
     }
 
     override fun onBindViewHolder(holder: ItemCardViewHolder, position: Int) {
-        val currentItem = cardList[position]
-        holder.titleImage.setImageResource(currentItem.cardsImage)
+        holder.bindCard(cardList[position])
     }
 
 
     private class DiffUtlCallback : DiffUtil.ItemCallback<Cards>() {
         override fun areItemsTheSame(oldItem: Cards, newItem: Cards): Boolean {
-            return oldItem.cardsImage == newItem.cardsImage
+            return oldItem.cardImage == newItem.cardImage
         }
 
         override fun areContentsTheSame(oldItem: Cards, newItem: Cards): Boolean {
