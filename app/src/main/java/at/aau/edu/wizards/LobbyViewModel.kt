@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import at.aau.edu.wizards.*
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.api.model.ServerConnection
-//import at.aau.edu.wizards.ui.util.LiveEvent
 import kotlinx.coroutines.flow.map
 
 class LobbyViewModel(
@@ -35,6 +34,8 @@ class LobbyViewModel(
     fun startGame() {
         val connections = server.getConnections()
             .filterIsInstance(ServerConnection.Connected::class.java)
+
+        //TODO: define the communication protocol
 
         connections.forEach {
             server.send(it, "START")
