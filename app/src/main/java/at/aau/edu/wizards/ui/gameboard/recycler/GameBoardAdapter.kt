@@ -4,18 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import at.aau.edu.wizards.databinding.CardBinding
+import at.aau.edu.wizards.databinding.ItemCardBinding
 import at.aau.edu.wizards.ui.gameboard.Cards
 
-class GameBoardAdapter : ListAdapter<Cards, ItemCardViewHolder>(DiffUtlCallback()) {
+class GameBoardAdapter : ListAdapter<Cards, GameBoardItemViewHolder>(DiffUtlCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemCardViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameBoardItemViewHolder {
         val from = LayoutInflater.from(parent.context)
-        val binding = CardBinding.inflate(from, parent, false)
-        return ItemCardViewHolder(binding)
+        val binding = ItemCardBinding.inflate(from, parent, false)
+        return GameBoardItemViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ItemCardViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GameBoardItemViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 

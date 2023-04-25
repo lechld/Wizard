@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 
-
 class GameBoardFragment : Fragment() {
 
     private var binding: FragmentGameboardBinding? = null

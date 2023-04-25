@@ -5,5 +5,4 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/default_margin"
     android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-    android:background="@drawable/border"
     tools:text="Some text here" />
