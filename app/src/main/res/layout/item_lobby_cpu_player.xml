@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/default_margin">
+    android:layout_marginHorizontal="@dimen/default_margin"
+    android:layout_marginVertical="@dimen/default_margin_half">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
