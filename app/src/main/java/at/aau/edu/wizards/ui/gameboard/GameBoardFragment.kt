@@ -1,4 +1,4 @@
-package at.aau.edu.wizards.gameboard
+package at.aau.edu.wizards.ui.gameboard
 
 
 import android.os.Bundle
@@ -8,18 +8,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
+import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 
 
-class GameboardFragment : Fragment() {
+class GameBoardFragment : Fragment() {
 
     private var binding: FragmentGameboardBinding? = null
 
     private val viewModel by lazy {
         ViewModelProvider(
             this,
-            GameboardViewModel.Factory("") //WAS KOMMT HIER
-        )[GameboardViewModel::class.java]
+            GameBoardViewModel.Factory()
+        )[GameBoardViewModel::class.java]
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,7 +34,6 @@ class GameboardFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -44,23 +45,15 @@ class GameboardFragment : Fragment() {
         super.onDestroyView()
     }
 
-    // WIE FUNKTIONIERT DER SETUPUI AUFBAU
-    private fun setupUI(binding: FragmentGameboardBinding) {
-
+    private fun setupUI() {
         val binding = this.binding ?: return
-        val adapter = GameboardAdapter {
-        }
+        val adapter = GameBoardAdapter()
 
         binding.gameboardRecyclerView.adapter = adapter
 
-        viewModel.items.observe(viewLifecycleOwner) { endpoints ->
-            adapter.submitList(endpoints)
+        viewModel.cards.observe(viewLifecycleOwner) { cards ->
+            adapter.submitList(cards)
         }
-
-        viewModel.()
-
     }
-
-
 }
 

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import at.aau.edu.wizards.api.impl.REQUIRED_PERMISSIONS
 import at.aau.edu.wizards.databinding.ActivityMainBinding
-import at.aau.edu.wizards.gameboard.GameboardFragment
+import at.aau.edu.wizards.ui.gameboard.GameBoardFragment
 import at.aau.edu.wizards.ui.discover.DiscoverFragment
 import at.aau.edu.wizards.ui.lobby.LobbyFragment
 import at.aau.edu.wizards.util.permission.PermissionHandler
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showGame() {
         val fragment = supportFragmentManager.findFragmentByTag(GAME_BOARD_FRAGMENT_TAG)
-            ?: GameboardFragment()
+            ?: GameBoardFragment()
 
         if (fragment.isAdded) {
             return

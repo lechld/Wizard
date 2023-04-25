@@ -1,14 +1,13 @@
-package at.aau.edu.wizards.gameboard
+package at.aau.edu.wizards.ui.gameboard.recycler
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import at.aau.edu.wizards.databinding.CardBinding
+import at.aau.edu.wizards.ui.gameboard.Cards
 
-
-class GameboardAdapter(private val cardList: ArrayList<Cards>) :
-    ListAdapter<Cards, ItemCardViewHolder>(DiffUtlCallback()) {
+class GameBoardAdapter : ListAdapter<Cards, ItemCardViewHolder>(DiffUtlCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemCardViewHolder {
         val from = LayoutInflater.from(parent.context)
@@ -16,14 +15,9 @@ class GameboardAdapter(private val cardList: ArrayList<Cards>) :
         return ItemCardViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return cardList.size
-    }
-
     override fun onBindViewHolder(holder: ItemCardViewHolder, position: Int) {
-        holder.bindCard(cardList[position])
+        holder.bind(getItem(position))
     }
-
 
     private class DiffUtlCallback : DiffUtil.ItemCallback<Cards>() {
         override fun areItemsTheSame(oldItem: Cards, newItem: Cards): Boolean {
