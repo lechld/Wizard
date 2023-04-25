@@ -4,12 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import at.aau.edu.wizards.R
 import at.aau.edu.wizards.databinding.CardBinding
 
 
 class GameboardAdapter(private val cardList: ArrayList<Cards>) :
-        ListAdapter<Cards, ItemCardViewHolder>(DiffUtlCallback()) {
+    ListAdapter<Cards, ItemCardViewHolder>(DiffUtlCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemCardViewHolder {
         val from = LayoutInflater.from(parent.context)

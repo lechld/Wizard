@@ -1,15 +1,17 @@
 package at.aau.edu.wizards
 
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import at.aau.edu.wizards.sample.SampleFragment
 import at.aau.edu.wizards.api.impl.REQUIRED_PERMISSIONS
 import at.aau.edu.wizards.databinding.ActivityMainBinding
 import at.aau.edu.wizards.gameboard.GameboardFragment
+import at.aau.edu.wizards.ui.discover.DiscoverFragment
+import at.aau.edu.wizards.ui.lobby.LobbyFragment
 import at.aau.edu.wizards.util.permission.PermissionHandler
 
-private const val GAMEBOARD_FRAGMENT_TAG = "GAMEBOARD_FRAGMENT_TAG"
+private const val DISCOVER_FRAGMENT_TAG = "DISCOVER_FRAGMENT_TAG"
+private const val LOBBY_FRAGMENT_TAG = "LOBBY_FRAGMENT_TAG"
+private const val GAME_BOARD_FRAGMENT_TAG = "GAME_BOARD_FRAGMENT_TAG"
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,24 +24,54 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        findViewById<Button>(R.id.sample_button)?.let { sampleButton ->
-            sampleButton.setOnClickListener {
-                showSampleFragment()
-            }
-        }
-
         setupUi()
         handlePermissions()
     }
 
     private fun setupUi() {
-        binding.gamebutton.setOnClickListener {
+        binding.clientButton.setOnClickListener {
+            showDiscoverFragment()
+        }
+
+        binding.serverButton.setOnClickListener {
+            showLobby()
+        }
+
+        binding.gameButton.setOnClickListener {
             showGame()
         }
     }
 
+    private fun showDiscoverFragment() {
+        val fragment = supportFragmentManager.findFragmentByTag(DISCOVER_FRAGMENT_TAG)
+            ?: DiscoverFragment()
+
+        if (fragment.isAdded) {
+            return
+        }
+
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_container, fragment, DISCOVER_FRAGMENT_TAG)
+            .addToBackStack(DISCOVER_FRAGMENT_TAG)
+            .commit()
+    }
+
+    private fun showLobby() {
+        val fragment = supportFragmentManager.findFragmentByTag(LOBBY_FRAGMENT_TAG)
+            ?: LobbyFragment()
+
+        if (fragment.isAdded) {
+            return
+        }
+
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_container, fragment, LOBBY_FRAGMENT_TAG)
+            .addToBackStack(LOBBY_FRAGMENT_TAG)
+            .commit()
+    }
+
     private fun showGame() {
-        val fragment = supportFragmentManager.findFragmentByTag(GAMEBOARD_FRAGMENT_TAG)
+        val fragment = supportFragmentManager.findFragmentByTag(GAME_BOARD_FRAGMENT_TAG)
             ?: GameboardFragment()
 
         if (fragment.isAdded) {
@@ -47,18 +79,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container, fragment, GAMEBOARD_FRAGMENT_TAG)
-            .addToBackStack(GAMEBOARD_FRAGMENT_TAG)
+            .add(R.id.fragment_container, fragment, GAME_BOARD_FRAGMENT_TAG)
+            .addToBackStack(GAME_BOARD_FRAGMENT_TAG)
             .commit()
     }
 
-
-    private fun showSampleFragment() {
-      supportFragmentManager.beginTransaction()
-          .add(R.id.fragment_container, SampleFragment(), "TAG")
-          .addToBackStack(null)
-          .commit()
-  }
     private fun handlePermissions() {
         val permissionHandler = PermissionHandler(
             activity = this,
