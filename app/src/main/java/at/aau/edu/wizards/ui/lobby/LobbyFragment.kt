@@ -47,8 +47,8 @@ class LobbyFragment : Fragment() {
 
     private fun setupUI() {
         val binding = this.binding ?: return
-        val adapter = LobbyAdapter { clickedRequested ->
-            viewModel.accept(clickedRequested)
+        val adapter = LobbyAdapter { clickedItem ->
+            viewModel.clicked(clickedItem)
         }
 
         binding.lobbyRecycler.adapter = adapter

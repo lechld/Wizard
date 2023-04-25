@@ -4,17 +4,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import at.aau.edu.wizards.databinding.ItemLobbyAcceptedBinding
-import at.aau.edu.wizards.databinding.ItemLobbyHeaderBinding
-import at.aau.edu.wizards.databinding.ItemLobbyRequestedBinding
+import at.aau.edu.wizards.databinding.*
 import at.aau.edu.wizards.ui.lobby.LobbyItem
 
 private const val ACCEPTED_VIEW_TYPE = 0
 private const val HEADER_VIEW_TYPE = 1
 private const val REQUESTED_VIEW_TYPE = 2
+private const val ADD_CPU_VIEW_TYPE = 3
+private const val CPU_PLAYER_VIEW_TYPE = 4
 
 class LobbyAdapter(
-    private val onClick: (LobbyItem.Requested) -> Unit,
+    private val onClick: (LobbyItem) -> Unit,
 ) : ListAdapter<LobbyItem, LobbyItemViewHolder>(DiffItemCallback()) {
 
     override fun getItemViewType(position: Int): Int {
@@ -22,6 +22,8 @@ class LobbyAdapter(
             is LobbyItem.Accepted -> ACCEPTED_VIEW_TYPE
             is LobbyItem.Header -> HEADER_VIEW_TYPE
             is LobbyItem.Requested -> REQUESTED_VIEW_TYPE
+            is LobbyItem.CpuPlayer -> CPU_PLAYER_VIEW_TYPE
+            is LobbyItem.AddCpu -> ADD_CPU_VIEW_TYPE
             else -> throw IllegalStateException("ViewType not supported!")
         }
     }
@@ -39,13 +41,21 @@ class LobbyAdapter(
                 val binding = ItemLobbyHeaderBinding.inflate(inflater, parent, false)
 
                 LobbyItemViewHolder.Header(binding)
-
             }
             REQUESTED_VIEW_TYPE -> {
                 val binding = ItemLobbyRequestedBinding.inflate(inflater, parent, false)
 
                 LobbyItemViewHolder.Requested(binding, onClick)
+            }
+            ADD_CPU_VIEW_TYPE -> {
+                val binding = ItemLobbyAddCpuBinding.inflate(inflater, parent, false)
 
+                LobbyItemViewHolder.AddCpu(binding, onClick)
+            }
+            CPU_PLAYER_VIEW_TYPE -> {
+                val binding = ItemLobbyCpuPlayerBinding.inflate(inflater, parent, false)
+
+                LobbyItemViewHolder.CpuPlayer(binding)
             }
             else -> throw IllegalStateException("ViewType not supported!")
         }
@@ -63,6 +73,12 @@ class LobbyAdapter(
             }
             is LobbyItemViewHolder.Requested -> {
                 holder.bind(item as LobbyItem.Requested)
+            }
+            is LobbyItemViewHolder.AddCpu -> {
+                holder.bind(item as LobbyItem.AddCpu)
+            }
+            is LobbyItemViewHolder.CpuPlayer -> {
+                holder.bind(item as LobbyItem.CpuPlayer)
             }
         }
     }
@@ -83,8 +99,13 @@ class LobbyAdapter(
                 is LobbyItem.Requested -> {
                     newItem is LobbyItem.Requested && oldItem.connection == newItem.connection
                 }
+                is LobbyItem.AddCpu -> {
+                    newItem is LobbyItem.AddCpu
+                }
+                is LobbyItem.CpuPlayer -> {
+                    newItem is LobbyItem.CpuPlayer && oldItem.text == newItem.text
+                }
             }
         }
-
     }
 }
