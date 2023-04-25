@@ -54,6 +54,10 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
 
     // https://medium.com/nerd-for-tech/setup-jacoco-code-coverage-with-your-multimodule-android-app-kotlin-a0f82573a1
     def fileFilter = [
+            // exclude ui
+            '**/*Adapter.*',
+            '**/*Activity.*',
+            '**/*Fragment.*',
             // data binding
             'android/databinding/**/*.class',
             '**/android/databinding/*Binding.class',
