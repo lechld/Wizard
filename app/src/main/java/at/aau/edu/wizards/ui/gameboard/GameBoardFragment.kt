@@ -5,20 +5,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import at.aau.edu.wizards.api.Client
+import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 
 class GameBoardFragment : Fragment() {
 
+    private val asClient by lazy {
+        requireArguments().getBoolean(AS_CLIENT_EXTRA)
+    }
+
+    private val amountCpu by lazy {
+        requireArguments().getInt(AMOUNT_CPU_EXTRA)
+    }
+
     private var binding: FragmentGameboardBinding? = null
 
     private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            GameBoardViewModel.Factory()
-        )[GameBoardViewModel::class.java]
+        val factory = GameBoardViewModelFactory(
+            asClient = asClient,
+            amountCpu = amountCpu,
+            server = Server.getInstance(requireContext()),
+            client = Client.getInstance(requireContext())
+        )
+        ViewModelProvider(this, factory)[GameBoardViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -52,6 +66,24 @@ class GameBoardFragment : Fragment() {
 
         viewModel.cards.observe(viewLifecycleOwner) { cards ->
             adapter.submitList(cards)
+        }
+    }
+
+    companion object {
+        private const val AS_CLIENT_EXTRA = "AS_CLIENT_EXTRA"
+        private const val AMOUNT_CPU_EXTRA = "AMOUNT_CPU_EXTRA"
+        fun instance(asClient: Boolean, amountCpu: Int = 0): GameBoardFragment {
+            if (asClient && amountCpu > 0) {
+                // This is not handled idealy, but fine for now
+                throw IllegalArgumentException("Only Server is allowed to define cpu players")
+            }
+
+            return GameBoardFragment().apply {
+                arguments = bundleOf(
+                    AS_CLIENT_EXTRA to asClient,
+                    AMOUNT_CPU_EXTRA to amountCpu
+                )
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import at.aau.edu.wizards.MainActivity
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.databinding.FragmentDiscoverBinding
 import at.aau.edu.wizards.ui.discover.recycler.DiscoverAdapter
@@ -55,6 +56,12 @@ class DiscoverFragment : Fragment() {
 
         viewModel.items.observe(viewLifecycleOwner) { endpoints ->
             adapter.submitList(endpoints)
+        }
+
+        viewModel.startGame.observe(viewLifecycleOwner) {
+            val mainActivity = activity as? MainActivity ?: return@observe
+
+            mainActivity.showGame(asClient = true)
         }
 
         viewModel.startDiscovery()

@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import at.aau.edu.wizards.*
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.api.model.ServerConnection
+import at.aau.edu.wizards.gameModel.START_COMMAND
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 
@@ -55,16 +56,15 @@ class LobbyViewModel(
         cpuPlayers.tryEmit(cpuPlayers.value + 1)
     }
 
-    fun startGame() {
+    fun startGame(): Int {
         val connections = server.getConnections()
             .filterIsInstance(ServerConnection.Connected::class.java)
 
-        //TODO: define the communication protocol
-
-        connections.forEach {
-            server.send(it, "START")
+        connections.forEach { connection ->
+            server.send(connection, START_COMMAND)
         }
 
+        return cpuPlayers.value
     }
 
     class Factory(

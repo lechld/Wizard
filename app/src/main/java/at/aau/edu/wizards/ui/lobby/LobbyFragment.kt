@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import at.aau.edu.wizards.MainActivity
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentLobbyBinding
 import at.aau.edu.wizards.ui.lobby.recycler.LobbyAdapter
@@ -58,7 +59,10 @@ class LobbyFragment : Fragment() {
         }
 
         binding.startGameButton.setOnClickListener {
-            viewModel.startGame()
+            val amountCpu = viewModel.startGame()
+            val mainActivity = activity as? MainActivity ?: return@setOnClickListener
+
+            mainActivity.showGame(asClient = false, amountCpu = amountCpu)
         }
         viewModel.startAdvertising()
     }
