@@ -1,10 +1,18 @@
 package at.aau.edu.wizards.ui.gameboard
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import at.aau.edu.wizards.R
+import at.aau.edu.wizards.api.MessageReceiver
+import at.aau.edu.wizards.api.MessageSender
 import kotlinx.coroutines.launch
 
-class GameBoardViewModel : ViewModel() {
+abstract class GameBoardViewModel(
+    private val messageReceiver: MessageReceiver,
+    private val messageSender: MessageSender,
+) : ViewModel() {
 
     private val _cards = MutableLiveData<List<Cards>>()
     val cards: LiveData<List<Cards>> = _cards
@@ -19,17 +27,6 @@ class GameBoardViewModel : ViewModel() {
                     Cards(R.drawable.card)
                 )
             )
-        }
-    }
-
-    class Factory : ViewModelProvider.Factory {
-
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return if (modelClass.isAssignableFrom(GameBoardViewModel::class.java)) {
-                // creates the instance and provides someDependency
-                GameBoardViewModel() as T
-            } else throw IllegalStateException("Wrong Factory for instantiating ${modelClass::class.java.canonicalName}")
         }
     }
 }

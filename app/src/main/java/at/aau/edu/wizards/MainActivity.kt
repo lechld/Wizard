@@ -28,6 +28,20 @@ class MainActivity : AppCompatActivity() {
         handlePermissions()
     }
 
+    fun showGame(asClient: Boolean) {
+        val fragment = supportFragmentManager.findFragmentByTag(GAME_BOARD_FRAGMENT_TAG)
+            ?: GameBoardFragment.instance(asClient)
+
+        if (fragment.isAdded) {
+            return
+        }
+
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_container, fragment, GAME_BOARD_FRAGMENT_TAG)
+            .addToBackStack(GAME_BOARD_FRAGMENT_TAG)
+            .commit()
+    }
+
     private fun setupUi() {
         binding.clientButton.setOnClickListener {
             showDiscoverFragment()
@@ -35,10 +49,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.serverButton.setOnClickListener {
             showLobby()
-        }
-
-        binding.gameButton.setOnClickListener {
-            showGame()
         }
     }
 
@@ -67,20 +77,6 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container, fragment, LOBBY_FRAGMENT_TAG)
             .addToBackStack(LOBBY_FRAGMENT_TAG)
-            .commit()
-    }
-
-    private fun showGame() {
-        val fragment = supportFragmentManager.findFragmentByTag(GAME_BOARD_FRAGMENT_TAG)
-            ?: GameBoardFragment()
-
-        if (fragment.isAdded) {
-            return
-        }
-
-        supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container, fragment, GAME_BOARD_FRAGMENT_TAG)
-            .addToBackStack(GAME_BOARD_FRAGMENT_TAG)
             .commit()
     }
 
