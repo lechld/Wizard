@@ -6,4 +6,8 @@ sealed interface LobbyItem {
     data class Header(val text: String) : LobbyItem
     data class Requested(val connection: ServerConnection.ClientRequest) : LobbyItem
     data class Accepted(val connection: ServerConnection.Connected) : LobbyItem
+
+    object AddCpu : LobbyItem
+
+    data class CpuPlayer(val text: String) : LobbyItem
 }

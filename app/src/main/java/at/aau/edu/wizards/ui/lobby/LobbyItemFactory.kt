@@ -5,7 +5,8 @@ import at.aau.edu.wizards.api.model.ServerConnection
 class LobbyItemFactory {
 
     fun create(
-        connections: List<ServerConnection>
+        connections: List<ServerConnection>,
+        cpuPlayers: Int,
     ): List<LobbyItem> {
         val clientRequest = connections.filterIsInstance(
             ServerConnection.ClientRequest::class.java
@@ -35,6 +36,13 @@ class LobbyItemFactory {
         if (clientRequest.isEmpty() && connected.isEmpty()) {
             result.add(LobbyItem.Header("Waiting for players to join"))
         }
+
+        result.add(LobbyItem.Header(" "))
+        result.add(LobbyItem.Header("CPU Players"))
+        for (i in 1..cpuPlayers) {
+            result.add(LobbyItem.CpuPlayer("CPU $i"))
+        }
+        result.add(LobbyItem.AddCpu)
 
         return result
     }

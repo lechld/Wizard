@@ -3,9 +3,7 @@ package at.aau.edu.wizards.ui.lobby.recycler
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import at.aau.edu.wizards.databinding.ItemLobbyAcceptedBinding
-import at.aau.edu.wizards.databinding.ItemLobbyHeaderBinding
-import at.aau.edu.wizards.databinding.ItemLobbyRequestedBinding
+import at.aau.edu.wizards.databinding.*
 import at.aau.edu.wizards.ui.lobby.LobbyItem
 
 sealed class LobbyItemViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -41,6 +39,27 @@ sealed class LobbyItemViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder
             binding.root.setOnClickListener {
                 onClick(item)
             }
+        }
+    }
+
+    class AddCpu(
+        private val binding: ItemLobbyAddCpuBinding,
+        private val onClick: (LobbyItem) -> Unit,
+    ) : LobbyItemViewHolder(binding) {
+
+        fun bind(item: LobbyItem.AddCpu) {
+            binding.root.setOnClickListener {
+                onClick(item)
+            }
+        }
+    }
+
+    class CpuPlayer(
+        private val binding: ItemLobbyCpuPlayerBinding
+    ) : LobbyItemViewHolder(binding) {
+
+        fun bind(item: LobbyItem.CpuPlayer) {
+            binding.cpuText.text = item.text
         }
     }
 }

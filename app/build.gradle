@@ -159,4 +159,6 @@ dependencies {
 
     // https://developer.android.com/jetpack/androidx/releases/lifecycle
     testImplementation 'androidx.lifecycle:lifecycle-runtime-testing:2.6.1'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
 }
