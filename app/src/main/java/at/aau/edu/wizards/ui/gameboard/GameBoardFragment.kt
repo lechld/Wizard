@@ -19,11 +19,16 @@ class GameBoardFragment : Fragment() {
         requireArguments().getBoolean(AS_CLIENT_EXTRA)
     }
 
+    private val amountCpu by lazy {
+        requireArguments().getInt(AMOUNT_CPU_EXTRA)
+    }
+
     private var binding: FragmentGameboardBinding? = null
 
     private val viewModel by lazy {
         val factory = GameBoardViewModelFactory(
             asClient = asClient,
+            amountCpu = amountCpu,
             server = Server.getInstance(requireContext()),
             client = Client.getInstance(requireContext())
         )
@@ -66,8 +71,19 @@ class GameBoardFragment : Fragment() {
 
     companion object {
         private const val AS_CLIENT_EXTRA = "AS_CLIENT_EXTRA"
-        fun instance(asClient: Boolean): GameBoardFragment = GameBoardFragment().apply {
-            arguments = bundleOf(AS_CLIENT_EXTRA to asClient)
+        private const val AMOUNT_CPU_EXTRA = "AMOUNT_CPU_EXTRA"
+        fun instance(asClient: Boolean, amountCpu: Int = 0): GameBoardFragment {
+            if (asClient && amountCpu > 0) {
+                // This is not handled idealy, but fine for now
+                throw IllegalArgumentException("Only Server is allowed to define cpu players")
+            }
+
+            return GameBoardFragment().apply {
+                arguments = bundleOf(
+                    AS_CLIENT_EXTRA to asClient,
+                    AMOUNT_CPU_EXTRA to amountCpu
+                )
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ import at.aau.edu.wizards.api.Server
 
 class GameBoardViewModelFactory(
     private val asClient: Boolean,
+    private val amountCpu: Int,
     private val server: Server,
     private val client: Client,
 ) : ViewModelProvider.Factory {
@@ -17,7 +18,7 @@ class GameBoardViewModelFactory(
             val viewModel = if (asClient) {
                 ClientGameBoardViewModel(client)
             } else {
-                ServerGameBoardViewModel(server)
+                ServerGameBoardViewModel(server, amountCpu)
             }
             viewModel as T
         } else throw IllegalStateException("Wrong Factory for instantiating ${modelClass::class.java.canonicalName}")

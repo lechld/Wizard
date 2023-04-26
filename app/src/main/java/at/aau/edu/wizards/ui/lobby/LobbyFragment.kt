@@ -59,11 +59,10 @@ class LobbyFragment : Fragment() {
         }
 
         binding.startGameButton.setOnClickListener {
-            viewModel.startGame()
-
+            val amountCpu = viewModel.startGame()
             val mainActivity = activity as? MainActivity ?: return@setOnClickListener
 
-            mainActivity.showGame(asClient = false)
+            mainActivity.showGame(asClient = false, amountCpu = amountCpu)
         }
         viewModel.startAdvertising()
     }

@@ -56,13 +56,15 @@ class LobbyViewModel(
         cpuPlayers.tryEmit(cpuPlayers.value + 1)
     }
 
-    fun startGame() {
+    fun startGame(): Int {
         val connections = server.getConnections()
             .filterIsInstance(ServerConnection.Connected::class.java)
 
         connections.forEach { connection ->
             server.send(connection, START_COMMAND)
         }
+
+        return cpuPlayers.value
     }
 
     class Factory(
