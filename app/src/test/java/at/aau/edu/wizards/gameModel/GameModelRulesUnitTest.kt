@@ -25,7 +25,9 @@ class GameModelRulesUnitTest {
         listOfPlayers.add(player3)
         listOfPlayers.add(player4)
         listOfPlayers.add(player5)
-        val rules = GameModelRules(listOfPlayers, 0, dealer, model)
+        val rules = GameModelRules(listOfPlayers, 0, dealer, model, 420420)
+
+        assertEquals(0, rules.round)
 
         assertThrows<Exception> { rules.playCard(GameModelCard.NoCard) }
         player0.guesses.add(0)
@@ -39,7 +41,9 @@ class GameModelRulesUnitTest {
         assertEquals(GameModelCard.NoCard, rules.winningCard)
 
         rules.init()
+        assertEquals(1, rules.round)
         rules.init()
+        player0.guesses.add(0)
         assertEquals(GameModelCard.NoCard, rules.winningCard)
         assertEquals(GameModelCard.Normal(GameModelCard.Color.Orange, 11), rules.trump)
         assertEquals(0, rules.currentPlayer)
@@ -73,6 +77,7 @@ class GameModelRulesUnitTest {
         assertEquals(30, player3.scores[player0.scores.lastIndex])
         assertEquals(20, player4.scores[player0.scores.lastIndex])
         assertEquals(-10, player5.scores[player0.scores.lastIndex])
+        assertEquals(2, rules.round)
 
         assert(rules.localPlayerOwns(GameModelCard.Normal(GameModelCard.Color.Red, 9)))
         assertFalse(rules.localPlayerOwns(GameModelCard.Normal(GameModelCard.Color.Orange, 10)))
@@ -168,7 +173,7 @@ class GameModelRulesUnitTest {
         listOfPlayers.add(player3)
         listOfPlayers.add(player4)
         listOfPlayers.add(player5)
-        val rules = GameModelRules(listOfPlayers, 0, dealer, model)
+        val rules = GameModelRules(listOfPlayers, 0, dealer, model, 420420)
 
         player0.guesses.add(1)
         player1.guesses.add(0)
@@ -184,6 +189,8 @@ class GameModelRulesUnitTest {
         dealer.dealCardInSet()
 
         rules.init()
+
+        player0.guesses.add(1)
 
         rules.playCard(GameModelCard.Normal(GameModelCard.Color.Green, 5))
         rules.playCard(GameModelCard.Normal(GameModelCard.Color.Orange, 11))
@@ -216,7 +223,7 @@ class GameModelRulesUnitTest {
         listOfPlayers.add(player3)
         listOfPlayers.add(player4)
         listOfPlayers.add(player5)
-        val rules = GameModelRules(listOfPlayers, 0, dealer, model)
+        val rules = GameModelRules(listOfPlayers, 0, dealer, model, 420420)
 
         player0.guesses.add(1)
         player1.guesses.add(0)
@@ -257,7 +264,7 @@ class GameModelRulesUnitTest {
         listOfPlayers.add(player3)
         listOfPlayers.add(player4)
         listOfPlayers.add(player5)
-        val rules = GameModelRules(listOfPlayers, 0, dealer, model)
+        val rules = GameModelRules(listOfPlayers, 0, dealer, model, 420420)
 
         player0.guesses.add(1)
         player1.guesses.add(0)
