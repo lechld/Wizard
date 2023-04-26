@@ -1,6 +1,8 @@
 package at.aau.edu.wizards.gameModel
 
-class GameModel {
+import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
+
+class GameModel(private val viewModel: GameBoardViewModel?) {
 
     private val players = ArrayList<GameModelPlayer>()
     private var dealer = GameModelDealer(0)
@@ -9,11 +11,12 @@ class GameModel {
         private set
 
     fun sendMessage(move: String): Boolean {
-        if (legalMessageGuessSend(move) || legalMessageCardSend(move) || move == "EndGame") {
-            //TODO send to network
-            return true
+        return if (legalMessageGuessSend(move) || legalMessageCardSend(move) || move == END_COMMAND) {
+            viewModel?.sendMessage(move)
+            true
+        } else {
+            false
         }
-        return false
     }
 
     private fun legalMessageGuessSend(move: String): Boolean {

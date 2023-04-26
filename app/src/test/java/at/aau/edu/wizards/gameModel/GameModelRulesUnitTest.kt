@@ -7,10 +7,10 @@ import org.junit.jupiter.api.assertThrows
 
 
 class GameModelRulesUnitTest {
-
+    private val viewModel = null
     @Test
     fun test() {
-        val model = GameModel()
+        val model = GameModel(viewModel)
         val dealer = GameModelDealer(420420)
         val player0 = GameModelPlayer(0, dealer, true)
         val player1 = GameModelPlayer(1, dealer, true)
@@ -158,7 +158,7 @@ class GameModelRulesUnitTest {
 
     @Test
     fun testWizardTrump() {
-        val model = GameModel()
+        val model = GameModel(viewModel)
         val dealer = GameModelDealer(420420)
         val player0 = GameModelPlayer(0, dealer, true)
         val player1 = GameModelPlayer(1, dealer, true)
@@ -208,7 +208,7 @@ class GameModelRulesUnitTest {
 
     @Test
     fun testWizardTrump2() {
-        val model = GameModel()
+        val model = GameModel(viewModel)
         val dealer = GameModelDealer(22)
         val player0 = GameModelPlayer(0, dealer, true)
         val player1 = GameModelPlayer(1, dealer, true)
@@ -249,7 +249,7 @@ class GameModelRulesUnitTest {
 
     @Test
     fun testJesterTrump() {
-        val model = GameModel()
+        val model = GameModel(viewModel)
         val dealer = GameModelDealer(23)
         val player0 = GameModelPlayer(0, dealer, true)
         val player1 = GameModelPlayer(1, dealer, true)

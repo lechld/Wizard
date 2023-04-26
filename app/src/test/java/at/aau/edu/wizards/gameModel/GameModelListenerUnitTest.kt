@@ -4,10 +4,11 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class GameModelListenerUnitTest {
+    private val viewModel = null
 
     @Test
     fun test() {
-        val model = GameModel()
+        val model = GameModel(viewModel)
         var listener = model.listener
 
         assertEquals(GameModelCard.NoCard, listener.trump)

@@ -73,7 +73,7 @@ class GameModelRules(
 
 
     private fun endGame() {
-        parent.sendMessage("EndGame")
+        parent.sendMessage(END_COMMAND)
     }
 
     fun playCard(card: GameModelCard) {

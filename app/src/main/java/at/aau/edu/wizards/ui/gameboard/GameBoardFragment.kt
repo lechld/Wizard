@@ -39,7 +39,7 @@ class GameBoardFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentGameboardBinding.inflate(inflater, container, false)
 
         this.binding = binding
@@ -74,7 +74,7 @@ class GameBoardFragment : Fragment() {
         private const val AMOUNT_CPU_EXTRA = "AMOUNT_CPU_EXTRA"
         fun instance(asClient: Boolean, amountCpu: Int = 0): GameBoardFragment {
             if (asClient && amountCpu > 0) {
-                // This is not handled idealy, but fine for now
+                // This is not handled ideally, but fine for now
                 throw IllegalArgumentException("Only Server is allowed to define cpu players")
             }
 

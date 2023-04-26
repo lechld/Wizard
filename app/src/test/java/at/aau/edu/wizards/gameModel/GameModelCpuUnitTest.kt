@@ -6,6 +6,7 @@ import org.junit.jupiter.api.assertThrows
 import kotlin.random.Random
 
 class GameModelCpuUnitTest {
+    private val viewModel = null
 
     @Test
     fun metric() {
@@ -16,7 +17,7 @@ class GameModelCpuUnitTest {
 
         for (i in 0..limit) {
             val ran = Random(420420)
-            val model = GameModel()
+            val model = GameModel(viewModel)
             model.receiveMessage(buildString {
                 append(0.toChar())
                 append(1.toChar())
@@ -60,7 +61,7 @@ class GameModelCpuUnitTest {
 
     @Test
     fun noCard() {
-        val model = GameModel()
+        val model = GameModel(viewModel)
         val dealer = GameModelDealer(420420)
         val players = ArrayList<GameModelPlayer>()
         players.add(GameModelPlayer(0, dealer, true))
