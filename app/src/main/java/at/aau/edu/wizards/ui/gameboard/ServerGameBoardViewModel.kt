@@ -33,14 +33,14 @@ class ServerGameBoardViewModel(
         var iteration = 0
         model.receiveMessage(buildString {
             append(iteration++.toChar())
-            append(connections.size.toChar())
+            append((connections.size+1).toChar())
             append(amountCpu.toChar())
             append(seed)
         })
         connections.forEach {
             server.send(it, buildString {
                 append(iteration++.toChar())
-                append(connections.size.toChar())
+                append((connections.size+1).toChar())
                 append(amountCpu.toChar())
                 append(seed)
             })
