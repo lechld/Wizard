@@ -39,6 +39,7 @@ class ServerGameBoardViewModel(
     }
 
     override fun sendMessage(move: String) {
+        model.receiveMessage(move)
         viewModelScope.launch {
             server.getConnections().filterIsInstance(ServerConnection.Connected::class.java)
                 .forEach {
