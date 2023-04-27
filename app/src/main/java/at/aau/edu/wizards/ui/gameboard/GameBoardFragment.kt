@@ -1,6 +1,7 @@
 package at.aau.edu.wizards.ui.gameboard
 
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,12 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
+import kotlin.coroutines.coroutineContext
 
 class GameBoardFragment : Fragment() {
 
@@ -63,9 +66,19 @@ class GameBoardFragment : Fragment() {
         val adapter = GameBoardAdapter()
 
         binding.gameboardRecyclerView.adapter = adapter
+        binding.gameboardRecyclerView.addItemDecoration(OffsetDecoration())
 
         viewModel.cards.observe(viewLifecycleOwner) { cards ->
             adapter.submitList(cards)
+        }
+
+        val adapterBoard = GameBoardAdapter()
+
+        binding.gameboardBoardRecyclerView.adapter = adapterBoard
+        binding.gameboardRecyclerView.addItemDecoration(OffsetBoardDecoration())
+
+        viewModel.board.observe(viewLifecycleOwner) {cards ->
+            adapterBoard.submitList(cards)
         }
     }
 
@@ -84,6 +97,24 @@ class GameBoardFragment : Fragment() {
                     AMOUNT_CPU_EXTRA to amountCpu
                 )
             }
+        }
+    }
+
+    class OffsetDecoration : RecyclerView.ItemDecoration() {
+
+        private val overlap = 60
+
+        override fun getItemOffsets(outRect : Rect, view : View, parent : RecyclerView, state : RecyclerView.State) {
+            outRect.set(0, 0, -overlap, 0)
+        }
+    }
+
+    class OffsetBoardDecoration : RecyclerView.ItemDecoration() {
+
+        private val overlap = 120
+
+        override fun getItemOffsets(outRect : Rect, view : View, parent : RecyclerView, state : RecyclerView.State) {
+            outRect.set(0, 0, -overlap, 0)
         }
     }
 }

@@ -69,6 +69,7 @@ class GameModelListener(
         for (card in rules.board) {
             board.add(card)
         }
+        board.add(rules.winningCard)
         hands.clear()
         guesses.clear()
         scores.clear()

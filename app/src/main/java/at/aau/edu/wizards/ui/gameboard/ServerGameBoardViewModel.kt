@@ -24,6 +24,7 @@ class ServerGameBoardViewModel(
                         server.send(it, message.value)
                     }
                     mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())
+                    mutableBoard.value = model.listener.board
                 }
             }
         }
@@ -45,6 +46,7 @@ class ServerGameBoardViewModel(
             })
         }
         mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())
+        mutableBoard.value = model.listener.board
     }
 
     override fun sendMessage(move: String) {
@@ -56,6 +58,7 @@ class ServerGameBoardViewModel(
                     }
             }
             mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())
+            mutableBoard.value = model.listener.board
         }
     }
 }

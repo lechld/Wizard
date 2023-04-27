@@ -10,6 +10,9 @@ abstract class GameBoardViewModel : ViewModel() {
     protected val mutableCards = MutableLiveData<ArrayList<GameModelCard>>()
     val cards : LiveData<ArrayList<GameModelCard>> = mutableCards
 
+    protected val mutableBoard = MutableLiveData<ArrayList<GameModelCard>>()
+    val board : LiveData<ArrayList<GameModelCard>> = mutableBoard
+
     open fun sendMessage(move: String) {}
 
 
