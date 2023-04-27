@@ -1,6 +1,6 @@
 package at.aau.edu.wizards.gameModel
 
-import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
 
@@ -98,6 +98,8 @@ class GameModelUnitTest {
             )
         )
         assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Green, 6).getString()))
+
+        assertEquals(0, model.localPlayer())
 
         val model2 = GameModel(viewModel)
 

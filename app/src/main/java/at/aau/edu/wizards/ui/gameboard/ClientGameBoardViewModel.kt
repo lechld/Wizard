@@ -14,7 +14,9 @@ class ClientGameBoardViewModel(
     init {
         viewModelScope.launch {
             client.messages.collect { message ->
-                model.receiveMessage(message.value)
+                if(model.receiveMessage(message.value)){
+                    mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())
+                }
             }
         }
     }

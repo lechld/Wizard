@@ -136,4 +136,8 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         }
     }
 
+    fun localPlayer():Int{
+        return rules.id
+    }
+
 }
