@@ -83,12 +83,12 @@ sealed class GameModelCard {
     }
 
     fun image(): Int {
-        when (this) {
+        return when (this) {
             is Normal -> {
-                return imageNormal()
+                imageNormal()
             }
             is Jester -> {
-                return when (this.color) {
+                when (this.color) {
                     Color.Blue -> R.drawable.bj
                     Color.Green -> R.drawable.gj
                     Color.Orange -> R.drawable.oj
@@ -96,7 +96,7 @@ sealed class GameModelCard {
                 }
             }
             is Wizard -> {
-                return when (this.color) {
+                when (this.color) {
                     Color.Blue -> R.drawable.bw
                     Color.Green -> R.drawable.gw
                     Color.Orange -> R.drawable.ow
@@ -104,49 +104,49 @@ sealed class GameModelCard {
                 }
             }
             is NoCard -> {
-                return R.drawable.card
+                R.drawable.nocard
             }
         }
     }
 
     private fun imageNormal(): Int {
-        when ((this as Normal).color) {
+        return when ((this as Normal).color) {
             Color.Blue -> {
-                return when(this.value) {
-                    1 ->  R.drawable.b1
-                    2 ->  R.drawable.b2
-                    3 ->  R.drawable.b3
-                    4 ->  R.drawable.b4
-                    5 ->  R.drawable.b5
-                    6 ->  R.drawable.b6
-                    7 ->  R.drawable.b7
-                    8 ->  R.drawable.b8
-                    9 ->  R.drawable.b9
-                    10 ->  R.drawable.b10
-                    11 ->  R.drawable.b11
-                    12 ->  R.drawable.b12
+                when (this.value) {
+                    1 -> R.drawable.b1
+                    2 -> R.drawable.b2
+                    3 -> R.drawable.b3
+                    4 -> R.drawable.b4
+                    5 -> R.drawable.b5
+                    6 -> R.drawable.b6
+                    7 -> R.drawable.b7
+                    8 -> R.drawable.b8
+                    9 -> R.drawable.b9
+                    10 -> R.drawable.b10
+                    11 -> R.drawable.b11
+                    12 -> R.drawable.b12
                     else -> R.drawable.b13
                 }
             }
             Color.Green -> {
-                return when(this.value) {
-                    1 ->  R.drawable.g1
-                    2 ->  R.drawable.g2
-                    3 ->  R.drawable.g3
-                    4 ->  R.drawable.g4
-                    5 ->  R.drawable.g5
-                    6 ->  R.drawable.g6
-                    7 ->  R.drawable.g7
-                    8 ->  R.drawable.g8
-                    9 ->  R.drawable.g9
-                    10 ->  R.drawable.g10
-                    11 ->  R.drawable.g11
-                    12 ->  R.drawable.g12
+                when (this.value) {
+                    1 -> R.drawable.g1
+                    2 -> R.drawable.g2
+                    3 -> R.drawable.g3
+                    4 -> R.drawable.g4
+                    5 -> R.drawable.g5
+                    6 -> R.drawable.g6
+                    7 -> R.drawable.g7
+                    8 -> R.drawable.g8
+                    9 -> R.drawable.g9
+                    10 -> R.drawable.g10
+                    11 -> R.drawable.g11
+                    12 -> R.drawable.g12
                     else -> R.drawable.g13
                 }
             }
             Color.Orange -> {
-                return when(this.value) {
+                when (this.value) {
                     1 -> R.drawable.o1
                     2 -> R.drawable.o2
                     3 -> R.drawable.o3
@@ -163,19 +163,19 @@ sealed class GameModelCard {
                 }
             }
             Color.Red -> {
-                return when(this.value) {
-                    1 ->  R.drawable.r1
-                    2 ->  R.drawable.r2
-                    3 ->  R.drawable.r3
-                    4 ->  R.drawable.r4
-                    5 ->  R.drawable.r5
-                    6 ->  R.drawable.r6
-                    7 ->  R.drawable.r7
-                    8 ->  R.drawable.r8
-                    9 ->  R.drawable.r9
-                    10 ->  R.drawable.r10
-                    11 ->  R.drawable.r11
-                    12 ->  R.drawable.r12
+                when (this.value) {
+                    1 -> R.drawable.r1
+                    2 -> R.drawable.r2
+                    3 -> R.drawable.r3
+                    4 -> R.drawable.r4
+                    5 -> R.drawable.r5
+                    6 -> R.drawable.r6
+                    7 -> R.drawable.r7
+                    8 -> R.drawable.r8
+                    9 -> R.drawable.r9
+                    10 -> R.drawable.r10
+                    11 -> R.drawable.r11
+                    12 -> R.drawable.r12
                     else -> R.drawable.r13
                 }
             }

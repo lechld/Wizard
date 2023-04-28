@@ -11,10 +11,10 @@
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/card_image"
         android:layout_width="wrap_content"
-        android:layout_height="180dp"
+        android:layout_height="187dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/card"
+        android:src="@drawable/nocard"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
