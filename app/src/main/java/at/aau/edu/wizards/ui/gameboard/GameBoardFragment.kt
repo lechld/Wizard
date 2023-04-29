@@ -66,7 +66,7 @@ class GameBoardFragment : Fragment() {
         val adapter = GameBoardAdapter(this.viewModel)
 
         binding.gameboardRecyclerView.adapter = adapter
-        binding.gameboardRecyclerView.addItemDecoration(OffsetDecoration())
+        binding.gameboardRecyclerView.addItemDecoration(OffsetDecoration(90))
 
         viewModel.cards.observe(viewLifecycleOwner) { cards ->
             adapter.submitList(cards)
@@ -75,7 +75,7 @@ class GameBoardFragment : Fragment() {
         val adapterBoard = GameBoardBoardAdapter()
 
         binding.gameboardBoardRecyclerView.adapter = adapterBoard
-        binding.gameboardBoardRecyclerView.addItemDecoration(OffsetBoardDecoration())
+        binding.gameboardBoardRecyclerView.addItemDecoration(OffsetDecoration(310))
 
         viewModel.board.observe(viewLifecycleOwner) { cards ->
             adapterBoard.submitList(cards)
@@ -83,6 +83,7 @@ class GameBoardFragment : Fragment() {
 
         viewModel.trump.observe(viewLifecycleOwner) { trump ->
             binding.boardBackground.setImageResource(trump.imageBackground())
+            binding.boardSlice.setImageResource(trump.imageSlice())
         }
     }
 
@@ -104,29 +105,9 @@ class GameBoardFragment : Fragment() {
         }
     }
 
-    class OffsetDecoration : RecyclerView.ItemDecoration() {
+    class OffsetDecoration(private val overlap: Int) : RecyclerView.ItemDecoration() {
 
-        private val overlap = 90
-
-        override fun getItemOffsets(
-            outRect: Rect,
-            view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            if (parent.getChildAdapterPosition(view) == 0) {
-                outRect.set(0, 0, 0, 0)
-            } else {
-                outRect.set(-overlap, 0, 0, 0)
-            }
-        }
-    }
-
-    class OffsetBoardDecoration : RecyclerView.ItemDecoration() {
-
-        private val overlap = 270
-
-        override fun getItemOffsets(
+        override fun getItemOffsets( //by doing the offset this way we run into a problem that the cards are only rendered once the normal position would be viewable, leading to rather awkward umps - needs to be fixed
             outRect: Rect,
             view: View,
             parent: RecyclerView,

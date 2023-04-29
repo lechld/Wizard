@@ -203,4 +203,26 @@ sealed class GameModelCard {
             else -> R.drawable.nb
         }
     }
+
+    fun imageSlice(): Int {
+        return when (this) {
+            is Normal -> {
+                when (this.color) {
+                    Color.Blue -> R.drawable.bslice
+                    Color.Green -> R.drawable.gslice
+                    Color.Orange -> R.drawable.oslice
+                    Color.Red -> R.drawable.rslice
+                }
+            }
+            is Wizard -> {
+                when (this.color) {
+                    Color.Blue -> R.drawable.bslice
+                    Color.Green -> R.drawable.gslice
+                    Color.Orange -> R.drawable.oslice
+                    Color.Red -> R.drawable.rslice
+                }
+            }
+            else -> R.drawable.nslice
+        }
+    }
 }

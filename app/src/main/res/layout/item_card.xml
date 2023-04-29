@@ -6,7 +6,8 @@
     android:layout_marginHorizontal="8dp"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:foreground="?android:attr/selectableItemBackground"
+    android:background="@color/md_theme_dark_background">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/card_image"
@@ -15,6 +16,7 @@
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:src="@drawable/nocard"
+        android:padding="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

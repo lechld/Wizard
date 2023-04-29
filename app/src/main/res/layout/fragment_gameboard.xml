@@ -11,10 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        android:paddingLeft="-5dp"
-        android:paddingRight="-5dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/bb"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,16 +20,16 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gameboard_board_recycler_view"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:orientation="horizontal"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.7"
+        app:layout_constraintVertical_bias="0.9"
         tools:listitem="@layout/item_card" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -45,5 +42,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/item_card" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/board_slice"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/nslice"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
