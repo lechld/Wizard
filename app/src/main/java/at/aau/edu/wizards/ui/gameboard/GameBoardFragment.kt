@@ -80,6 +80,10 @@ class GameBoardFragment : Fragment() {
         viewModel.board.observe(viewLifecycleOwner) { cards ->
             adapterBoard.submitList(cards)
         }
+
+        viewModel.trump.observe(viewLifecycleOwner) { trump ->
+            binding.boardBackground.setImageResource(trump.imageBackground())
+        }
     }
 
     companion object {

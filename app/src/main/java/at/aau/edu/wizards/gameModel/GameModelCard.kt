@@ -181,4 +181,26 @@ sealed class GameModelCard {
             }
         }
     }
+
+    fun imageBackground(): Int {
+        return when (this) {
+            is Normal -> {
+                when (this.color) {
+                    Color.Blue -> R.drawable.bb
+                    Color.Green -> R.drawable.gb
+                    Color.Orange -> R.drawable.ob
+                    Color.Red -> R.drawable.rb
+                }
+            }
+            is Wizard -> {
+                when (this.color) {
+                    Color.Blue -> R.drawable.bb
+                    Color.Green -> R.drawable.gb
+                    Color.Orange -> R.drawable.ob
+                    Color.Red -> R.drawable.rb
+                }
+            }
+            else -> R.drawable.nb
+        }
+    }
 }

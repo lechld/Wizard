@@ -23,11 +23,11 @@ class ServerGameBoardViewModel(
                     connections.forEach {
                         server.send(it, message.value)
                     }
-                    mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())
-                    mutableBoard.value = model.listener.getBoard()
+                    updateData(model)
                 }
             }
         }
+
         viewModelScope.launch {
             val seed = Random.nextInt().toString()
             var iteration = 0
@@ -45,9 +45,8 @@ class ServerGameBoardViewModel(
                     append(seed)
                 })
             }
+            updateData(model)
         }
-        mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())
-        mutableBoard.value = model.listener.getBoard()
     }
 
     override fun sendMessage(move: String) {
@@ -59,8 +58,7 @@ class ServerGameBoardViewModel(
                             server.send(it, move)
                         }
                 }
-                mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())
-                mutableBoard.value = model.listener.getBoard()
+                updateData(model)
             }
         }
     }
