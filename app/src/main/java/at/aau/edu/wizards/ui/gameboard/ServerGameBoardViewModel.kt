@@ -24,41 +24,44 @@ class ServerGameBoardViewModel(
                         server.send(it, message.value)
                     }
                     mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())
-                    mutableBoard.value = model.listener.board
+                    mutableBoard.value = model.listener.getBoard()
                 }
             }
         }
-
-        val seed = Random.nextInt().toString()
-        var iteration = 0
-        model.receiveMessage(buildString {
-            append(iteration++.toChar())
-            append((connections.size+1).toChar())
-            append(amountCpu.toChar())
-            append(seed)
-        })
-        connections.forEach {
-            server.send(it, buildString {
+        viewModelScope.launch {
+            val seed = Random.nextInt().toString()
+            var iteration = 0
+            model.receiveMessage(buildString {
                 append(iteration++.toChar())
-                append((connections.size+1).toChar())
+                append((connections.size + 1).toChar())
                 append(amountCpu.toChar())
                 append(seed)
             })
+            connections.forEach {
+                server.send(it, buildString {
+                    append(iteration++.toChar())
+                    append((connections.size + 1).toChar())
+                    append(amountCpu.toChar())
+                    append(seed)
+                })
+            }
         }
         mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())
-        mutableBoard.value = model.listener.board
+        mutableBoard.value = model.listener.getBoard()
     }
 
     override fun sendMessage(move: String) {
-        if(model.receiveMessage(move)) {
-            viewModelScope.launch {
-                server.getConnections().filterIsInstance(ServerConnection.Connected::class.java)
-                    .forEach {
-                        server.send(it, move)
-                    }
+        viewModelScope.launch {
+            if (model.receiveMessage(move)) {
+                viewModelScope.launch {
+                    server.getConnections().filterIsInstance(ServerConnection.Connected::class.java)
+                        .forEach {
+                            server.send(it, move)
+                        }
+                }
+                mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())
+                mutableBoard.value = model.listener.getBoard()
             }
-            mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())
-            mutableBoard.value = model.listener.board
         }
     }
 }

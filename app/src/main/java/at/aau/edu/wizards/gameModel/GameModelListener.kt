@@ -13,7 +13,7 @@ class GameModelListener(
         private set
     private val guesses = ArrayList<Guess>()
     private val scores = ArrayList<Score>()
-    val board = ArrayList<GameModelCard>()
+    private val board = ArrayList<GameModelCard>()
     var winningCard: GameModelCard = GameModelCard.NoCard
         private set
 
@@ -29,6 +29,14 @@ class GameModelListener(
             }
         }
         return hand
+    }
+
+    fun getBoard(): ArrayList<GameModelCard> {
+        val cards = ArrayList<GameModelCard>()
+        for (card in board) {
+            cards.add(card)
+        }
+        return cards
     }
 
     fun getCurrentGuessOfPlayer(id: Int): Int {

@@ -14,7 +14,7 @@ import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
-import kotlin.coroutines.coroutineContext
+import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
 
 class GameBoardFragment : Fragment() {
 
@@ -63,7 +63,7 @@ class GameBoardFragment : Fragment() {
 
     private fun setupUI() {
         val binding = this.binding ?: return
-        val adapter = GameBoardAdapter()
+        val adapter = GameBoardAdapter(this.viewModel)
 
         binding.gameboardRecyclerView.adapter = adapter
         binding.gameboardRecyclerView.addItemDecoration(OffsetDecoration())
@@ -72,12 +72,12 @@ class GameBoardFragment : Fragment() {
             adapter.submitList(cards)
         }
 
-        val adapterBoard = GameBoardAdapter()
+        val adapterBoard = GameBoardBoardAdapter()
 
         binding.gameboardBoardRecyclerView.adapter = adapterBoard
-        binding.gameboardRecyclerView.addItemDecoration(OffsetBoardDecoration())
+        binding.gameboardBoardRecyclerView.addItemDecoration(OffsetBoardDecoration())
 
-        viewModel.board.observe(viewLifecycleOwner) {cards ->
+        viewModel.board.observe(viewLifecycleOwner) { cards ->
             adapterBoard.submitList(cards)
         }
     }
@@ -102,19 +102,37 @@ class GameBoardFragment : Fragment() {
 
     class OffsetDecoration : RecyclerView.ItemDecoration() {
 
-        private val overlap = 60
+        private val overlap = 90
 
-        override fun getItemOffsets(outRect : Rect, view : View, parent : RecyclerView, state : RecyclerView.State) {
-            outRect.set(0, 0, -overlap, 0)
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            if (parent.getChildAdapterPosition(view) == 0) {
+                outRect.set(0, 0, 0, 0)
+            } else {
+                outRect.set(-overlap, 0, 0, 0)
+            }
         }
     }
 
     class OffsetBoardDecoration : RecyclerView.ItemDecoration() {
 
-        private val overlap = 120
+        private val overlap = 270
 
-        override fun getItemOffsets(outRect : Rect, view : View, parent : RecyclerView, state : RecyclerView.State) {
-            outRect.set(0, 0, -overlap, 0)
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            if (parent.getChildAdapterPosition(view) == 0) {
+                outRect.set(0, 0, 0, 0)
+            } else {
+                outRect.set(-overlap, 0, 0, 0)
+            }
         }
     }
 }
