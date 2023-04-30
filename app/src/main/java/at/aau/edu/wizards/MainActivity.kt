@@ -1,6 +1,10 @@
 package at.aau.edu.wizards
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import at.aau.edu.wizards.api.impl.REQUIRED_PERMISSIONS
 import at.aau.edu.wizards.databinding.ActivityMainBinding
@@ -12,10 +16,12 @@ import at.aau.edu.wizards.util.permission.PermissionHandler
 private const val DISCOVER_FRAGMENT_TAG = "DISCOVER_FRAGMENT_TAG"
 private const val LOBBY_FRAGMENT_TAG = "LOBBY_FRAGMENT_TAG"
 private const val GAME_BOARD_FRAGMENT_TAG = "GAME_BOARD_FRAGMENT_TAG"
+private const val SHARED_PREFERENCE_USERNAME_KEY = "USERNAME";
+private const val SHARED_PREFERENCE_NAME = "SHARED_DATA"
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,13 +49,48 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUi() {
+        val sharedPrefs: SharedPreferences = getSharedPreferences(getString(R.string.shared_storage), Context.MODE_PRIVATE)
+        if (usernameAlreadyExists(sharedPrefs)) {
+            binding.inputUsername.setText(sharedPrefs.getString(SHARED_PREFERENCE_USERNAME_KEY, ""))
+            setButtonsEnableStatus(true)
+        }
+        else {
+            setButtonsEnableStatus(false)
+        }
+
+        binding.inputUsername.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(typedText: CharSequence, i: Int, i1: Int, i2: Int) {
+                if (typedText.isNotEmpty()) {
+                    setButtonsEnableStatus(true)
+                }
+                else {
+                    setButtonsEnableStatus(false)
+                }
+            }
+
+            override fun afterTextChanged(editable: Editable) {}
+        })
         binding.clientButton.setOnClickListener {
-            showDiscoverFragment()
+            if (binding.clientButton.isEnabled) {
+                showDiscoverFragment()
+            }
         }
 
         binding.serverButton.setOnClickListener {
-            showLobby()
+            if (binding.serverButton.isEnabled) {
+                showLobby();
+            }
         }
+    }
+
+    private fun usernameAlreadyExists(sharedPrefs: SharedPreferences): Boolean {
+        return sharedPrefs.getString(SHARED_PREFERENCE_USERNAME_KEY, null) != null
+    }
+
+    private fun setButtonsEnableStatus(enabled: Boolean) {
+        binding.clientButton.isEnabled = enabled
+        binding.serverButton.isEnabled = enabled
     }
 
     private fun showDiscoverFragment() {

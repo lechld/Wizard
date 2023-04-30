@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Wizards</string>
     <string name="start_game">Start game</string>
+    <string name="shared_storage">Shared storage</string>
 </resources>
