@@ -15,8 +15,27 @@ class GameBoardAdapter : ListAdapter<Cards, GameBoardItemViewHolder>(DiffUtlCall
         return GameBoardItemViewHolder(binding)
     }
 
+    /*
     override fun onBindViewHolder(holder: GameBoardItemViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+     */
+
+    override fun onBindViewHolder(holder: GameBoardItemViewHolder, position: Int) {
+        val card = getItem(position)
+        holder.binding.cardImageView.setImageResource(card.cardImage)
+        // Set the drag event listener for the item view
+        holder.binding.cardImageView.setOnDragListener { v, event ->
+            if (event.action == DragEvent.ACTION_DRAG_STARTED) {
+                v.visibility = View.INVISIBLE
+                return@setOnDragListener true
+            } else if (event.action == DragEvent.ACTION_DRAG_ENDED) {
+                v.visibility = View.VISIBLE
+                return@setOnDragListener true
+            }
+            false
+        }
     }
 
     private class DiffUtlCallback : DiffUtil.ItemCallback<Cards>() {

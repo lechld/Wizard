@@ -69,6 +69,40 @@ class GameBoardFragment : Fragment() {
         }
     }
 
+    // Define the OnDragListener for the TextView
+    val textView = findViewById<TextView>(R.id.text_view)
+    textView.setOnDragListener(object : View.OnDragListener {
+        override fun onDrag(v: View, event: DragEvent): Boolean {
+            when (event.action) {
+                DragEvent.ACTION_DROP -> {
+                    // Get the dropped item from the DragEvent
+                    val item = event.clipData.getItemAt(0).text
+                    // Set the text of the TextView to the dropped item
+                    textView.text = item
+                    return true
+                }
+            }
+            return false
+        }
+    })
+
+    // Define the OnTouchListener for the RecyclerView
+    val recyclerView = findViewById<RecyclerView>(R.id.gameboard_recycler_view)
+    recyclerView.setOnTouchListener { _, event ->
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            val view = recyclerView.findChildViewUnder(event.x, event.y)
+            if (view != null) {
+                // Start the drag operation when an item is touched
+                val item = ClipData.Item(view.toString())
+                val dragData = ClipData("item", arrayOf("text/plain"), item)
+                val shadow = View.DragShadowBuilder(view)
+                view.startDragAndDrop(dragData, shadow, null, 0)
+                return@setOnTouchListener true
+            }
+        }
+        false
+    }
+
     companion object {
         private const val AS_CLIENT_EXTRA = "AS_CLIENT_EXTRA"
         private const val AMOUNT_CPU_EXTRA = "AMOUNT_CPU_EXTRA"
