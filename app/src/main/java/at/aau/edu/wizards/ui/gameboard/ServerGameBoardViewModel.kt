@@ -62,4 +62,8 @@ class ServerGameBoardViewModel(
             }
         }
     }
+
+    override fun getGameModel(): GameModel {
+        return model
+    }
 }

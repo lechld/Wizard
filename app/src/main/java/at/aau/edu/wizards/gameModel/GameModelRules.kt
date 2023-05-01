@@ -20,6 +20,7 @@ class GameModelRules(
     private var dealer = 0
     private var winningPlayer = 0
     var winningCard: GameModelCard = GameModelCard.NoCard
+    var wantsGuess = false
 
     fun init() {
         if (round == 0) {
@@ -41,8 +42,7 @@ class GameModelRules(
     }
 
     private fun getGuess() {
-        players[id].guesses.add(0)
-        //Todo
+        wantsGuess = true
     }
 
     private fun nextRound() {

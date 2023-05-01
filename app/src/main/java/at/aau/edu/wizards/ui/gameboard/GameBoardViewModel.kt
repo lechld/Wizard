@@ -42,6 +42,10 @@ abstract class GameBoardViewModel : ViewModel() {
         }
         mutableHeader.value = headerList
     }
+
+    open fun getGameModel(): GameModel {
+        return GameModel(this) //OVERWRITE THIS
+    }
 }
 
 

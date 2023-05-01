@@ -61,6 +61,9 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                     else -> {
                         if (legalMessageGuess(move)) {
                             players[(move[0].code - 60) / 11].guesses.add((move[0].code - 60) % 11)
+                            if((move[0].code - 60) / 11 == rules.id){
+                                rules.wantsGuess = false
+                            }
                             listener.update()
                             true
                         } else {

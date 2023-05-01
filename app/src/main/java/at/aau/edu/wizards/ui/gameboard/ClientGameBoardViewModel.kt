@@ -29,4 +29,8 @@ class ClientGameBoardViewModel(
                 }
         }
     }
+
+    override fun getGameModel(): GameModel {
+        return model
+    }
 }

@@ -270,4 +270,66 @@ sealed class GameModelCard {
             else -> GameBoardTheme.No
         }
     }
+
+    fun guessingImage(): Int {
+        return when(this){
+            is Normal -> {
+                when(this.color){
+                    Color.Blue -> when(this.value){
+                        0 -> R.drawable.b0
+                        1 -> R.drawable.numberb1
+                        2 -> R.drawable.numberb2
+                        3 -> R.drawable.numberb3
+                        4 -> R.drawable.numberb4
+                        5 -> R.drawable.numberb5
+                        6 -> R.drawable.numberb6
+                        7 -> R.drawable.numberb7
+                        8 -> R.drawable.numberb8
+                        9 -> R.drawable.numberb9
+                        else -> R.drawable.numberb10
+                    }
+                    Color.Green -> when(this.value){
+                        0 -> R.drawable.g0
+                        1 -> R.drawable.numberg1
+                        2 -> R.drawable.numberg2
+                        3 -> R.drawable.numberg3
+                        4 -> R.drawable.numberg4
+                        5 -> R.drawable.numberg5
+                        6 -> R.drawable.numberg6
+                        7 -> R.drawable.numberg7
+                        8 -> R.drawable.numberg8
+                        9 -> R.drawable.numberg9
+                        else -> R.drawable.numberg10
+                    }
+                    Color.Orange -> when(this.value){
+                        0 -> R.drawable.o0
+                        1 -> R.drawable.numbero1
+                        2 -> R.drawable.numbero2
+                        3 -> R.drawable.numbero3
+                        4 -> R.drawable.numbero4
+                        5 -> R.drawable.numbero5
+                        6 -> R.drawable.numbero6
+                        7 -> R.drawable.numbero7
+                        8 -> R.drawable.numbero8
+                        9 -> R.drawable.numbero9
+                        else -> R.drawable.numbero10
+                    }
+                    Color.Red -> when(this.value){
+                        0 -> R.drawable.r0
+                        1 -> R.drawable.numberr1
+                        2 -> R.drawable.numberr2
+                        3 -> R.drawable.numberr3
+                        4 -> R.drawable.numberr4
+                        5 -> R.drawable.numberr5
+                        6 -> R.drawable.numberr6
+                        7 -> R.drawable.numberr7
+                        8 -> R.drawable.numberr8
+                        9 -> R.drawable.numberr9
+                        else -> R.drawable.numberr10
+                    }
+                }
+            }
+            else -> R.drawable.nocard
+        }
+    }
 }
