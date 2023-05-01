@@ -1,6 +1,7 @@
 package at.aau.edu.wizards.gameModel
 
 import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
+import kotlin.random.Random
 
 class GameModel(private val viewModel: GameBoardViewModel?) {
 
@@ -119,10 +120,10 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         )
         listener = GameModelListener(rules, players)
         for (player in 1..move[1].code) {
-            players.add(GameModelPlayer(players.size, dealer, true))
+            players.add(GameModelPlayer(players.size, dealer, true, Random.nextInt(1, 20)))
         }
         for (cpu in 1..move[2].code) {
-            players.add(GameModelPlayer(players.size, dealer, false))
+            players.add(GameModelPlayer(players.size, dealer, false, Random.nextInt(1, 20)))
         }
         rules.init()
     }
@@ -136,7 +137,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         }
     }
 
-    fun localPlayer():Int{
+    fun localPlayer(): Int {
         return rules.id
     }
 

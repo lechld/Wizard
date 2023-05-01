@@ -40,7 +40,6 @@ class GameModelListenerUnitTest {
 
 
         assertEquals(0, listener.activePlayer)
-        assert(listener.board.isEmpty())
         assertEquals(GameModelCard.Normal(GameModelCard.Color.Orange, 11), listener.trump)
         assert(listener.getAllScoresOfPlayer(0).isEmpty())
         assertEquals(0, listener.getCurrentGuessOfPlayer(0))

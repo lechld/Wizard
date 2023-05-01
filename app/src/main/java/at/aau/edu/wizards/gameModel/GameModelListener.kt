@@ -68,6 +68,25 @@ class GameModelListener(
         return returnScore
     }
 
+    fun getIconOfPlayer(id: Int): Int {
+        return if (id in 0 until numberOfPlayers) {
+            players[id].icon
+        } else {
+            1
+        }
+    }
+
+    fun getNameOfPlayer(id: Int): String {
+        return buildString {
+            append("Player")
+            append(id.toString())
+        }
+    }
+
+    fun getCurrentWins(id: Int): Int {
+        return rules.getAmountWon(id)
+    }
+
     fun update() {
         activePlayer = rules.currentPlayer
         numberOfPlayers = players.size

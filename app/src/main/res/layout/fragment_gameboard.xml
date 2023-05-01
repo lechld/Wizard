@@ -50,10 +50,10 @@
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:src="@drawable/nslice"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gameboard_board_recycler_view"
         app:layout_constraintVertical_bias="0.5" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -64,7 +64,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/gameboard_board_recycler_view"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.15" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/board_header_background"
@@ -78,124 +78,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/board_header_circle_middle"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/nhc"
-        app:layout_constraintBottom_toTopOf="@id/board_header_text_middle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/board_header_background"
-        app:layout_constraintVertical_bias="0.5" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/board_header_icon_middle"
-        android:layout_width="wrap_content"
-        android:layout_height="90dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/iconchickenpengu"
-        app:layout_constraintBottom_toBottomOf="@id/board_header_circle_middle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/board_header_circle_middle"
-        app:layout_constraintVertical_bias="0.5" />
-
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/board_header_text_middle"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gameboard_header_recycler_view"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ntxt"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="@id/board_header_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/board_header_circle_middle"
-        app:layout_constraintVertical_bias="0.5" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/board_header_circle_start"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/nhc"
-        app:layout_constraintBottom_toTopOf="@id/board_header_text_start"
-        app:layout_constraintEnd_toEndOf="@id/board_header_circle_middle"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/board_header_background"
-        app:layout_constraintVertical_bias="0.3" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/board_header_icon_start"
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/iconchickenpengu"
-        app:layout_constraintBottom_toBottomOf="@id/board_header_circle_start"
-        app:layout_constraintEnd_toEndOf="@id/board_header_icon_middle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/board_header_circle_start"
-        app:layout_constraintVertical_bias="0.5" />
-
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/board_header_text_start"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ntxt"
-        app:layout_constraintBottom_toBottomOf="@id/board_header_background"
-        app:layout_constraintEnd_toEndOf="@id/board_header_text_middle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/board_header_circle_start"
-        app:layout_constraintVertical_bias="0.5" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/board_header_circle_end"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/nhc"
-        app:layout_constraintBottom_toTopOf="@id/board_header_text_end"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/board_header_circle_middle"
-        app:layout_constraintTop_toTopOf="@id/board_header_background"
-        app:layout_constraintVertical_bias="0.3" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/board_header_icon_end"
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/iconchickenpengu"
-        app:layout_constraintBottom_toBottomOf="@id/board_header_circle_end"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/board_header_icon_middle"
-        app:layout_constraintTop_toTopOf="@id/board_header_circle_end"
-        app:layout_constraintVertical_bias="0.5" />
-
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/board_header_text_end"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ntxt"
-        app:layout_constraintBottom_toBottomOf="@id/board_header_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/board_header_text_middle"
-        app:layout_constraintTop_toBottomOf="@id/board_header_circle_end"
-        app:layout_constraintVertical_bias="0.5" />
+        tools:listitem="@layout/item_gameboard_header" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

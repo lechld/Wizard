@@ -5,7 +5,8 @@ import kotlin.math.abs
 class GameModelPlayer(
     val id: Int,
     private val dealer: GameModelDealer,
-    val isHuman: Boolean
+    val isHuman: Boolean,
+    val icon: Int
 ) {
 
     val cards = ArrayList<GameModelCard>()

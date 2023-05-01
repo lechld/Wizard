@@ -17,12 +17,30 @@ abstract class GameBoardViewModel : ViewModel() {
     private val mutableTrump = MutableLiveData<GameModelCard>()
     val trump: LiveData<GameModelCard> = mutableTrump
 
+    private val mutableHeader = MutableLiveData<ArrayList<GameBoardHeader>>()
+    val header: LiveData<ArrayList<GameBoardHeader>> = mutableHeader
+
     open fun sendMessage(move: String) {}
 
     protected fun updateData(model: GameModel) {
         mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())
         mutableBoard.value = model.listener.getBoard()
         mutableTrump.value = model.listener.trump
+        val headerList = ArrayList<GameBoardHeader>()
+        for (player in 0 until model.listener.numberOfPlayers) {
+            headerList.add(
+                GameBoardHeader(
+                    player,
+                    model.listener.getIconOfPlayer(player),
+                    model.listener.getNameOfPlayer(player),
+                    model.listener.getCurrentGuessOfPlayer(player),
+                    model.listener.getCurrentWins(player),
+                    model.listener.getCurrentScoreOfPlayer(player),
+                    model.listener.trump.getGameBoardTheme()
+                )
+            )
+        }
+        mutableHeader.value = headerList
     }
 }
 

@@ -1,6 +1,7 @@
 package at.aau.edu.wizards.gameModel
 
 import at.aau.edu.wizards.R
+import at.aau.edu.wizards.ui.gameboard.GameBoardTheme
 
 sealed class GameModelCard {
 
@@ -223,6 +224,50 @@ sealed class GameModelCard {
                 }
             }
             else -> R.drawable.nslice
+        }
+    }
+
+    fun imageHeaderBackground(): Int {
+        return when (this) {
+            is Normal -> {
+                when (this.color) {
+                    Color.Blue -> R.drawable.bhb
+                    Color.Green -> R.drawable.ghb
+                    Color.Orange -> R.drawable.ohb
+                    Color.Red -> R.drawable.rhb
+                }
+            }
+            is Wizard -> {
+                when (this.color) {
+                    Color.Blue -> R.drawable.bhb
+                    Color.Green -> R.drawable.ghb
+                    Color.Orange -> R.drawable.ohb
+                    Color.Red -> R.drawable.rhb
+                }
+            }
+            else -> R.drawable.nhb
+        }
+    }
+
+    fun getGameBoardTheme(): GameBoardTheme {
+        return when (this) {
+            is Normal -> {
+                when (this.color) {
+                    Color.Blue -> GameBoardTheme.Blue
+                    Color.Green -> GameBoardTheme.Green
+                    Color.Orange -> GameBoardTheme.Orange
+                    Color.Red -> GameBoardTheme.Red
+                }
+            }
+            is Wizard -> {
+                when (this.color) {
+                    Color.Blue -> GameBoardTheme.Blue
+                    Color.Green -> GameBoardTheme.Green
+                    Color.Orange -> GameBoardTheme.Orange
+                    Color.Red -> GameBoardTheme.Red
+                }
+            }
+            else -> GameBoardTheme.No
         }
     }
 }

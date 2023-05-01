@@ -15,6 +15,7 @@ import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
+import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardHeaderAdapter
 
 class GameBoardFragment : Fragment() {
 
@@ -66,7 +67,7 @@ class GameBoardFragment : Fragment() {
         val adapter = GameBoardAdapter(this.viewModel)
 
         binding.gameboardRecyclerView.adapter = adapter
-        binding.gameboardRecyclerView.addItemDecoration(OffsetDecoration(110))
+        binding.gameboardRecyclerView.addItemDecoration(OffsetDecoration(90))
 
         viewModel.cards.observe(viewLifecycleOwner) { cards ->
             adapter.submitList(cards)
@@ -81,9 +82,18 @@ class GameBoardFragment : Fragment() {
             adapterBoard.submitList(cards)
         }
 
+        val adapterHeader = GameBoardHeaderAdapter()
+
+        binding.gameboardHeaderRecyclerView.adapter = adapterHeader
+
+        viewModel.header.observe(viewLifecycleOwner) { header ->
+            adapterHeader.submitList(header)
+        }
+
         viewModel.trump.observe(viewLifecycleOwner) { trump ->
             binding.boardBackground.setImageResource(trump.imageBackground())
             binding.boardSlice.setImageResource(trump.imageSlice())
+            binding.boardHeaderBackground.setImageResource(trump.imageHeaderBackground())
         }
     }
 

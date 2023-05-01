@@ -64,9 +64,9 @@ class GameModelCpuUnitTest {
         val model = GameModel(viewModel)
         val dealer = GameModelDealer(420420)
         val players = ArrayList<GameModelPlayer>()
-        players.add(GameModelPlayer(0, dealer, true))
-        players.add(GameModelPlayer(1, dealer, false))
-        players.add(GameModelPlayer(2, dealer, false))
+        players.add(GameModelPlayer(0, dealer, true, 1))
+        players.add(GameModelPlayer(1, dealer, false, 1))
+        players.add(GameModelPlayer(2, dealer, false, 1))
         val rules = GameModelRules(players, 0, dealer, model, 420420)
         val cpu = GameModelCpu(420420, rules)
 
