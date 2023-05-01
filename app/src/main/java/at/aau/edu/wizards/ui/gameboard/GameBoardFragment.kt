@@ -66,7 +66,7 @@ class GameBoardFragment : Fragment() {
         val adapter = GameBoardAdapter(this.viewModel)
 
         binding.gameboardRecyclerView.adapter = adapter
-        binding.gameboardRecyclerView.addItemDecoration(OffsetDecoration(90))
+        binding.gameboardRecyclerView.addItemDecoration(OffsetDecoration(110))
 
         viewModel.cards.observe(viewLifecycleOwner) { cards ->
             adapter.submitList(cards)
