@@ -1,7 +1,6 @@
 package at.aau.edu.wizards.ui.gameboard
 
 
-import android.R
 import android.os.Bundle
 import android.view.DragEvent
 import android.view.LayoutInflater
@@ -80,19 +79,22 @@ class GameBoardFragment : Fragment(), OnDragListener {
         val binding = this.binding
         if (event.action == DragEvent.ACTION_DROP && binding != null) {
 
-            val dropX = event.getX()
-            val dropY: Float = event.getY()
+            val dropX = event.x
+            val dropY = event.y
             val item = event.localState as Cards
             val inflater = LayoutInflater.from(requireContext())
             val shape = ItemCardBinding.inflate(inflater, binding.dragContainer,false)
 
-            /*shape.root.x =
+            shape.root.x = dropX
+            shape.root.y = dropY
 
-            shape.setImageResource(state.item.getImageDrawable())
-            shape.setX(dropX - state.width as Float / 2)
-            shape.setY(dropY - state.height as Float / 2)
-            shape.getLayoutParams().width = state.width
-            shape.getLayoutParams().height = state.height*/
+            /*
+            shape.setImageResource(state.item.getImageDrawable());
+            shape.setX(dropX - (float) state.width / 2);
+            shape.setY(dropY - (float) state.height / 2);
+            shape.getLayoutParams().width = state.width;
+            shape.getLayoutParams().height = state.height;
+            */
             binding.dragContainer.addView(shape.root)
 
         }
