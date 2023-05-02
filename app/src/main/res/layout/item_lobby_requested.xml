@@ -8,7 +8,8 @@
     android:layout_marginVertical="@dimen/default_margin_half"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?selectableItemBackground">
+    android:foreground="?selectableItemBackground"
+    android:backgroundTint="@color/wizard_red">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -24,7 +25,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Text" />
+            tools:text="Text"
+            android:textColor="@color/wizard_txt"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

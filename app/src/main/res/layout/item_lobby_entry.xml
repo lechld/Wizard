@@ -5,12 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/default_margin"
-    android:layout_marginVertical="@dimen/default_margin_half">
+    android:layout_marginVertical="@dimen/default_margin_half"
+    android:backgroundTint="@color/wizard_red">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:minHeight="@dimen/min_touch_target">
+        android:minHeight="@dimen/min_touch_target"
+        >
 
         <TextView
             android:id="@+id/text"
@@ -21,7 +23,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Text" />
+            tools:text="Text"
+            android:textColor="@color/wizard_txt"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

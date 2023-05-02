@@ -5,8 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:colorBackground"
-    android:clipToPadding="false"
-    android:paddingVertical="@dimen/default_margin_half">
+    android:clipToPadding="false">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/rtitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/bubble"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/rbubble"
+        app:layout_constraintVertical_bias="0.55"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lobby_recycler"
@@ -15,9 +40,13 @@
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/start_game_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/bubble"
+        app:layout_constraintStart_toStartOf="@id/bubble"
+        app:layout_constraintTop_toTopOf="@id/bubble"
+        android:layout_marginStart="70dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="15dp"
         tools:itemCount="5"
         tools:listitem="@layout/item_lobby_entry" />
 
@@ -25,10 +54,14 @@
         android:id="@+id/start_game_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_margin"
+        android:layout_marginVertical="16dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/wizard_red"
         android:text="@string/start_game"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textColor="@color/wizard_txt"
+        app:layout_constraintBottom_toBottomOf="@id/bubble"
+        app:layout_constraintEnd_toEndOf="@id/bubble"
+        app:layout_constraintStart_toStartOf="@id/bubble" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
