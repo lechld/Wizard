@@ -64,7 +64,9 @@ class GameBoardFragment : Fragment() {
 
     private fun setupUI() {
         val binding = this.binding ?: return
-        val adapter = GameBoardAdapter(viewModel, viewModel.getGameModel())
+        val adapter = GameBoardAdapter {
+            viewModel.sendMessage(it.getString()) //TODO  holder.bindingAdapterPosition < viewModel.cards.value!!.size
+        }
 
         binding.gameboardRecyclerView.adapter = adapter
         binding.gameboardRecyclerView.addItemDecoration(OffsetDecoration(90))
