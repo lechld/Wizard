@@ -104,9 +104,9 @@ class GameBoardFragment : Fragment() {
         }
 
         viewModel.trump.observe(viewLifecycleOwner) { trump ->
-            binding.boardBackground.setImageResource(trump.imageBackground())
-            binding.boardSlice.setImageResource(trump.imageSlice())
-            binding.boardHeaderBackground.setImageResource(trump.imageHeaderBackground())
+            //binding.boardBackground.setImageResource(trump.imageBackground())
+            //binding.boardSlice.setImageResource(trump.imageSlice())
+            //binding.boardHeaderBackground.setImageResource(trump.imageHeaderBackground())
         }
     }
 
@@ -130,16 +130,14 @@ class GameBoardFragment : Fragment() {
 
     class OffsetDecoration(private val overlap: Int) : RecyclerView.ItemDecoration() {
 
-        override fun getItemOffsets( //by doing the offset this way we run into a problem that the cards are only rendered once the normal position would be viewable, leading to rather awkward umps - needs to be fixed
+        override fun getItemOffsets(
             outRect: Rect,
             view: View,
             parent: RecyclerView,
             state: RecyclerView.State
         ) {
-            if (parent.getChildAdapterPosition(view) == 0) {
-                outRect.set(0, 0, 0, 0)
-            } else {
-                outRect.set(-overlap, 0, 0, 0)
+            if (parent.getChildAdapterPosition(view) != 0) {
+                outRect.left = outRect.left - overlap
             }
         }
     }

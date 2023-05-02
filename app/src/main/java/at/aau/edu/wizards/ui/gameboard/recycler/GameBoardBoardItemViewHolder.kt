@@ -19,6 +19,6 @@ class GameBoardBoardItemViewHolder(
                 R.color.md_theme_dark_background
             )
         }
-        binding.cardImage.setImageResource(item.image())
+        binding.root.setImageResource(item.image())
     }
 }
