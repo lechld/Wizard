@@ -7,17 +7,18 @@ import org.junit.jupiter.api.assertThrows
 
 
 class GameModelRulesUnitTest {
+    private val viewModel = null
 
     @Test
     fun test() {
-        val model = GameModel()
+        val model = GameModel(viewModel)
         val dealer = GameModelDealer(420420)
-        val player0 = GameModelPlayer(0, dealer, true)
-        val player1 = GameModelPlayer(1, dealer, true)
-        val player2 = GameModelPlayer(2, dealer, true)
-        val player3 = GameModelPlayer(3, dealer, true)
-        val player4 = GameModelPlayer(4, dealer, true)
-        val player5 = GameModelPlayer(5, dealer, true)
+        val player0 = GameModelPlayer(0, dealer, true, 1)
+        val player1 = GameModelPlayer(1, dealer, true, 1)
+        val player2 = GameModelPlayer(2, dealer, true, 1)
+        val player3 = GameModelPlayer(3, dealer, true, 1)
+        val player4 = GameModelPlayer(4, dealer, true, 1)
+        val player5 = GameModelPlayer(5, dealer, true, 1)
         val listOfPlayers = ArrayList<GameModelPlayer>()
         listOfPlayers.add(player0)
         listOfPlayers.add(player1)
@@ -158,14 +159,14 @@ class GameModelRulesUnitTest {
 
     @Test
     fun testWizardTrump() {
-        val model = GameModel()
+        val model = GameModel(viewModel)
         val dealer = GameModelDealer(420420)
-        val player0 = GameModelPlayer(0, dealer, true)
-        val player1 = GameModelPlayer(1, dealer, true)
-        val player2 = GameModelPlayer(2, dealer, true)
-        val player3 = GameModelPlayer(3, dealer, true)
-        val player4 = GameModelPlayer(4, dealer, true)
-        val player5 = GameModelPlayer(5, dealer, true)
+        val player0 = GameModelPlayer(0, dealer, true, 1)
+        val player1 = GameModelPlayer(1, dealer, true, 1)
+        val player2 = GameModelPlayer(2, dealer, true, 1)
+        val player3 = GameModelPlayer(3, dealer, true, 1)
+        val player4 = GameModelPlayer(4, dealer, true, 1)
+        val player5 = GameModelPlayer(5, dealer, true, 1)
         val listOfPlayers = ArrayList<GameModelPlayer>()
         listOfPlayers.add(player0)
         listOfPlayers.add(player1)
@@ -208,14 +209,14 @@ class GameModelRulesUnitTest {
 
     @Test
     fun testWizardTrump2() {
-        val model = GameModel()
+        val model = GameModel(viewModel)
         val dealer = GameModelDealer(22)
-        val player0 = GameModelPlayer(0, dealer, true)
-        val player1 = GameModelPlayer(1, dealer, true)
-        val player2 = GameModelPlayer(2, dealer, true)
-        val player3 = GameModelPlayer(3, dealer, true)
-        val player4 = GameModelPlayer(4, dealer, true)
-        val player5 = GameModelPlayer(5, dealer, true)
+        val player0 = GameModelPlayer(0, dealer, true, 1)
+        val player1 = GameModelPlayer(1, dealer, true, 1)
+        val player2 = GameModelPlayer(2, dealer, true, 1)
+        val player3 = GameModelPlayer(3, dealer, true, 1)
+        val player4 = GameModelPlayer(4, dealer, true, 1)
+        val player5 = GameModelPlayer(5, dealer, true, 1)
         val listOfPlayers = ArrayList<GameModelPlayer>()
         listOfPlayers.add(player0)
         listOfPlayers.add(player1)
@@ -249,14 +250,14 @@ class GameModelRulesUnitTest {
 
     @Test
     fun testJesterTrump() {
-        val model = GameModel()
+        val model = GameModel(viewModel)
         val dealer = GameModelDealer(23)
-        val player0 = GameModelPlayer(0, dealer, true)
-        val player1 = GameModelPlayer(1, dealer, true)
-        val player2 = GameModelPlayer(2, dealer, true)
-        val player3 = GameModelPlayer(3, dealer, true)
-        val player4 = GameModelPlayer(4, dealer, true)
-        val player5 = GameModelPlayer(5, dealer, true)
+        val player0 = GameModelPlayer(0, dealer, true, 1)
+        val player1 = GameModelPlayer(1, dealer, true, 1)
+        val player2 = GameModelPlayer(2, dealer, true, 1)
+        val player3 = GameModelPlayer(3, dealer, true, 1)
+        val player4 = GameModelPlayer(4, dealer, true, 1)
+        val player5 = GameModelPlayer(5, dealer, true, 1)
         val listOfPlayers = ArrayList<GameModelPlayer>()
         listOfPlayers.add(player0)
         listOfPlayers.add(player1)

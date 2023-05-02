@@ -7,25 +7,72 @@
     android:background="?android:colorBackground"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/server_button"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/btitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/bubble"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_margin"
-        android:text="Behave as server"
+        android:layout_marginVertical="100dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="20dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/bbubble"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/server_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/wizard_blue"
+        android:text="@string/behave_as_server"
+        android:textColor="@color/wizard_txt"
+        app:layout_constraintBottom_toTopOf="@id/client_button"
+        app:layout_constraintEnd_toEndOf="@id/bubble"
+        app:layout_constraintStart_toStartOf="@id/bubble"
+        app:layout_constraintTop_toTopOf="@id/bubble"
+        android:fontFamily="@font/bitter"/>
+
+    <Button
         android:id="@+id/client_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_margin"
-        android:text="Behave as client"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/wizard_blue"
+        android:text="@string/behave_as_client"
+        android:textColor="@color/wizard_txt"
+        app:layout_constraintBottom_toBottomOf="@id/bubble"
+        app:layout_constraintEnd_toEndOf="@id/bubble"
+        app:layout_constraintStart_toStartOf="@id/bubble"
+        app:layout_constraintTop_toBottomOf="@id/server_button"
+        android:fontFamily="@font/bitter"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/titlesolo"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/btitlesolo"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/server_button" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"

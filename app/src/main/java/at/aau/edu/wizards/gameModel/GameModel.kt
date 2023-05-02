@@ -1,19 +1,23 @@
 package at.aau.edu.wizards.gameModel
 
-class GameModel {
+import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
+import kotlin.random.Random
+
+class GameModel(private val viewModel: GameBoardViewModel?) {
 
     private val players = ArrayList<GameModelPlayer>()
     private var dealer = GameModelDealer(0)
     private var rules = GameModelRules(players, 0, dealer, this, 0)
-    var listener = GameModelListener(rules, players)
+    var listener = GameModelListener(rules, players, viewModel, this)
         private set
 
     fun sendMessage(move: String): Boolean {
-        if (legalMessageGuessSend(move) || legalMessageCardSend(move) || move == "EndGame") {
-            //TODO send to network
-            return true
+        return if (legalMessageGuessSend(move) || legalMessageCardSend(move) || move == END_COMMAND) {
+            viewModel?.sendMessage(move)
+            true
+        } else {
+            false
         }
-        return false
     }
 
     private fun legalMessageGuessSend(move: String): Boolean {
@@ -57,6 +61,9 @@ class GameModel {
                     else -> {
                         if (legalMessageGuess(move)) {
                             players[(move[0].code - 60) / 11].guesses.add((move[0].code - 60) % 11)
+                            if((move[0].code - 60) / 11 == rules.id){
+                                rules.wantsGuess = false
+                            }
                             listener.update()
                             true
                         } else {
@@ -114,12 +121,12 @@ class GameModel {
             this,
             move.substring(3, move.length).toInt()
         )
-        listener = GameModelListener(rules, players)
+        listener = GameModelListener(rules, players, viewModel, this)
         for (player in 1..move[1].code) {
-            players.add(GameModelPlayer(players.size, dealer, true))
+            players.add(GameModelPlayer(players.size, dealer, true, Random.nextInt(1, 20)))
         }
         for (cpu in 1..move[2].code) {
-            players.add(GameModelPlayer(players.size, dealer, false))
+            players.add(GameModelPlayer(players.size, dealer, false, Random.nextInt(1, 20)))
         }
         rules.init()
     }
@@ -131,6 +138,10 @@ class GameModel {
             2 -> GameModelCard.Color.Orange
             else -> GameModelCard.Color.Red
         }
+    }
+
+    fun localPlayer(): Int {
+        return rules.id
     }
 
 }

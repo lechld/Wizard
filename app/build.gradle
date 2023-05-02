@@ -145,6 +145,7 @@ dependencies {
 
     // https://developers.google.com/nearby
     implementation 'com.google.android.gms:play-services-nearby:18.5.0'
+    implementation 'androidx.test:monitor:1.6.1'
 
     // https://github.com/junit-team/junit5
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'

@@ -1,8 +1,13 @@
 package at.aau.edu.wizards.gameModel
 
+import at.aau.edu.wizards.ui.gameboard.GameBoardTheme
+import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
+
 class GameModelListener(
     private val rules: GameModelRules,
-    private val players: ArrayList<GameModelPlayer>
+    private val players: ArrayList<GameModelPlayer>,
+    private val viewModel: GameBoardViewModel?,
+    private val parent: GameModel
 ) {
     var activePlayer = 0
         private set
@@ -13,9 +18,10 @@ class GameModelListener(
         private set
     private val guesses = ArrayList<Guess>()
     private val scores = ArrayList<Score>()
-    val board = ArrayList<GameModelCard>()
+    private val board = ArrayList<GameModelCard>()
     var winningCard: GameModelCard = GameModelCard.NoCard
         private set
+    var guessing = false
 
     data class Card(val card: GameModelCard, val playerId: Int)
     data class Guess(val guess: Int, val playerId: Int)
@@ -29,6 +35,14 @@ class GameModelListener(
             }
         }
         return hand
+    }
+
+    fun getBoard(): ArrayList<GameModelCard> {
+        val cards = ArrayList<GameModelCard>()
+        for (card in board) {
+            cards.add(card)
+        }
+        return cards
     }
 
     fun getCurrentGuessOfPlayer(id: Int): Int {
@@ -60,14 +74,60 @@ class GameModelListener(
         return returnScore
     }
 
+    fun getIconOfPlayer(id: Int): Int {
+        return if (id in 0 until numberOfPlayers) {
+            players[id].icon
+        } else {
+            1
+        }
+    }
+
+    fun getNameOfPlayer(id: Int): String {
+        return buildString {
+            append("Player")
+            append(id.toString())
+        }
+    }
+
+    fun getCurrentWins(id: Int): Int {
+        return rules.getAmountWon(id)
+    }
+
     fun update() {
         activePlayer = rules.currentPlayer
         numberOfPlayers = players.size
         trump = rules.trump
         winningCard = rules.winningCard
+        guessing = rules.wantsGuess
         board.clear()
-        for (card in rules.board) {
-            board.add(card)
+        if(guessing){
+            when(trump.getGameBoardTheme()){
+                GameBoardTheme.Blue -> {
+                    for(guess in 20 .. 20+rules.round){
+                        board.add(GameModelCard.Normal(GameModelCard.Color.Blue,guess))
+                    }
+                }
+                GameBoardTheme.Green -> {
+                    for(guess in 20 .. 20+rules.round){
+                        board.add(GameModelCard.Normal(GameModelCard.Color.Green,guess))
+                    }
+                }
+                GameBoardTheme.Orange -> {
+                    for(guess in 20 .. 20+rules.round){
+                        board.add(GameModelCard.Normal(GameModelCard.Color.Orange,guess))
+                    }
+                }
+                else -> {
+                    for(guess in 20 .. 20+rules.round){
+                        board.add(GameModelCard.Normal(GameModelCard.Color.Red,guess))
+                    }
+                }
+            }
+        }else {
+            for (card in rules.board) {
+                board.add(card)
+            }
+            board.add(rules.winningCard)
         }
         hands.clear()
         guesses.clear()
@@ -83,5 +143,10 @@ class GameModelListener(
                 scores.add(Score(score, player.id))
             }
         }
+        viewModel?.updateData(parent)
+    }
+
+    fun localPlayer(): Int{
+        return rules.id
     }
 }
