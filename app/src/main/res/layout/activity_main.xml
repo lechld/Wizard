@@ -45,7 +45,8 @@
         app:layout_constraintBottom_toTopOf="@id/client_button"
         app:layout_constraintEnd_toEndOf="@id/bubble"
         app:layout_constraintStart_toStartOf="@id/bubble"
-        app:layout_constraintTop_toTopOf="@id/bubble" />
+        app:layout_constraintTop_toTopOf="@id/bubble"
+        android:fontFamily="@font/bitter"/>
 
     <Button
         android:id="@+id/client_button"
@@ -58,7 +59,8 @@
         app:layout_constraintBottom_toBottomOf="@id/bubble"
         app:layout_constraintEnd_toEndOf="@id/bubble"
         app:layout_constraintStart_toStartOf="@id/bubble"
-        app:layout_constraintTop_toBottomOf="@id/server_button" />
+        app:layout_constraintTop_toBottomOf="@id/server_button"
+        android:fontFamily="@font/bitter"/>
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/titlesolo"

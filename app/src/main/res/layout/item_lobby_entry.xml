@@ -11,20 +11,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:minHeight="@dimen/min_touch_target"
-        >
+        android:minHeight="@dimen/min_touch_target">
 
         <TextView
             android:id="@+id/text"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:fontFamily="@font/bitter"
             android:gravity="center"
+            android:textColor="@color/wizard_txt"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Text"
-            android:textColor="@color/wizard_txt"/>
+            tools:text="Text" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

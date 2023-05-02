@@ -26,7 +26,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Text"
-            android:textColor="@color/wizard_txt"/>
+            android:textColor="@color/wizard_txt"
+            android:fontFamily="@font/bitter" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

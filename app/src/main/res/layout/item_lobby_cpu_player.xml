@@ -17,6 +17,7 @@
             android:id="@+id/cpu_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/bitter"
             android:gravity="center"
             android:textColor="@color/wizard_txt"
             app:layout_constraintBottom_toBottomOf="parent"
