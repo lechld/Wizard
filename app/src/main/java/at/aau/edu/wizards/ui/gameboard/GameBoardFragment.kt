@@ -81,13 +81,6 @@ class GameBoardFragment : Fragment() {
 
         viewModel.board.observe(viewLifecycleOwner) { cards ->
             adapterBoard.submitList(cards)
-            if (viewModel.gameModel.listener.guessing) { //Dunnow if this counts as logic, might have to move this.
-                binding.gameboardBoardRecyclerView.removeItemDecorationAt(0)
-                binding.gameboardBoardRecyclerView.addItemDecoration(OffsetItemDecoration(120))
-            } else {
-                binding.gameboardBoardRecyclerView.removeItemDecorationAt(0)
-                binding.gameboardBoardRecyclerView.addItemDecoration(OffsetItemDecoration(270))
-            }
         }
 
         val adapterHeader = GameBoardHeaderAdapter()
