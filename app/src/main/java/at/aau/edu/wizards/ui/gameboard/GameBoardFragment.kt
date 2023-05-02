@@ -64,7 +64,7 @@ class GameBoardFragment : Fragment() {
     private fun setupUI() {
         val binding = this.binding ?: return
         val adapter = GameBoardAdapter {
-            viewModel.sendMessage(it.getString()) //TODO  holder.bindingAdapterPosition < viewModel.cards.value!!.size
+            viewModel.sendMessage(it.getString())
         }
 
         binding.gameboardRecyclerView.adapter = adapter
@@ -74,14 +74,14 @@ class GameBoardFragment : Fragment() {
             adapter.submitList(cards)
         }
 
-        val adapterBoard = GameBoardBoardAdapter(viewModel, viewModel.getGameModel())
+        val adapterBoard = GameBoardBoardAdapter(viewModel, viewModel.gameModel)
 
         binding.gameboardBoardRecyclerView.adapter = adapterBoard
         binding.gameboardBoardRecyclerView.addItemDecoration(OffsetItemDecoration(310))
 
         viewModel.board.observe(viewLifecycleOwner) { cards ->
             adapterBoard.submitList(cards)
-            if (viewModel.getGameModel().listener.guessing) { //Dunnow if this counts as logic, might have to move this.
+            if (viewModel.gameModel.listener.guessing) { //Dunnow if this counts as logic, might have to move this.
                 binding.gameboardBoardRecyclerView.removeItemDecorationAt(0)
                 binding.gameboardBoardRecyclerView.addItemDecoration(OffsetItemDecoration(120))
             } else {

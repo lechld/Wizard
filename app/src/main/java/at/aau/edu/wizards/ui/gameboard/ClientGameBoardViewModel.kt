@@ -9,13 +9,13 @@ import kotlinx.coroutines.launch
 class ClientGameBoardViewModel(
     val client: Client,
 ) : GameBoardViewModel() {
-    val model = GameModel(this)
+    override val gameModel = GameModel(this)
 
     init {
         viewModelScope.launch {
             client.messages.collect { message ->
-                if (model.receiveMessage(message.value)) {
-                    updateData(model)
+                if (gameModel.receiveMessage(message.value)) {
+                    updateData(gameModel)
                 }
             }
         }
@@ -28,9 +28,5 @@ class ClientGameBoardViewModel(
                     client.send(it, move)
                 }
         }
-    }
-
-    override fun getGameModel(): GameModel {
-        return model
     }
 }

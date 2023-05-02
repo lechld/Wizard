@@ -25,6 +25,8 @@ abstract class GameBoardViewModel : ViewModel() {
 
     abstract fun sendMessage(move: String)
 
+    abstract val gameModel : GameModel
+
     fun updateData(model: GameModel) {
         mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())
         mutableBoard.value = model.listener.getBoard()
@@ -45,10 +47,6 @@ abstract class GameBoardViewModel : ViewModel() {
         }
         mutableHeader.value = headerList
         mutablePlayer.value = model.listener.activePlayer
-    }
-
-    open fun getGameModel(): GameModel {
-        return GameModel(this) //OVERWRITE THIS
     }
 }
 
