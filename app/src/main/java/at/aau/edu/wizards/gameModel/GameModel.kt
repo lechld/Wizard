@@ -8,7 +8,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
     private val players = ArrayList<GameModelPlayer>()
     private var dealer = GameModelDealer(0)
     private var rules = GameModelRules(players, 0, dealer, this, 0)
-    var listener = GameModelListener(rules, players)
+    var listener = GameModelListener(rules, players, viewModel, this)
         private set
 
     fun sendMessage(move: String): Boolean {
@@ -121,7 +121,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
             this,
             move.substring(3, move.length).toInt()
         )
-        listener = GameModelListener(rules, players)
+        listener = GameModelListener(rules, players, viewModel, this)
         for (player in 1..move[1].code) {
             players.add(GameModelPlayer(players.size, dealer, true, Random.nextInt(1, 20)))
         }

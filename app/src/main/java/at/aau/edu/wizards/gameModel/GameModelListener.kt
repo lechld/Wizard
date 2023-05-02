@@ -1,10 +1,13 @@
 package at.aau.edu.wizards.gameModel
 
 import at.aau.edu.wizards.ui.gameboard.GameBoardTheme
+import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
 
 class GameModelListener(
     private val rules: GameModelRules,
-    private val players: ArrayList<GameModelPlayer>
+    private val players: ArrayList<GameModelPlayer>,
+    private val viewModel: GameBoardViewModel?,
+    private val parent: GameModel
 ) {
     var activePlayer = 0
         private set
@@ -140,6 +143,7 @@ class GameModelListener(
                 scores.add(Score(score, player.id))
             }
         }
+        viewModel?.updateData(parent)
     }
 
     fun localPlayer(): Int{

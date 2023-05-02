@@ -85,7 +85,7 @@ class GameBoardFragment : Fragment() {
                 binding.gameboardBoardRecyclerView.addItemDecoration(OffsetDecoration(120))
             } else {
                 binding.gameboardBoardRecyclerView.removeItemDecorationAt(0)
-                binding.gameboardBoardRecyclerView.addItemDecoration(OffsetDecoration(310))
+                binding.gameboardBoardRecyclerView.addItemDecoration(OffsetDecoration(270))
             }
         }
 
@@ -95,6 +95,10 @@ class GameBoardFragment : Fragment() {
 
         viewModel.header.observe(viewLifecycleOwner) { header ->
             adapterHeader.submitList(header)
+        }
+
+        viewModel.player.observe(viewLifecycleOwner) { player ->
+            binding.gameboardBoardRecyclerView.scrollToPosition(player) //Doesn't work
         }
 
         viewModel.trump.observe(viewLifecycleOwner) { trump ->
