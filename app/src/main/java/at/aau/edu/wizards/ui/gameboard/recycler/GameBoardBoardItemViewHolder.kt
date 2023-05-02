@@ -13,13 +13,12 @@ class GameBoardBoardItemViewHolder(
 
     fun bind(item: GameModelCard) {
         if (model.listener.guessing) {
-            binding.cardImage.setImageResource(item.guessingImage())
             binding.root.setBackgroundResource(0)
         } else {
-            binding.cardImage.setImageResource(item.image())
             binding.root.setBackgroundResource(
                 R.color.md_theme_dark_background
             )
         }
+        binding.cardImage.setImageResource(item.image())
     }
 }

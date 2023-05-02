@@ -126,7 +126,18 @@ sealed class GameModelCard {
                     10 -> R.drawable.b10
                     11 -> R.drawable.b11
                     12 -> R.drawable.b12
-                    else -> R.drawable.b13
+                    13 -> R.drawable.b13
+                    20 -> R.drawable.b0
+                    21 -> R.drawable.numberb1
+                    22 -> R.drawable.numberb2
+                    23 -> R.drawable.numberb3
+                    24 -> R.drawable.numberb4
+                    25 -> R.drawable.numberb5
+                    26 -> R.drawable.numberb6
+                    27 -> R.drawable.numberb7
+                    28 -> R.drawable.numberb8
+                    29 -> R.drawable.numberb9
+                    else -> R.drawable.numberb10
                 }
             }
             Color.Green -> {
@@ -143,7 +154,18 @@ sealed class GameModelCard {
                     10 -> R.drawable.g10
                     11 -> R.drawable.g11
                     12 -> R.drawable.g12
-                    else -> R.drawable.g13
+                    13 -> R.drawable.g13
+                    20 -> R.drawable.g0
+                    21 -> R.drawable.numberg1
+                    22 -> R.drawable.numberg2
+                    23 -> R.drawable.numberg3
+                    24 -> R.drawable.numberg4
+                    25 -> R.drawable.numberg5
+                    26 -> R.drawable.numberg6
+                    27 -> R.drawable.numberg7
+                    28 -> R.drawable.numberg8
+                    29 -> R.drawable.numberg9
+                    else -> R.drawable.numberg10
                 }
             }
             Color.Orange -> {
@@ -160,7 +182,18 @@ sealed class GameModelCard {
                     10 -> R.drawable.o10
                     11 -> R.drawable.o11
                     12 -> R.drawable.o12
-                    else -> R.drawable.o13
+                    13 -> R.drawable.o13
+                    20 -> R.drawable.o0
+                    21 -> R.drawable.numbero1
+                    22 -> R.drawable.numbero2
+                    23 -> R.drawable.numbero3
+                    24 -> R.drawable.numbero4
+                    25 -> R.drawable.numbero5
+                    26 -> R.drawable.numbero6
+                    27 -> R.drawable.numbero7
+                    28 -> R.drawable.numbero8
+                    29 -> R.drawable.numbero9
+                    else -> R.drawable.numbero10
                 }
             }
             Color.Red -> {
@@ -177,7 +210,18 @@ sealed class GameModelCard {
                     10 -> R.drawable.r10
                     11 -> R.drawable.r11
                     12 -> R.drawable.r12
-                    else -> R.drawable.r13
+                    13 -> R.drawable.r13
+                    20 -> R.drawable.r0
+                    21 -> R.drawable.numberr1
+                    22 -> R.drawable.numberr2
+                    23 -> R.drawable.numberr3
+                    24 -> R.drawable.numberr4
+                    25 -> R.drawable.numberr5
+                    26 -> R.drawable.numberr6
+                    27 -> R.drawable.numberr7
+                    28 -> R.drawable.numberr8
+                    29 -> R.drawable.numberr9
+                    else -> R.drawable.numberr10
                 }
             }
         }
@@ -268,68 +312,6 @@ sealed class GameModelCard {
                 }
             }
             else -> GameBoardTheme.No
-        }
-    }
-
-    fun guessingImage(): Int {
-        return when(this){
-            is Normal -> {
-                when(this.color){
-                    Color.Blue -> when(this.value){
-                        0 -> R.drawable.b0
-                        1 -> R.drawable.numberb1
-                        2 -> R.drawable.numberb2
-                        3 -> R.drawable.numberb3
-                        4 -> R.drawable.numberb4
-                        5 -> R.drawable.numberb5
-                        6 -> R.drawable.numberb6
-                        7 -> R.drawable.numberb7
-                        8 -> R.drawable.numberb8
-                        9 -> R.drawable.numberb9
-                        else -> R.drawable.numberb10
-                    }
-                    Color.Green -> when(this.value){
-                        0 -> R.drawable.g0
-                        1 -> R.drawable.numberg1
-                        2 -> R.drawable.numberg2
-                        3 -> R.drawable.numberg3
-                        4 -> R.drawable.numberg4
-                        5 -> R.drawable.numberg5
-                        6 -> R.drawable.numberg6
-                        7 -> R.drawable.numberg7
-                        8 -> R.drawable.numberg8
-                        9 -> R.drawable.numberg9
-                        else -> R.drawable.numberg10
-                    }
-                    Color.Orange -> when(this.value){
-                        0 -> R.drawable.o0
-                        1 -> R.drawable.numbero1
-                        2 -> R.drawable.numbero2
-                        3 -> R.drawable.numbero3
-                        4 -> R.drawable.numbero4
-                        5 -> R.drawable.numbero5
-                        6 -> R.drawable.numbero6
-                        7 -> R.drawable.numbero7
-                        8 -> R.drawable.numbero8
-                        9 -> R.drawable.numbero9
-                        else -> R.drawable.numbero10
-                    }
-                    Color.Red -> when(this.value){
-                        0 -> R.drawable.r0
-                        1 -> R.drawable.numberr1
-                        2 -> R.drawable.numberr2
-                        3 -> R.drawable.numberr3
-                        4 -> R.drawable.numberr4
-                        5 -> R.drawable.numberr5
-                        6 -> R.drawable.numberr6
-                        7 -> R.drawable.numberr7
-                        8 -> R.drawable.numberr8
-                        9 -> R.drawable.numberr9
-                        else -> R.drawable.numberr10
-                    }
-                }
-            }
-            else -> R.drawable.nocard
         }
     }
 }

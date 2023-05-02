@@ -11,7 +11,7 @@ import at.aau.edu.wizards.gameModel.GameModelCard
 import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
 
 class GameBoardBoardAdapter(val viewModel: GameBoardViewModel, val model: GameModel) :
-    ListAdapter<GameModelCard, GameBoardBoardItemViewHolder>(DiffUtilCallback(model)) {
+    ListAdapter<GameModelCard, GameBoardBoardItemViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -36,9 +36,9 @@ class GameBoardBoardAdapter(val viewModel: GameBoardViewModel, val model: GameMo
         }
     }
 
-    private class DiffUtilCallback(val model: GameModel) : DiffUtil.ItemCallback<GameModelCard>() {
+    private class DiffUtilCallback() : DiffUtil.ItemCallback<GameModelCard>() {
         override fun areItemsTheSame(oldItem: GameModelCard, newItem: GameModelCard): Boolean {
-            return oldItem.image() == newItem.image() && !model.listener.guessing
+            return oldItem.image() == newItem.image()
         }
 
         override fun areContentsTheSame(oldItem: GameModelCard, newItem: GameModelCard): Boolean {

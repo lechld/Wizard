@@ -100,22 +100,22 @@ class GameModelListener(
         if(guessing){
             when(trump.getGameBoardTheme()){
                 GameBoardTheme.Blue -> {
-                    for(guess in 0 .. rules.round){
+                    for(guess in 20 .. 20+rules.round){
                         board.add(GameModelCard.Normal(GameModelCard.Color.Blue,guess))
                     }
                 }
                 GameBoardTheme.Green -> {
-                    for(guess in 0 .. rules.round){
+                    for(guess in 20 .. 20+rules.round){
                         board.add(GameModelCard.Normal(GameModelCard.Color.Green,guess))
                     }
                 }
                 GameBoardTheme.Orange -> {
-                    for(guess in 0 .. rules.round){
+                    for(guess in 20 .. 20+rules.round){
                         board.add(GameModelCard.Normal(GameModelCard.Color.Orange,guess))
                     }
                 }
                 else -> {
-                    for(guess in 0 .. rules.round){
+                    for(guess in 20 .. 20+rules.round){
                         board.add(GameModelCard.Normal(GameModelCard.Color.Red,guess))
                     }
                 }
