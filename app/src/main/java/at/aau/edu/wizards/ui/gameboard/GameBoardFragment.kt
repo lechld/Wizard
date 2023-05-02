@@ -1,9 +1,12 @@
 package at.aau.edu.wizards.ui.gameboard
 
 
+import android.R
 import android.os.Bundle
+import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnDragListener
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -11,9 +14,11 @@ import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
+import at.aau.edu.wizards.databinding.ItemCardBinding
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 
-class GameBoardFragment : Fragment() {
+
+class GameBoardFragment : Fragment(), OnDragListener {
 
     private val asClient by lazy {
         requireArguments().getBoolean(AS_CLIENT_EXTRA)
@@ -67,6 +72,32 @@ class GameBoardFragment : Fragment() {
         viewModel.cards.observe(viewLifecycleOwner) { cards ->
             adapter.submitList(cards)
         }
+
+        binding.dragContainer.setOnDragListener(this)
+    }
+
+    override fun onDrag(view: View, event: DragEvent): Boolean {
+        val binding = this.binding
+        if (event.action == DragEvent.ACTION_DROP && binding != null) {
+
+            val dropX = event.getX()
+            val dropY: Float = event.getY()
+            val item = event.localState as Cards
+            val inflater = LayoutInflater.from(requireContext())
+            val shape = ItemCardBinding.inflate(inflater, binding.dragContainer,false)
+
+            /*shape.root.x =
+
+            shape.setImageResource(state.item.getImageDrawable())
+            shape.setX(dropX - state.width as Float / 2)
+            shape.setY(dropY - state.height as Float / 2)
+            shape.getLayoutParams().width = state.width
+            shape.getLayoutParams().height = state.height*/
+            binding.dragContainer.addView(shape.root)
+
+        }
+
+        return true
     }
 
     companion object {
