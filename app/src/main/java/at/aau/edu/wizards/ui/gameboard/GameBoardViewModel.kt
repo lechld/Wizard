@@ -23,7 +23,7 @@ abstract class GameBoardViewModel : ViewModel() {
     private val mutablePlayer = MutableLiveData<Int>()
     val player = mutablePlayer
 
-    open fun sendMessage(move: String) {}
+    abstract fun sendMessage(move: String)
 
     fun updateData(model: GameModel) {
         mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())

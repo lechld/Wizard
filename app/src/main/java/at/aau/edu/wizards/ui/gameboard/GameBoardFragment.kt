@@ -1,7 +1,6 @@
 package at.aau.edu.wizards.ui.gameboard
 
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +8,13 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardHeaderAdapter
+import at.aau.edu.wizards.util.OffsetItemDecoration
 
 class GameBoardFragment : Fragment() {
 
@@ -69,7 +68,7 @@ class GameBoardFragment : Fragment() {
         }
 
         binding.gameboardRecyclerView.adapter = adapter
-        binding.gameboardRecyclerView.addItemDecoration(OffsetDecoration(90))
+        binding.gameboardRecyclerView.addItemDecoration(OffsetItemDecoration(90))
 
         viewModel.cards.observe(viewLifecycleOwner) { cards ->
             adapter.submitList(cards)
@@ -78,16 +77,16 @@ class GameBoardFragment : Fragment() {
         val adapterBoard = GameBoardBoardAdapter(viewModel, viewModel.getGameModel())
 
         binding.gameboardBoardRecyclerView.adapter = adapterBoard
-        binding.gameboardBoardRecyclerView.addItemDecoration(OffsetDecoration(310))
+        binding.gameboardBoardRecyclerView.addItemDecoration(OffsetItemDecoration(310))
 
         viewModel.board.observe(viewLifecycleOwner) { cards ->
             adapterBoard.submitList(cards)
             if (viewModel.getGameModel().listener.guessing) { //Dunnow if this counts as logic, might have to move this.
                 binding.gameboardBoardRecyclerView.removeItemDecorationAt(0)
-                binding.gameboardBoardRecyclerView.addItemDecoration(OffsetDecoration(120))
+                binding.gameboardBoardRecyclerView.addItemDecoration(OffsetItemDecoration(120))
             } else {
                 binding.gameboardBoardRecyclerView.removeItemDecorationAt(0)
-                binding.gameboardBoardRecyclerView.addItemDecoration(OffsetDecoration(270))
+                binding.gameboardBoardRecyclerView.addItemDecoration(OffsetItemDecoration(270))
             }
         }
 
@@ -128,18 +127,5 @@ class GameBoardFragment : Fragment() {
         }
     }
 
-    class OffsetDecoration(private val overlap: Int) : RecyclerView.ItemDecoration() {
-
-        override fun getItemOffsets(
-            outRect: Rect,
-            view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            if (parent.getChildAdapterPosition(view) != 0) {
-                outRect.left = outRect.left - overlap
-            }
-        }
-    }
 }
 

@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="@id/header_circle"
         app:layout_constraintStart_toStartOf="@id/header_circle"
         app:layout_constraintTop_toTopOf="@id/header_circle" />
-    
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/header_circle"
         android:layout_width="120dp"
