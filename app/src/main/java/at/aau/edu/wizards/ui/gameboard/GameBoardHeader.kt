@@ -4,8 +4,8 @@ data class GameBoardHeader(
     val player: Int,
     val icon: Int,
     val name: String,
-    val guess: Int,
-    val wins: Int,
-    val score: Int,
-    val theme: GameBoardTheme
+    var guess: Int,
+    var wins: Int,
+    var score: Int,
+    var theme: GameBoardTheme
 )
