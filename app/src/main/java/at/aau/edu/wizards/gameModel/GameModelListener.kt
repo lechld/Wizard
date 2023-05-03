@@ -68,7 +68,7 @@ class GameModelListener(
         return returnScore
     }
 
-    fun getIconOfPlayer(id: Int): Int {
+    private fun getIconOfPlayer(id: Int): Int {
         return if (id in 0 until numberOfPlayers) {
             players[id].icon
         } else {
@@ -76,14 +76,14 @@ class GameModelListener(
         }
     }
 
-    fun getNameOfPlayer(id: Int): String {
+    private fun getNameOfPlayer(id: Int): String {
         return buildString {
             append("Player")
             append(id.toString())
         }
     }
 
-    fun getCurrentWins(id: Int): Int {
+    private fun getCurrentWins(id: Int): Int {
         return rules.getAmountWon(id)
     }
 
@@ -168,9 +168,12 @@ class GameModelListener(
     }
 
     private fun calculateBoard() {
-        for (card in board) {
-            if (!rules.board.contains(card)) {
-                board.remove(card)
+        var card = 0
+        while (card < board.size) {
+            if (!rules.board.contains(board[card])) {
+                board.removeAt(card)
+            } else {
+                card++
             }
         }
         for (card in rules.board) {
