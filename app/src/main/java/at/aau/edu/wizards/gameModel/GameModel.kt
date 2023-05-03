@@ -25,7 +25,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
     }
 
     private fun legalMessageCardSend(move: String): Boolean {
-        return legalMessageCard(move) && legalPlayFromLocalPlayer(move)
+        return legalMessageCard(move) && legalPlayFromLocalPlayer(move) && rules.everyoneHasGuessed()
     }
 
     private fun legalPlayFromLocalPlayer(move: String): Boolean {
@@ -52,7 +52,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                 }
             }
             else -> {
-                when (legalMessageCard(move)) {
+                when (legalMessageCard(move) && rules.everyoneHasGuessed()) {
                     true -> {
                         rules.playCard(dealer.getCardFromHash(move[0].code))
                         listener.update()
@@ -60,10 +60,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                     }
                     else -> {
                         if (legalMessageGuess(move)) {
-                            players[(move[0].code - 60) / 11].guesses.add((move[0].code - 60) % 11)
-                            if((move[0].code - 60) / 11 == rules.id){
-                                rules.wantsGuess = false
-                            }
+                            rules.addGuess(move[0].code)
                             listener.update()
                             true
                         } else {
