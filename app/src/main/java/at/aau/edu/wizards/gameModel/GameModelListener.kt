@@ -180,4 +180,8 @@ class GameModelListener(
         }
         board.add(winningCard)
     }
+
+    private fun getRound(): Int{
+        return rules.round
+    }
 }
