@@ -1,10 +1,6 @@
 package at.aau.edu.wizards.gameModel
 
 import android.os.CountDownTimer
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 class GameModelRules(
     val players: ArrayList<GameModelPlayer>,
@@ -263,17 +259,15 @@ class GameModelRules(
     }
 
     private fun getCpuToPlay() {
-        CoroutineScope(Job() + Dispatchers.Default).launch {
-            object : CountDownTimer(CPU_TIME_TO_MOVE, 1000) {
-                override fun onTick(millisUntilFinished: Long) {
-                    // We don't want to execute anything while waiting, so this stays empty.
-                }
+        object : CountDownTimer(CPU_TIME_TO_MOVE, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                // We don't want to execute anything while waiting, so this stays empty.
+            }
 
 
-                override fun onFinish() {
-                    parent.receiveMessage(cpu.getMove(players[currentPlayer]).getString())
-                }
-            }.start()
-        }
+            override fun onFinish() {
+                parent.receiveMessage(cpu.getMove(players[currentPlayer]).getString())
+            }
+        }.start()
     }
 }
