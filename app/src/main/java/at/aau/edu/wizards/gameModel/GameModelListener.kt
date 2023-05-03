@@ -143,7 +143,7 @@ class GameModelListener(
     }
 
     private fun calculateHeader() {
-        if (headerList.isEmpty()) {
+        if (headerList.isNotEmpty()) {
             for (player in 0 until numberOfPlayers) {
                 headerList[player].guess = getCurrentGuessOfPlayer(player)
                 headerList[player].wins = getCurrentWins(player)
