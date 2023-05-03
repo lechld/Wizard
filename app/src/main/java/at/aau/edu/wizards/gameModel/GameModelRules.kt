@@ -1,6 +1,10 @@
 package at.aau.edu.wizards.gameModel
 
 import android.os.CountDownTimer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class GameModelRules(
     val players: ArrayList<GameModelPlayer>,
@@ -198,15 +202,7 @@ class GameModelRules(
             nextSet()
         }
         if (!players[currentPlayer].isHuman && everyoneHasGuessed() && round < 11) {
-            object : CountDownTimer(CPU_TIME_TO_MOVE, 1000) {
-                override fun onTick(millisUntilFinished: Long) {
-                    // We don't want to execute anything while waiting, so this stays empty.
-                }
-
-                override fun onFinish() {
-                    parent.receiveMessage(cpu.getMove(players[currentPlayer]).getString())
-                }
-            }.start()
+            getCpuToPlay()
         }
     }
 
@@ -254,6 +250,20 @@ class GameModelRules(
             wantsGuess = false
         }
         if (everyoneHasGuessed() && !players[currentPlayer].isHuman) {
+            getCpuToPlay()
+        }
+    }
+
+    private fun getPlayerIdFromGuessInInt(guess: Int): Int {
+        return (guess - 60) / 11
+    }
+
+    private fun getGuessValueFromGuessInInt(guess: Int): Int {
+        return (guess - 60) % 11
+    }
+
+    private fun getCpuToPlay() {
+        CoroutineScope(Job() + Dispatchers.Default).launch {
             object : CountDownTimer(CPU_TIME_TO_MOVE, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     // We don't want to execute anything while waiting, so this stays empty.
@@ -265,13 +275,5 @@ class GameModelRules(
                 }
             }.start()
         }
-    }
-
-    private fun getPlayerIdFromGuessInInt(guess: Int): Int {
-        return (guess - 60) / 11
-    }
-
-    private fun getGuessValueFromGuessInInt(guess: Int): Int {
-        return (guess - 60) % 11
     }
 }
