@@ -1,7 +1,6 @@
 package at.aau.edu.wizards.gameModel
 
 import at.aau.edu.wizards.ui.gameboard.GameBoardHeader
-import at.aau.edu.wizards.ui.gameboard.GameBoardTheme
 import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
 
 class GameModelListener(
@@ -93,33 +92,7 @@ class GameModelListener(
         trump = rules.trump
         winningCard = rules.winningCard
         guessing = rules.wantsGuess
-        if (guessing) { //Depricated, will be removed
-            board.clear()
-            when (trump.getGameBoardTheme()) {
-                GameBoardTheme.Blue -> {
-                    for (guess in 20..20 + rules.round) {
-                        board.add(GameModelCard.Normal(GameModelCard.Color.Blue, guess))
-                    }
-                }
-                GameBoardTheme.Green -> {
-                    for (guess in 20..20 + rules.round) {
-                        board.add(GameModelCard.Normal(GameModelCard.Color.Green, guess))
-                    }
-                }
-                GameBoardTheme.Orange -> {
-                    for (guess in 20..20 + rules.round) {
-                        board.add(GameModelCard.Normal(GameModelCard.Color.Orange, guess))
-                    }
-                }
-                else -> {
-                    for (guess in 20..20 + rules.round) {
-                        board.add(GameModelCard.Normal(GameModelCard.Color.Red, guess))
-                    }
-                }
-            }
-        } else {
-            calculateBoard()
-        }
+        calculateBoard()
         hands.clear()
         guesses.clear()
         scores.clear()
@@ -168,23 +141,22 @@ class GameModelListener(
     }
 
     private fun calculateBoard() {
-        var card = 0
-        while (card < board.size) {
-            if (!rules.board.contains(board[card])) {
-                board.removeAt(card)
-            } else {
-                card++
-            }
-        }
+        this.board.clear()
         for (card in rules.board) {
-            if (!board.contains(card)) {
-                board.add(card)
-            }
+            this.board.add(card)
         }
-        board.add(winningCard)
+        this.board.add(winningCard)
     }
 
-    private fun getRound(): Int{
+    fun boardAsNewArray(): ArrayList<GameModelCard> {
+        val returnBoard = ArrayList<GameModelCard>()
+        for (card in board) {
+            returnBoard.add(card)
+        }
+        return returnBoard
+    }
+
+    private fun getRound(): Int {
         return rules.round
     }
 }

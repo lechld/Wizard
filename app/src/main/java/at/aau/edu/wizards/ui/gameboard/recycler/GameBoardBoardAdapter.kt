@@ -11,24 +11,24 @@ import at.aau.edu.wizards.gameModel.GameModelCard
 import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
 
 class GameBoardBoardAdapter(val viewModel: GameBoardViewModel, val model: GameModel) :
-    ListAdapter<GameModelCard, GameBoardBoardItemViewHolder>(DiffUtilCallback()) {
+    ListAdapter<GameModelCard, GameBoardItemViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): GameBoardBoardItemViewHolder {
+    ): GameBoardItemViewHolder {
         val from = LayoutInflater.from(parent.context)
         val binding = ItemCardBinding.inflate(from, parent, false)
-        return GameBoardBoardItemViewHolder(binding, model)
+        return GameBoardItemViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: GameBoardBoardItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GameBoardItemViewHolder, position: Int) {
         holder.bind(getItem(position))
         holder.itemView.setOnClickListener {
             if (holder.bindingAdapterPosition != RecyclerView.NO_POSITION) {
                 if (model.listener.guessing) {
                     viewModel.sendMessage(
-                        (60 + model.listener.localPlayer() + holder.bindingAdapterPosition).toChar()
+                        (60 + model.listener.localPlayer() * 11 + holder.bindingAdapterPosition).toChar()
                             .toString()
                     )
                 }

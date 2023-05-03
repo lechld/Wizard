@@ -29,7 +29,7 @@ abstract class GameBoardViewModel : ViewModel() {
 
     fun updateData(model: GameModel) {
         mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())
-        mutableBoard.value = model.listener.board
+        mutableBoard.value = model.listener.boardAsNewArray()
         mutableTrump.value = model.listener.trump
         mutableHeader.value = model.listener.headerList
         mutablePlayer.value = model.listener.activePlayer
