@@ -8,10 +8,11 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import at.aau.edu.wizards.databinding.ItemCardBinding
-import at.aau.edu.wizards.ui.gameboard.Cards
+import at.aau.edu.wizards.gameModel.GameModelCard
+class GameBoardAdapter(
+    private val onClick: (GameModelCard) -> Unit,
+) : ListAdapter<GameModelCard, GameBoardItemViewHolder>(DiffUtilCallback()) {
 
-
-class GameBoardAdapter : ListAdapter<Cards, GameBoardItemViewHolder>(DiffUtlCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameBoardItemViewHolder {
         val from = LayoutInflater.from(parent.context)
@@ -29,14 +30,19 @@ class GameBoardAdapter : ListAdapter<Cards, GameBoardItemViewHolder>(DiffUtlCall
 
     override fun onBindViewHolder(holder: GameBoardItemViewHolder, position: Int) {
         holder.bind(getItem(position))
+        holder.itemView.setOnClickListener {
+            val item = getItem(holder.bindingAdapterPosition)
+
+            onClick(item)
+        }
     }
 
-    private class DiffUtlCallback : DiffUtil.ItemCallback<Cards>() {
-        override fun areItemsTheSame(oldItem: Cards, newItem: Cards): Boolean {
-            return oldItem.cardImage == newItem.cardImage
+    private class DiffUtilCallback : DiffUtil.ItemCallback<GameModelCard>() {
+        override fun areItemsTheSame(oldItem: GameModelCard, newItem: GameModelCard): Boolean {
+            return oldItem.image() == newItem.image()
         }
 
-        override fun areContentsTheSame(oldItem: Cards, newItem: Cards): Boolean {
+        override fun areContentsTheSame(oldItem: GameModelCard, newItem: GameModelCard): Boolean {
             return areItemsTheSame(oldItem, newItem)
         }
     }
