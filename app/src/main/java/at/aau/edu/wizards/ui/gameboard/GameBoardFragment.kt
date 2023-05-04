@@ -9,6 +9,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import at.aau.edu.wizards.R
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
@@ -49,9 +50,9 @@ class GameBoardFragment : Fragment() {
         activity.onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 MaterialAlertDialogBuilder(activity)
-                    .setMessage("Do you really wan't to leave this game?")
-                    .setPositiveButton("No", null)
-                    .setNegativeButton("Yes") { _, _ ->
+                    .setMessage(getString(R.string.leave_warning))
+                    .setPositiveButton(getString(R.string.no), null)
+                    .setNegativeButton(getString(R.string.yes)) { _, _ ->
                         isEnabled = false
                         activity.onBackPressedDispatcher.onBackPressed()
                     }
