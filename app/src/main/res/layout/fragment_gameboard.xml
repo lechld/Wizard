@@ -27,8 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header_recycler"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@id/header_recycler" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/guess_recycler"
@@ -57,5 +56,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/item_card" />
+
+    <include
+        android:id="@+id/trump_indicator_card"
+        layout="@layout/item_card"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view"
+        app:layout_constraintDimensionRatio="7:10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/gameboard_recycler_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

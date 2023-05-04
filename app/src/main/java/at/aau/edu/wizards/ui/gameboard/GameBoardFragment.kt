@@ -94,9 +94,7 @@ class GameBoardFragment : Fragment() {
         setupHeader(binding)
 
         viewModel.trump.observe(viewLifecycleOwner) { trump ->
-            //binding.boardBackground.setImageResource(trump.imageBackground())
-            //binding.boardSlice.setImageResource(trump.imageSlice())
-            //binding.boardHeaderBackground.setImageResource(trump.imageHeaderBackground())
+            binding.trumpIndicatorCard.root.setImageResource(trump.image())
         }
     }
 
