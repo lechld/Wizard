@@ -160,14 +160,14 @@ class GameBoardFragment : Fragment(), OnDragListener {
         val binding = this.binding
         if (event.action == DragEvent.ACTION_DROP && binding != null) {
 
-            val dropX = event.x
-            val dropY = event.y
+           // val dropX = event.x
+            //val dropY = event.y
             //val item = event.localState as Card
             val inflater = LayoutInflater.from(requireContext())
             val shape = ItemCardBinding.inflate(inflater, binding.dragContainer,false)
 
-            shape.root.x = dropX
-            shape.root.y = dropY
+            //shape.root.x = dropX
+            //shape.root.y = dropY
 
             binding.dragContainer.addView(shape.root)
 
