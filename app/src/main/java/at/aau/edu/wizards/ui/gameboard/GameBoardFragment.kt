@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,7 @@ import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardHeaderAdapter
 import at.aau.edu.wizards.util.OffsetItemDecoration
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class GameBoardFragment : Fragment() {
 
@@ -37,6 +39,26 @@ class GameBoardFragment : Fragment() {
             client = Client.getInstance(requireContext())
         )
         ViewModelProvider(this, factory)[GameBoardViewModel::class.java]
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val activity = requireActivity()
+
+        activity.onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                MaterialAlertDialogBuilder(activity)
+                    .setMessage("Do you really wan't to leave this game?")
+                    .setPositiveButton("No", null)
+                    .setNegativeButton("Yes") { _, _ ->
+                        isEnabled = false
+                        activity.onBackPressedDispatcher.onBackPressed()
+                    }
+                    .create()
+                    .show()
+            }
+        })
     }
 
     override fun onCreateView(
