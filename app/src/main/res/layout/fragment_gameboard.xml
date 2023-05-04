@@ -16,14 +16,66 @@
         app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/gameboard_recycler_view"
+        android:id="@+id/header_recycler"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_gameboard_header" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/board_recycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_recycler" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/guess_recycler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/default_margin_half"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_guess" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gameboard_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="260dp"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/default_margin_half"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/item_card" />
+
+    <include
+        android:id="@+id/trump_indicator_card"
+        layout="@layout/item_card"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view"
+        app:layout_constraintDimensionRatio="7:10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/gameboard_recycler_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

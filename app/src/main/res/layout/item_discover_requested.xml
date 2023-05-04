@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/default_margin"
     android:layout_marginVertical="@dimen/default_margin_half"
-    android:background="?colorSurface">
+    android:background="?colorSurface"
+    android:backgroundTint="@color/wizard_green">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,8 +18,9 @@
             android:id="@+id/requested_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/bitter"
             android:gravity="center"
-            android:textColor="?colorOnSurface"
+            android:textColor="@color/wizard_txt"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/progress_bar"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +35,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:trackColor="?colorPrimary" />
+            app:trackColor="@color/wizard_green" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
