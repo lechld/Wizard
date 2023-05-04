@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.api.Client
@@ -100,8 +99,6 @@ class GameBoardFragment : Fragment() {
         binding.guessRecycler.adapter = guessAdapter
 
         viewModel.guess.observe(viewLifecycleOwner) { guess ->
-            binding.boardRecycler.isVisible = guess.isEmpty()
-
             guessAdapter.submitList(guess)
         }
     }

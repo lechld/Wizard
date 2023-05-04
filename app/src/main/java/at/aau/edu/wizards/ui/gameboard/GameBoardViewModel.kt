@@ -30,19 +30,28 @@ abstract class GameBoardViewModel : ViewModel() {
     abstract val gameModel: GameModel
 
     fun updateData(model: GameModel) {
-        val toGuess = if (model.listener.guessing) {
-            val guesses = mutableListOf<Int>()
-            repeat(model.listener.getRound() + 1) {
-                guesses.add(it)
-            }
-            guesses
-        } else emptyList()
-
-        _guess.postValue(toGuess)
-        _cards.postValue(model.listener.getHandOfPlayer(model.localPlayer()))
-        _board.postValue(model.listener.boardAsNewArray())
-        _trump.postValue(model.listener.trump)
         _headersWithCurrentPlayer.postValue(model.listener.headerList to model.listener.activePlayer)
+
+        if (model.listener.guessing) {
+            _guess.postValue(buildGuessList(model))
+            _board.postValue(ArrayList())
+        } else {
+            _guess.postValue(emptyList())
+            _board.postValue(model.listener.boardAsNewArray())
+        }
+
+        _cards.postValue(model.listener.getHandOfPlayer(model.localPlayer()))
+        _trump.postValue(model.listener.trump)
+    }
+
+    private fun buildGuessList(model: GameModel): List<Int> {
+        val guesses = mutableListOf<Int>()
+
+        repeat(model.listener.getRound() + 1) {
+            guesses.add(it)
+        }
+
+        return guesses
     }
 }
 
