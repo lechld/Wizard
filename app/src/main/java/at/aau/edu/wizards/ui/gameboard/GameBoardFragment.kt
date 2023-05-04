@@ -88,14 +88,8 @@ class GameBoardFragment : Fragment(), OnDragListener {
             shape.root.x = dropX
             shape.root.y = dropY
 
-            /*
-            shape.setImageResource(state.item.getImageDrawable());
-            shape.setX(dropX - (float) state.width / 2);
-            shape.setY(dropY - (float) state.height / 2);
-            shape.getLayoutParams().width = state.width;
-            shape.getLayoutParams().height = state.height;
-            */
             binding.dragContainer.addView(shape.root)
+
 
         }
 
