@@ -2,11 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="8dp"
-    android:clickable="false"
-    android:focusable="true">
+    android:layout_marginHorizontal="@dimen/default_margin_half">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/header_txt_top"
@@ -32,7 +30,6 @@
         app:layout_constraintEnd_toEndOf="@id/header_circle"
         app:layout_constraintStart_toStartOf="@id/header_circle"
         app:layout_constraintTop_toTopOf="@id/header_circle" />
-
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/header_circle"

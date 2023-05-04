@@ -3,38 +3,55 @@ package at.aau.edu.wizards.ui.gameboard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.distinctUntilChanged
 import at.aau.edu.wizards.gameModel.GameModel
 import at.aau.edu.wizards.gameModel.GameModelCard
 
 abstract class GameBoardViewModel : ViewModel() {
 
-    private val mutableCards = MutableLiveData<ArrayList<GameModelCard>>()
-    val cards: LiveData<ArrayList<GameModelCard>> = mutableCards
+    private val _cards = MutableLiveData<ArrayList<GameModelCard>>()
+    val cards: LiveData<ArrayList<GameModelCard>> = _cards.distinctUntilChanged()
 
-    private val mutableBoard = MutableLiveData<ArrayList<GameModelCard>>()
-    val board: LiveData<ArrayList<GameModelCard>> = mutableBoard
+    private val _board = MutableLiveData<ArrayList<GameModelCard>>()
+    val board: LiveData<ArrayList<GameModelCard>> = _board.distinctUntilChanged()
 
-    private val mutableTrump = MutableLiveData<GameModelCard>()
-    val trump: LiveData<GameModelCard> = mutableTrump
+    private val _trump = MutableLiveData<GameModelCard>()
+    val trump: LiveData<GameModelCard> = _trump.distinctUntilChanged()
 
-    private val mutableHeader = MutableLiveData<ArrayList<GameBoardHeader>>()
-    val header: LiveData<ArrayList<GameBoardHeader>> = mutableHeader
+    private val _headersWithCurrentPlayer = MutableLiveData<Pair<ArrayList<GameBoardHeader>, Int>>()
+    val headersWithCurrentPlayer: LiveData<Pair<ArrayList<GameBoardHeader>, Int>> =
+        _headersWithCurrentPlayer.distinctUntilChanged()
 
-    private val mutablePlayer = MutableLiveData<Int>()
-    val player = mutablePlayer
+    private val _guess = MutableLiveData<List<Int>>()
+    val guess: LiveData<List<Int>> = _guess.distinctUntilChanged()
 
-    open fun sendMessage(move: String) {}
+    abstract fun sendMessage(move: String)
+
+    abstract val gameModel: GameModel
 
     fun updateData(model: GameModel) {
-        mutableCards.value = model.listener.getHandOfPlayer(model.localPlayer())
-        mutableBoard.value = model.listener.board
-        mutableTrump.value = model.listener.trump
-        mutableHeader.value = model.listener.headerList
-        mutablePlayer.value = model.listener.activePlayer
+        _headersWithCurrentPlayer.postValue(model.listener.headerList to model.listener.activePlayer)
+
+        if (model.listener.guessing) {
+            _guess.postValue(buildGuessList(model))
+            _board.postValue(ArrayList())
+        } else {
+            _guess.postValue(emptyList())
+            _board.postValue(model.listener.boardAsNewArray())
+        }
+
+        _cards.postValue(model.listener.getHandOfPlayer(model.localPlayer()))
+        _trump.postValue(model.listener.trump)
     }
 
-    open fun getGameModel(): GameModel {
-        return GameModel(this) //OVERWRITE THIS
+    private fun buildGuessList(model: GameModel): List<Int> {
+        val guesses = mutableListOf<Int>()
+
+        repeat(model.listener.getRound() + 1) {
+            guesses.add(it)
+        }
+
+        return guesses
     }
 }
 

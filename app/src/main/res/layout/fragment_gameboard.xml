@@ -6,88 +6,67 @@
     android:layout_height="match_parent"
     android:background="?android:colorBackground">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/board_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/gameboard_board_recycler_view"
+        android:id="@+id/header_recycler"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95"
-        tools:listitem="@layout/item_card" />
+        tools:listitem="@layout/item_gameboard_header" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/board_recycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_recycler" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/guess_recycler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/default_margin_half"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_guess" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gameboard_recycler_view"
         android:layout_width="0dp"
-        android:layout_height="300dp"
+        android:layout_height="260dp"
+        android:clipToPadding="false"
         android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/default_margin_half"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/item_card" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/board_slice"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/nslice"
-        app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gameboard_board_recycler_view"
-        app:layout_constraintVertical_bias="0.5" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/spacer"
+    <include
+        android:id="@+id/trump_indicator_card"
+        layout="@layout/item_card"
         android:layout_width="0dp"
-        android:layout_height="1dp"
-        app:layout_constraintBottom_toBottomOf="@id/gameboard_board_recycler_view"
+        android:layout_height="100dp"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view"
+        app:layout_constraintDimensionRatio="7:10"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/gameboard_board_recycler_view"
-        app:layout_constraintVertical_bias="0.15" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/board_header_background"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/nhb"
-        app:layout_constraintBottom_toBottomOf="@id/spacer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/gameboard_header_recycler_view"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="@id/board_header_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/board_header_background"
-        tools:listitem="@layout/item_gameboard_header" />
+        app:layout_constraintTop_toTopOf="@id/gameboard_recycler_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

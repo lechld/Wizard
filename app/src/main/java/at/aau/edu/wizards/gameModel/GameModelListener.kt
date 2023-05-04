@@ -1,7 +1,6 @@
 package at.aau.edu.wizards.gameModel
 
 import at.aau.edu.wizards.ui.gameboard.GameBoardHeader
-import at.aau.edu.wizards.ui.gameboard.GameBoardTheme
 import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
 
 class GameModelListener(
@@ -68,7 +67,7 @@ class GameModelListener(
         return returnScore
     }
 
-    fun getIconOfPlayer(id: Int): Int {
+    private fun getIconOfPlayer(id: Int): Int {
         return if (id in 0 until numberOfPlayers) {
             players[id].icon
         } else {
@@ -76,14 +75,14 @@ class GameModelListener(
         }
     }
 
-    fun getNameOfPlayer(id: Int): String {
+    private fun getNameOfPlayer(id: Int): String {
         return buildString {
             append("Player")
             append(id.toString())
         }
     }
 
-    fun getCurrentWins(id: Int): Int {
+    private fun getCurrentWins(id: Int): Int {
         return rules.getAmountWon(id)
     }
 
@@ -93,33 +92,7 @@ class GameModelListener(
         trump = rules.trump
         winningCard = rules.winningCard
         guessing = rules.wantsGuess
-        if (guessing) { //Depricated, will be removed
-            board.clear()
-            when (trump.getGameBoardTheme()) {
-                GameBoardTheme.Blue -> {
-                    for (guess in 20..20 + rules.round) {
-                        board.add(GameModelCard.Normal(GameModelCard.Color.Blue, guess))
-                    }
-                }
-                GameBoardTheme.Green -> {
-                    for (guess in 20..20 + rules.round) {
-                        board.add(GameModelCard.Normal(GameModelCard.Color.Green, guess))
-                    }
-                }
-                GameBoardTheme.Orange -> {
-                    for (guess in 20..20 + rules.round) {
-                        board.add(GameModelCard.Normal(GameModelCard.Color.Orange, guess))
-                    }
-                }
-                else -> {
-                    for (guess in 20..20 + rules.round) {
-                        board.add(GameModelCard.Normal(GameModelCard.Color.Red, guess))
-                    }
-                }
-            }
-        } else {
-            calculateBoard()
-        }
+        calculateBoard()
         hands.clear()
         guesses.clear()
         scores.clear()
@@ -143,12 +116,14 @@ class GameModelListener(
     }
 
     private fun calculateHeader() {
-        if (headerList.isEmpty()) {
+        if (headerList.isNotEmpty()) {
             for (player in 0 until numberOfPlayers) {
-                headerList[player].guess = getCurrentGuessOfPlayer(player)
-                headerList[player].wins = getCurrentWins(player)
-                headerList[player].score = getCurrentScoreOfPlayer(player)
-                headerList[player].theme = trump.getGameBoardTheme()
+                headerList[player] = headerList[player].copy(
+                    guess = getCurrentGuessOfPlayer(player),
+                    wins = getCurrentWins(player),
+                    score = getCurrentScoreOfPlayer(player),
+                    theme = trump.getGameBoardTheme()
+                )
             }
         } else {
             for (player in 0 until numberOfPlayers) {
@@ -168,20 +143,22 @@ class GameModelListener(
     }
 
     private fun calculateBoard() {
-        for (card in board) {
-            if (!rules.board.contains(card)) {
-                board.remove(card)
-            }
-        }
+        this.board.clear()
         for (card in rules.board) {
-            if (!board.contains(card)) {
-                board.add(card)
-            }
+            this.board.add(card)
         }
-        board.add(winningCard)
+        this.board.add(winningCard)
     }
 
-    private fun getRound(): Int{
+    fun boardAsNewArray(): ArrayList<GameModelCard> {
+        val returnBoard = ArrayList<GameModelCard>()
+        for (card in board) {
+            returnBoard.add(card)
+        }
+        return returnBoard
+    }
+
+    fun getRound(): Int {
         return rules.round
     }
 }

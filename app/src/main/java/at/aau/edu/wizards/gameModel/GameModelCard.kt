@@ -126,18 +126,7 @@ sealed class GameModelCard {
                     10 -> R.drawable.b10
                     11 -> R.drawable.b11
                     12 -> R.drawable.b12
-                    13 -> R.drawable.b13
-                    20 -> R.drawable.b0
-                    21 -> R.drawable.numberb1
-                    22 -> R.drawable.numberb2
-                    23 -> R.drawable.numberb3
-                    24 -> R.drawable.numberb4
-                    25 -> R.drawable.numberb5
-                    26 -> R.drawable.numberb6
-                    27 -> R.drawable.numberb7
-                    28 -> R.drawable.numberb8
-                    29 -> R.drawable.numberb9
-                    else -> R.drawable.numberb10
+                    else -> R.drawable.b13
                 }
             }
             Color.Green -> {
@@ -154,18 +143,7 @@ sealed class GameModelCard {
                     10 -> R.drawable.g10
                     11 -> R.drawable.g11
                     12 -> R.drawable.g12
-                    13 -> R.drawable.g13
-                    20 -> R.drawable.g0
-                    21 -> R.drawable.numberg1
-                    22 -> R.drawable.numberg2
-                    23 -> R.drawable.numberg3
-                    24 -> R.drawable.numberg4
-                    25 -> R.drawable.numberg5
-                    26 -> R.drawable.numberg6
-                    27 -> R.drawable.numberg7
-                    28 -> R.drawable.numberg8
-                    29 -> R.drawable.numberg9
-                    else -> R.drawable.numberg10
+                    else -> R.drawable.g13
                 }
             }
             Color.Orange -> {
@@ -182,18 +160,7 @@ sealed class GameModelCard {
                     10 -> R.drawable.o10
                     11 -> R.drawable.o11
                     12 -> R.drawable.o12
-                    13 -> R.drawable.o13
-                    20 -> R.drawable.o0
-                    21 -> R.drawable.numbero1
-                    22 -> R.drawable.numbero2
-                    23 -> R.drawable.numbero3
-                    24 -> R.drawable.numbero4
-                    25 -> R.drawable.numbero5
-                    26 -> R.drawable.numbero6
-                    27 -> R.drawable.numbero7
-                    28 -> R.drawable.numbero8
-                    29 -> R.drawable.numbero9
-                    else -> R.drawable.numbero10
+                    else -> R.drawable.o13
                 }
             }
             Color.Red -> {
@@ -210,86 +177,9 @@ sealed class GameModelCard {
                     10 -> R.drawable.r10
                     11 -> R.drawable.r11
                     12 -> R.drawable.r12
-                    13 -> R.drawable.r13
-                    20 -> R.drawable.r0
-                    21 -> R.drawable.numberr1
-                    22 -> R.drawable.numberr2
-                    23 -> R.drawable.numberr3
-                    24 -> R.drawable.numberr4
-                    25 -> R.drawable.numberr5
-                    26 -> R.drawable.numberr6
-                    27 -> R.drawable.numberr7
-                    28 -> R.drawable.numberr8
-                    29 -> R.drawable.numberr9
-                    else -> R.drawable.numberr10
+                    else -> R.drawable.r13
                 }
             }
-        }
-    }
-
-    fun imageBackground(): Int {
-        return when (this) {
-            is Normal -> {
-                when (this.color) {
-                    Color.Blue -> R.drawable.bb
-                    Color.Green -> R.drawable.gb
-                    Color.Orange -> R.drawable.ob
-                    Color.Red -> R.drawable.rb
-                }
-            }
-            is Wizard -> {
-                when (this.color) {
-                    Color.Blue -> R.drawable.bb
-                    Color.Green -> R.drawable.gb
-                    Color.Orange -> R.drawable.ob
-                    Color.Red -> R.drawable.rb
-                }
-            }
-            else -> R.drawable.nb
-        }
-    }
-
-    fun imageSlice(): Int {
-        return when (this) {
-            is Normal -> {
-                when (this.color) {
-                    Color.Blue -> R.drawable.bslice
-                    Color.Green -> R.drawable.gslice
-                    Color.Orange -> R.drawable.oslice
-                    Color.Red -> R.drawable.rslice
-                }
-            }
-            is Wizard -> {
-                when (this.color) {
-                    Color.Blue -> R.drawable.bslice
-                    Color.Green -> R.drawable.gslice
-                    Color.Orange -> R.drawable.oslice
-                    Color.Red -> R.drawable.rslice
-                }
-            }
-            else -> R.drawable.nslice
-        }
-    }
-
-    fun imageHeaderBackground(): Int {
-        return when (this) {
-            is Normal -> {
-                when (this.color) {
-                    Color.Blue -> R.drawable.bhb
-                    Color.Green -> R.drawable.ghb
-                    Color.Orange -> R.drawable.ohb
-                    Color.Red -> R.drawable.rhb
-                }
-            }
-            is Wizard -> {
-                when (this.color) {
-                    Color.Blue -> R.drawable.bhb
-                    Color.Green -> R.drawable.ghb
-                    Color.Orange -> R.drawable.ohb
-                    Color.Red -> R.drawable.rhb
-                }
-            }
-            else -> R.drawable.nhb
         }
     }
 

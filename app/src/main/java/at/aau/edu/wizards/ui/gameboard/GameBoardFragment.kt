@@ -1,21 +1,24 @@
 package at.aau.edu.wizards.ui.gameboard
 
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
+import at.aau.edu.wizards.R
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
+import at.aau.edu.wizards.ui.gameboard.claim.GuessAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardHeaderAdapter
+import at.aau.edu.wizards.util.OffsetItemDecoration
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class GameBoardFragment : Fragment() {
 
@@ -37,6 +40,26 @@ class GameBoardFragment : Fragment() {
             client = Client.getInstance(requireContext())
         )
         ViewModelProvider(this, factory)[GameBoardViewModel::class.java]
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val activity = requireActivity()
+
+        activity.onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                MaterialAlertDialogBuilder(activity)
+                    .setMessage(getString(R.string.leave_warning))
+                    .setPositiveButton(getString(R.string.no), null)
+                    .setNegativeButton(getString(R.string.yes)) { _, _ ->
+                        isEnabled = false
+                        activity.onBackPressedDispatcher.onBackPressed()
+                    }
+                    .create()
+                    .show()
+            }
+        })
     }
 
     override fun onCreateView(
@@ -64,49 +87,66 @@ class GameBoardFragment : Fragment() {
 
     private fun setupUI() {
         val binding = this.binding ?: return
-        val adapter = GameBoardAdapter {
-            viewModel.sendMessage(it.getString()) //TODO  holder.bindingAdapterPosition < viewModel.cards.value!!.size
-        }
 
-        binding.gameboardRecyclerView.adapter = adapter
-        binding.gameboardRecyclerView.addItemDecoration(OffsetDecoration(90))
-
-        viewModel.cards.observe(viewLifecycleOwner) { cards ->
-            adapter.submitList(cards)
-        }
-
-        val adapterBoard = GameBoardBoardAdapter(viewModel, viewModel.getGameModel())
-
-        binding.gameboardBoardRecyclerView.adapter = adapterBoard
-        binding.gameboardBoardRecyclerView.addItemDecoration(OffsetDecoration(310))
-
-        viewModel.board.observe(viewLifecycleOwner) { cards ->
-            adapterBoard.submitList(cards)
-            if (viewModel.getGameModel().listener.guessing) { //Dunnow if this counts as logic, might have to move this.
-                binding.gameboardBoardRecyclerView.removeItemDecorationAt(0)
-                binding.gameboardBoardRecyclerView.addItemDecoration(OffsetDecoration(120))
-            } else {
-                binding.gameboardBoardRecyclerView.removeItemDecorationAt(0)
-                binding.gameboardBoardRecyclerView.addItemDecoration(OffsetDecoration(270))
-            }
-        }
-
-        val adapterHeader = GameBoardHeaderAdapter()
-
-        binding.gameboardHeaderRecyclerView.adapter = adapterHeader
-
-        viewModel.header.observe(viewLifecycleOwner) { header ->
-            adapterHeader.submitList(header)
-        }
-
-        viewModel.player.observe(viewLifecycleOwner) { player ->
-            binding.gameboardBoardRecyclerView.scrollToPosition(player) //Doesn't work
-        }
+        setupHand(binding)
+        setupBoard(binding)
+        setupGuess(binding)
+        setupHeader(binding)
 
         viewModel.trump.observe(viewLifecycleOwner) { trump ->
-            binding.boardBackground.setImageResource(trump.imageBackground())
-            binding.boardSlice.setImageResource(trump.imageSlice())
-            binding.boardHeaderBackground.setImageResource(trump.imageHeaderBackground())
+            binding.trumpIndicatorCard.root.setImageResource(trump.image())
+        }
+    }
+
+    private fun setupHand(binding: FragmentGameboardBinding) {
+        val handAdapter = GameBoardAdapter {
+            viewModel.sendMessage(it.getString())
+        }
+
+        binding.gameboardRecyclerView.adapter = handAdapter
+        binding.gameboardRecyclerView.addItemDecoration(OffsetItemDecoration(90))
+
+        viewModel.cards.observe(viewLifecycleOwner) { cards ->
+            handAdapter.submitList(cards)
+        }
+    }
+
+    private fun setupGuess(binding: FragmentGameboardBinding) {
+        val guessAdapter = GuessAdapter { guess ->
+            // should not access GameModel here
+            viewModel.gameModel.sendGuessOfLocalPlayer(guess)
+        }
+
+        binding.guessRecycler.adapter = guessAdapter
+
+        viewModel.guess.observe(viewLifecycleOwner) { guess ->
+            guessAdapter.submitList(guess)
+        }
+    }
+
+    private fun setupBoard(binding: FragmentGameboardBinding) {
+        val boardAdapter = GameBoardBoardAdapter()
+
+        binding.boardRecycler.adapter = boardAdapter
+        binding.boardRecycler.addItemDecoration(OffsetItemDecoration(310))
+
+        viewModel.board.observe(viewLifecycleOwner) { cards ->
+            boardAdapter.submitList(cards)
+        }
+    }
+
+    private fun setupHeader(binding: FragmentGameboardBinding) {
+        val adapterHeader = GameBoardHeaderAdapter()
+
+        binding.headerRecycler.adapter = adapterHeader
+
+        viewModel.headersWithCurrentPlayer.observe(viewLifecycleOwner) {
+            val headers = it.first
+            val currentPlayer = it.second
+
+            adapterHeader.submitList(headers) {
+                binding.gameboardRecyclerView.smoothScrollToPosition(currentPlayer)
+            }
         }
     }
 
@@ -128,20 +168,5 @@ class GameBoardFragment : Fragment() {
         }
     }
 
-    class OffsetDecoration(private val overlap: Int) : RecyclerView.ItemDecoration() {
-
-        override fun getItemOffsets( //by doing the offset this way we run into a problem that the cards are only rendered once the normal position would be viewable, leading to rather awkward umps - needs to be fixed
-            outRect: Rect,
-            view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            if (parent.getChildAdapterPosition(view) == 0) {
-                outRect.set(0, 0, 0, 0)
-            } else {
-                outRect.set(-overlap, 0, 0, 0)
-            }
-        }
-    }
 }
 

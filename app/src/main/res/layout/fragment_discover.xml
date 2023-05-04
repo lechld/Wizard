@@ -4,15 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:colorBackground"
-    android:clipToPadding="false"
-    android:paddingVertical="@dimen/default_margin_half">
+    android:background="?android:colorBackground">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.8"
         android:scaleType="centerCrop"
         android:src="@drawable/gtitle"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,32 +18,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/bubble"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/gbubble"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/discover_recycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginVertical="10dp"
-        android:layout_marginEnd="100dp"
+        android:clipToPadding="false"
         android:orientation="vertical"
+        android:paddingVertical="@dimen/default_margin_half"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="@id/bubble"
-        app:layout_constraintEnd_toEndOf="@id/bubble"
-        app:layout_constraintStart_toStartOf="@id/bubble"
-        app:layout_constraintTop_toTopOf="@id/bubble"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="5"
         tools:listitem="@layout/item_lobby_accepted" />
 

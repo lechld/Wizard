@@ -57,5 +57,6 @@
     <color name="wizard_txt_contrary">#000000</color>
     <color name="wizard_green">#329836</color>
     <color name="wizard_blue">#3F51B5</color>
+    <color name="wizard_blue_light">#403F51B5</color>
     <color name="wizard_orange">#FF5722</color>
 </resources>
