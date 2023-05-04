@@ -162,7 +162,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
 
             val dropX = event.x
             val dropY = event.y
-            val item = event.localState as Cards
+            //val item = event.localState as Card
             val inflater = LayoutInflater.from(requireContext())
             val shape = ItemCardBinding.inflate(inflater, binding.dragContainer,false)
 
