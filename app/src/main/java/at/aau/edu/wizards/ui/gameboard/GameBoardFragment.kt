@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
+import at.aau.edu.wizards.ui.gameboard.claim.GuessAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardHeaderAdapter
@@ -63,42 +65,70 @@ class GameBoardFragment : Fragment() {
 
     private fun setupUI() {
         val binding = this.binding ?: return
-        val adapter = GameBoardAdapter {
-            viewModel.sendMessage(it.getString())
-        }
 
-        binding.gameboardRecyclerView.adapter = adapter
-        binding.gameboardRecyclerView.addItemDecoration(OffsetItemDecoration(90))
-
-        viewModel.cards.observe(viewLifecycleOwner) { cards ->
-            adapter.submitList(cards)
-        }
-
-        val adapterBoard = GameBoardBoardAdapter(viewModel, viewModel.gameModel)
-
-        binding.gameboardBoardRecyclerView.adapter = adapterBoard
-        binding.gameboardBoardRecyclerView.addItemDecoration(OffsetItemDecoration(310))
-
-        viewModel.board.observe(viewLifecycleOwner) { cards ->
-            adapterBoard.submitList(cards)
-        }
-
-        val adapterHeader = GameBoardHeaderAdapter()
-
-        binding.gameboardHeaderRecyclerView.adapter = adapterHeader
-
-        viewModel.header.observe(viewLifecycleOwner) { header ->
-            adapterHeader.submitList(header)
-        }
-
-        viewModel.player.observe(viewLifecycleOwner) { player ->
-            binding.gameboardBoardRecyclerView.scrollToPosition(player) //Doesn't work
-        }
+        setupHand(binding)
+        setupBoard(binding)
+        setupGuess(binding)
+        setupHeader(binding)
 
         viewModel.trump.observe(viewLifecycleOwner) { trump ->
             //binding.boardBackground.setImageResource(trump.imageBackground())
             //binding.boardSlice.setImageResource(trump.imageSlice())
             //binding.boardHeaderBackground.setImageResource(trump.imageHeaderBackground())
+        }
+    }
+
+    private fun setupHand(binding: FragmentGameboardBinding) {
+        val handAdapter = GameBoardAdapter {
+            viewModel.sendMessage(it.getString())
+        }
+
+        binding.gameboardRecyclerView.adapter = handAdapter
+        binding.gameboardRecyclerView.addItemDecoration(OffsetItemDecoration(90))
+
+        viewModel.cards.observe(viewLifecycleOwner) { cards ->
+            handAdapter.submitList(cards)
+        }
+    }
+
+    private fun setupGuess(binding: FragmentGameboardBinding) {
+        val guessAdapter = GuessAdapter { guess ->
+            // should not access GameModel here
+            viewModel.gameModel.sendGuessOfLocalPlayer(guess)
+        }
+
+        binding.guessRecycler.adapter = guessAdapter
+
+        viewModel.guess.observe(viewLifecycleOwner) { guess ->
+            binding.boardRecycler.isVisible = guess.isEmpty()
+
+            guessAdapter.submitList(guess)
+        }
+    }
+
+    private fun setupBoard(binding: FragmentGameboardBinding) {
+        val boardAdapter = GameBoardBoardAdapter()
+
+        binding.boardRecycler.adapter = boardAdapter
+        binding.boardRecycler.addItemDecoration(OffsetItemDecoration(310))
+
+        viewModel.board.observe(viewLifecycleOwner) { cards ->
+            boardAdapter.submitList(cards)
+        }
+    }
+
+    private fun setupHeader(binding: FragmentGameboardBinding) {
+        val adapterHeader = GameBoardHeaderAdapter()
+
+        binding.headerRecycler.adapter = adapterHeader
+
+        viewModel.headersWithCurrentPlayer.observe(viewLifecycleOwner) {
+            val headers = it.first
+            val currentPlayer = it.second
+
+            adapterHeader.submitList(headers) {
+                binding.gameboardRecyclerView.smoothScrollToPosition(currentPlayer)
+            }
         }
     }
 

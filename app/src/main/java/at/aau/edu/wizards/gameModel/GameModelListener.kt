@@ -118,10 +118,12 @@ class GameModelListener(
     private fun calculateHeader() {
         if (headerList.isNotEmpty()) {
             for (player in 0 until numberOfPlayers) {
-                headerList[player].guess = getCurrentGuessOfPlayer(player)
-                headerList[player].wins = getCurrentWins(player)
-                headerList[player].score = getCurrentScoreOfPlayer(player)
-                headerList[player].theme = trump.getGameBoardTheme()
+                headerList[player] = headerList[player].copy(
+                    guess = getCurrentGuessOfPlayer(player),
+                    wins = getCurrentWins(player),
+                    score = getCurrentScoreOfPlayer(player),
+                    theme = trump.getGameBoardTheme()
+                )
             }
         } else {
             for (player in 0 until numberOfPlayers) {
@@ -156,7 +158,7 @@ class GameModelListener(
         return returnBoard
     }
 
-    private fun getRound(): Int {
+    fun getRound(): Int {
         return rules.round
     }
 }
