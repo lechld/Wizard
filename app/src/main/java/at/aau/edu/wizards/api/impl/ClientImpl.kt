@@ -26,6 +26,8 @@ internal class ClientImpl(
     }
 
     override fun startDiscovery() {
+        connectionsClient.stopAllEndpoints()
+
         val connections = mutableListOf<ClientConnection>()
 
         connectionsClient.startDiscovery(

@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import at.aau.edu.wizards.databinding.ItemCardBinding
 import at.aau.edu.wizards.gameModel.GameModelCard
 
-class GameBoardAdapter() : ListAdapter<GameModelCard, GameBoardItemViewHolder>(DiffUtilCallback()) {
-
+class GameBoardAdapter : ListAdapter<GameModelCard, GameBoardItemViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameBoardItemViewHolder {
         val from = LayoutInflater.from(parent.context)
