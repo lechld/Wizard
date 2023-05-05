@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.MainActivity
+import at.aau.edu.wizards.R
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.databinding.FragmentDiscoverBinding
 import at.aau.edu.wizards.ui.discover.recycler.DiscoverAdapter
+
 
 class DiscoverFragment : Fragment() {
 
@@ -38,6 +41,7 @@ class DiscoverFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupUI()
+        setupAnimation()
     }
 
     override fun onDestroyView() {
@@ -65,5 +69,13 @@ class DiscoverFragment : Fragment() {
         }
 
         viewModel.startDiscovery()
+    }
+
+    private fun setupAnimation() {
+        val binding = this.binding ?: return
+        val context = this.context ?: return
+        val animation = AnimationUtils.loadAnimation(context, R.anim.crystal_animation)
+
+        binding.animatedView.animation = animation
     }
 }
