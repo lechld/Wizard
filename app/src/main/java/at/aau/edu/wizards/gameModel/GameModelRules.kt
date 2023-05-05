@@ -208,7 +208,7 @@ class GameModelRules(
         winningCard = GameModelCard.NoCard
         board.clear()
         if (players[0].cards.isEmpty()) {
-            object : CountDownTimer(CPU_TIME_TO_MOVE, FINALCARD_TIME_TO_CONTINUE) {
+            object : CountDownTimer(FINALCARD_TIME_TO_CONTINUE, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     // We don't want to execute anything while waiting, so this stays empty.
                 }
