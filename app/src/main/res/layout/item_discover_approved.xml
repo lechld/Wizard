@@ -7,7 +7,7 @@
     android:layout_marginHorizontal="@dimen/default_margin"
     android:layout_marginVertical="@dimen/default_margin_half"
     android:background="?colorSurface"
-    android:backgroundTint="@color/wizard_red">
+    android:backgroundTint="@color/wizard_blue">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
