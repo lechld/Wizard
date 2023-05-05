@@ -15,13 +15,10 @@ import at.aau.edu.wizards.R
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
-import at.aau.edu.wizards.databinding.ItemCardBinding
 import at.aau.edu.wizards.gameModel.GameModelCard
-import at.aau.edu.wizards.gameModel.GameModelListener
 import at.aau.edu.wizards.ui.gameboard.claim.GuessAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
-import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardHeaderAdapter
 import at.aau.edu.wizards.util.OffsetItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -98,16 +95,19 @@ class GameBoardFragment : Fragment(), OnDragListener {
         setupBoard(binding)
         setupGuess(binding)
         setupHeader(binding)
+        setupTrump(binding)
+    }
 
+    private fun setupTrump(binding: FragmentGameboardBinding) {
+        binding.trumpIndicatorCard.text.visibility = View.INVISIBLE
         viewModel.trump.observe(viewLifecycleOwner) { trump ->
-            binding.trumpIndicatorCard.root.setImageResource(trump.image())
+            binding.trumpIndicatorCard.image.setImageResource(trump.image())
+            binding.trumpIndicatorCard.text.text = trump.getNumber()
         }
     }
 
     private fun setupHand(binding: FragmentGameboardBinding) {
-        val handAdapter = GameBoardAdapter {
-            viewModel.sendMessage(it.getString())
-        }
+        val handAdapter = GameBoardAdapter()
 
         binding.gameboardRecyclerView.adapter = handAdapter
         binding.gameboardRecyclerView.addItemDecoration(OffsetItemDecoration(90))
@@ -142,16 +142,16 @@ class GameBoardFragment : Fragment(), OnDragListener {
     }
 
     private fun setupHeader(binding: FragmentGameboardBinding) {
-        val adapterHeader = GameBoardHeaderAdapter()
-
-        binding.headerRecycler.adapter = adapterHeader
-
         viewModel.headersWithCurrentPlayer.observe(viewLifecycleOwner) {
-            val headers = it.first
-            val currentPlayer = it.second
+            val header = it.first[it.second]
 
-            adapterHeader.submitList(headers) {
-                binding.gameboardRecyclerView.smoothScrollToPosition(currentPlayer)
+            binding.header.headerIcon.setImageResource(viewModel.getIconFromId(header.icon))
+            binding.header.headerUsername.text = header.name
+            binding.header.headerScore.text = header.score.toString()
+            binding.header.headerGuessAndWins.text = buildString {
+                append(header.wins)
+                append(" / ")
+                append(header.guess)
             }
         }
 
@@ -166,8 +166,8 @@ class GameBoardFragment : Fragment(), OnDragListener {
             val dropY = event.y
 
 
-            if(dropX < binding.dragContainer.width && dropY < binding.dragContainer.height){
-                val item : GameModelCard = event.localState as GameModelCard
+            if (dropX < binding.dragContainer.width && dropY < binding.dragContainer.height) {
+                val item: GameModelCard = event.localState as GameModelCard
                 viewModel.sendMessage(item.getString())
 
             }
