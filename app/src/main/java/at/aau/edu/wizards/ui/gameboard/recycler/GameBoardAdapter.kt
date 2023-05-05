@@ -18,36 +18,20 @@ class GameBoardAdapter(
         val from = LayoutInflater.from(parent.context)
         val binding = ItemCardBinding.inflate(from, parent, false)
 
-        return GameBoardItemViewHolder(binding).apply {
-            /*binding.root.setOnLongClickListener {
-                val item = getItem(this.bindingAdapterPosition)
-                val shadow = DragShadowBuilder(binding.root)
-                ViewCompat.startDragAndDrop(binding.root, null, shadow, item, 0)
-                true
-            } */
-        }
+        return GameBoardItemViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: GameBoardItemViewHolder, position: Int) {
         holder.bind(getItem(position))
 
-        holder.bind(getItem(position)).apply {
+       holder.bind(getItem(position)).apply {
             holder.itemView.setOnLongClickListener {
                 val item = getItem(holder.bindingAdapterPosition)
                 val shadow = DragShadowBuilder(holder.itemView)
                 ViewCompat.startDragAndDrop(holder.itemView, null, shadow, item, 0)
-                onClick(item)
                 true
             }
         }
-
-       /* holder.itemView.setOnClickListener {
-
-            val item = getItem(holder.bindingAdapterPosition)
-            onClick(item)
-        }
-
-        */
     }
 
     private class DiffUtilCallback : DiffUtil.ItemCallback<GameModelCard>() {

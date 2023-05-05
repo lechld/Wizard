@@ -16,6 +16,8 @@ import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
 import at.aau.edu.wizards.databinding.ItemCardBinding
+import at.aau.edu.wizards.gameModel.GameModelCard
+import at.aau.edu.wizards.gameModel.GameModelListener
 import at.aau.edu.wizards.ui.gameboard.claim.GuessAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
@@ -160,18 +162,15 @@ class GameBoardFragment : Fragment(), OnDragListener {
         val binding = this.binding
         if (event.action == DragEvent.ACTION_DROP && binding != null) {
 
-           // val dropX = event.x
-            //val dropY = event.y
-            //val item = event.localState as Card
-            val inflater = LayoutInflater.from(requireContext())
-            val shape = ItemCardBinding.inflate(inflater, binding.dragContainer,false)
-
-            //shape.root.x = dropX
-            //shape.root.y = dropY
-
-            binding.dragContainer.addView(shape.root)
+            val dropX = event.x
+            val dropY = event.y
 
 
+            if(dropX < binding.dragContainer.width && dropY < binding.dragContainer.height){
+                val item : GameModelCard = event.localState as GameModelCard
+                viewModel.sendMessage(item.getString())
+
+            }
         }
 
         return true
