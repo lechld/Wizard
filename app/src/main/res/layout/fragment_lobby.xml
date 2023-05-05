@@ -35,7 +35,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
-        android:backgroundTint="@color/wizard_red"
+        android:backgroundTint="@color/wizard_blue"
         android:fontFamily="@font/bitter"
         android:text="@string/start_game"
         android:textColor="@color/wizard_txt"

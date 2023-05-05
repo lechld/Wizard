@@ -16,7 +16,6 @@ import at.aau.edu.wizards.databinding.FragmentGameboardBinding
 import at.aau.edu.wizards.ui.gameboard.claim.GuessAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
-import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardHeaderAdapter
 import at.aau.edu.wizards.util.OffsetItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -136,16 +135,16 @@ class GameBoardFragment : Fragment() {
     }
 
     private fun setupHeader(binding: FragmentGameboardBinding) {
-        val adapterHeader = GameBoardHeaderAdapter()
-
-        binding.headerRecycler.adapter = adapterHeader
-
         viewModel.headersWithCurrentPlayer.observe(viewLifecycleOwner) {
-            val headers = it.first
-            val currentPlayer = it.second
+            val header = it.first[it.second]
 
-            adapterHeader.submitList(headers) {
-                binding.gameboardRecyclerView.smoothScrollToPosition(currentPlayer)
+            binding.header.headerIcon.setImageResource(viewModel.getIconFromId(header.icon))
+            binding.header.headerUsername.text = header.name
+            binding.header.headerScore.text = header.score.toString()
+            binding.header.headerGuessAndWins.text = buildString {
+                append(header.wins)
+                append(" / ")
+                append(header.guess)
             }
         }
     }
