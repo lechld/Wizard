@@ -30,6 +30,8 @@ internal class ServerImpl(
     }
 
     override fun startBroadcasting() {
+        connectionsClient.stopAllEndpoints()
+
         val connections = mutableListOf<ServerConnection>()
 
         connectionsClient.startAdvertising(

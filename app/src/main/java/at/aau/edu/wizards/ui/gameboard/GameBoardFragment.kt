@@ -143,7 +143,9 @@ class GameBoardFragment : Fragment(), OnDragListener {
 
     private fun setupHeader(binding: FragmentGameboardBinding) {
         viewModel.headersWithCurrentPlayer.observe(viewLifecycleOwner) {
-            val header = it.first[it.second]
+            val headers = it.first
+            val currentPlayer = it.second
+            val header = headers.getOrNull(currentPlayer) ?: return@observe
 
             binding.header.headerIcon.setImageResource(viewModel.getIconFromId(header.icon))
             binding.header.headerUsername.text = header.name

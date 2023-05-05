@@ -25,6 +25,18 @@ class DiscoverFragment : Fragment() {
 
     private var binding: FragmentDiscoverBinding? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel.startDiscovery()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        viewModel.stopDiscovery()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,7 +57,6 @@ class DiscoverFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        viewModel.stopDiscovery()
         binding = null
         super.onDestroyView()
     }
@@ -67,8 +78,6 @@ class DiscoverFragment : Fragment() {
 
             mainActivity.showGame(asClient = true)
         }
-
-        viewModel.startDiscovery()
     }
 
     private fun setupAnimation() {
