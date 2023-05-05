@@ -4,16 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/wizard_blue_light">
+    android:backgroundTint="@color/wizard_blue_light"
+    android:background="@color/wizard_blue_light"
+    android:alpha="1">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
+        android:scaleType="fitEnd"
         android:src="@drawable/btitlelobby"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHeight_percent="0.6"
+        app:layout_constrainedHeight="true"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lobby_recycler"
