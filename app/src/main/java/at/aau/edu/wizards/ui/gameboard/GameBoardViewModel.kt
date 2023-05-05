@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.distinctUntilChanged
+import at.aau.edu.wizards.R
 import at.aau.edu.wizards.gameModel.GameModel
 import at.aau.edu.wizards.gameModel.GameModelCard
 
@@ -52,6 +53,30 @@ abstract class GameBoardViewModel : ViewModel() {
         }
 
         return guesses
+    }
+
+    fun getIconFromId(icon:Int) : Int{
+        return when (icon) {
+            1 -> R.drawable.icon1
+            2 -> R.drawable.icon2
+            3 -> R.drawable.icon3
+            4 -> R.drawable.icon4
+            5 -> R.drawable.icon5
+            6 -> R.drawable.icon6
+            7 -> R.drawable.icon7
+            8 -> R.drawable.icon8
+            9 -> R.drawable.icon9
+            10 -> R.drawable.icon10
+            11 -> R.drawable.icon11
+            12 -> R.drawable.icon12
+            13 -> R.drawable.icon13
+            14 -> R.drawable.icon14
+            15 -> R.drawable.icon15
+            16 -> R.drawable.icon16
+            17 -> R.drawable.icon17
+            18 -> R.drawable.icon18
+            else -> R.drawable.icon19
+        }
     }
 }
 

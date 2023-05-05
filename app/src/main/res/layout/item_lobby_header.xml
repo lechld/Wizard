@@ -7,5 +7,5 @@
     android:layout_marginVertical="@dimen/default_margin_half"
     android:fontFamily="@font/bitter"
     android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-    android:textColor="@color/wizard_txt_contrary"
+    android:textColor="?colorOnSurface"
     tools:text="Some text here" />

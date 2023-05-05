@@ -1,6 +1,5 @@
 package at.aau.edu.wizards.ui.gameboard.recycler
 
-import android.R.attr.shape
 import android.view.LayoutInflater
 import android.view.View.DragShadowBuilder
 import android.view.ViewGroup
@@ -9,10 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import at.aau.edu.wizards.databinding.ItemCardBinding
 import at.aau.edu.wizards.gameModel.GameModelCard
-class GameBoardAdapter(
-    private val onClick: (GameModelCard) -> Unit,
-) : ListAdapter<GameModelCard, GameBoardItemViewHolder>(DiffUtilCallback()) {
 
+class GameBoardAdapter : ListAdapter<GameModelCard, GameBoardItemViewHolder>(DiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameBoardItemViewHolder {
         val from = LayoutInflater.from(parent.context)
@@ -24,7 +21,7 @@ class GameBoardAdapter(
     override fun onBindViewHolder(holder: GameBoardItemViewHolder, position: Int) {
         holder.bind(getItem(position))
 
-       holder.bind(getItem(position)).apply {
+        holder.bind(getItem(position)).apply {
             holder.itemView.setOnLongClickListener {
                 val item = getItem(holder.bindingAdapterPosition)
                 val shadow = DragShadowBuilder(holder.itemView)

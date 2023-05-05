@@ -204,4 +204,13 @@ sealed class GameModelCard {
             else -> GameBoardTheme.No
         }
     }
+
+    fun getNumber(): String {
+        return when(this){
+            is Jester -> "J"
+            is Normal -> this.value.toString()
+            is Wizard -> "W"
+            is NoCard -> ""
+        }
+    }
 }

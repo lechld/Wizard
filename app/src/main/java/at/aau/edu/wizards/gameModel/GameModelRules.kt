@@ -71,6 +71,7 @@ class GameModelRules(
             }
         }
         getGuess()
+        parent.listener.update()
     }
 
 
@@ -207,7 +208,16 @@ class GameModelRules(
         winningCard = GameModelCard.NoCard
         board.clear()
         if (players[0].cards.isEmpty()) {
-            nextRound()
+            object : CountDownTimer(CPU_TIME_TO_MOVE, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    // We don't want to execute anything while waiting, so this stays empty.
+                }
+
+
+                override fun onFinish() {
+                    nextRound()
+                }
+            }.start()
         }
     }
 
