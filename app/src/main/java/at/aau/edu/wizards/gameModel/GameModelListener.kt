@@ -75,13 +75,6 @@ class GameModelListener(
         }
     }
 
-    private fun getNameOfPlayer(id: Int): String {
-        return buildString {
-            append("Player")
-            append(id.toString())
-        }
-    }
-
     private fun getCurrentWins(id: Int): Int {
         return rules.getAmountWon(id)
     }
@@ -109,10 +102,6 @@ class GameModelListener(
         }
         calculateHeader()
         viewModel?.updateData(parent)
-    }
-
-    fun localPlayer(): Int {
-        return rules.id
     }
 
     private fun calculateHeader() {
@@ -160,5 +149,14 @@ class GameModelListener(
 
     fun getRound(): Int {
         return rules.round
+    }
+
+    fun getNameOfPlayer(id: Int): String {
+        for (player in players) {
+            if (player.id == id) {
+                return player.name
+            }
+        }
+        return "MissingPlayer"
     }
 }
