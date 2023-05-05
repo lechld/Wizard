@@ -1,28 +1,36 @@
 package at.aau.edu.wizards.ui.gameboard.recycler
 
+import android.R.attr.shape
 import android.view.LayoutInflater
+import android.view.View.DragShadowBuilder
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import at.aau.edu.wizards.databinding.ItemCardBinding
 import at.aau.edu.wizards.gameModel.GameModelCard
-
 class GameBoardAdapter(
     private val onClick: (GameModelCard) -> Unit,
 ) : ListAdapter<GameModelCard, GameBoardItemViewHolder>(DiffUtilCallback()) {
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameBoardItemViewHolder {
         val from = LayoutInflater.from(parent.context)
         val binding = ItemCardBinding.inflate(from, parent, false)
+
         return GameBoardItemViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: GameBoardItemViewHolder, position: Int) {
         holder.bind(getItem(position))
-        holder.itemView.setOnClickListener {
-            val item = getItem(holder.bindingAdapterPosition)
 
-            onClick(item)
+       holder.bind(getItem(position)).apply {
+            holder.itemView.setOnLongClickListener {
+                val item = getItem(holder.bindingAdapterPosition)
+                val shadow = DragShadowBuilder(holder.itemView)
+                ViewCompat.startDragAndDrop(holder.itemView, null, shadow, item, 0)
+                true
+            }
         }
     }
 

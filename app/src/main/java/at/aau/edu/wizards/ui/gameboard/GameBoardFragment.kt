@@ -2,8 +2,10 @@ package at.aau.edu.wizards.ui.gameboard
 
 
 import android.os.Bundle
+import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnDragListener
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
@@ -13,13 +15,17 @@ import at.aau.edu.wizards.R
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
+import at.aau.edu.wizards.databinding.ItemCardBinding
+import at.aau.edu.wizards.gameModel.GameModelCard
+import at.aau.edu.wizards.gameModel.GameModelListener
 import at.aau.edu.wizards.ui.gameboard.claim.GuessAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
 import at.aau.edu.wizards.util.OffsetItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class GameBoardFragment : Fragment() {
+
+class GameBoardFragment : Fragment(), OnDragListener {
 
     private val asClient by lazy {
         requireArguments().getBoolean(AS_CLIENT_EXTRA)
@@ -152,6 +158,26 @@ class GameBoardFragment : Fragment() {
                 append(header.guess)
             }
         }
+
+        binding.dragContainer.setOnDragListener(this)
+    }
+
+    override fun onDrag(view: View, event: DragEvent): Boolean {
+        val binding = this.binding
+        if (event.action == DragEvent.ACTION_DROP && binding != null) {
+
+            val dropX = event.x
+            val dropY = event.y
+
+
+            if(dropX < binding.dragContainer.width && dropY < binding.dragContainer.height){
+                val item : GameModelCard = event.localState as GameModelCard
+                viewModel.sendMessage(item.getString())
+
+            }
+        }
+
+        return true
     }
 
     companion object {
