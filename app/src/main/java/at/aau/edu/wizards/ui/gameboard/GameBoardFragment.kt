@@ -15,9 +15,7 @@ import at.aau.edu.wizards.R
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
-import at.aau.edu.wizards.databinding.ItemCardBinding
 import at.aau.edu.wizards.gameModel.GameModelCard
-import at.aau.edu.wizards.gameModel.GameModelListener
 import at.aau.edu.wizards.ui.gameboard.claim.GuessAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
@@ -109,9 +107,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
     }
 
     private fun setupHand(binding: FragmentGameboardBinding) {
-        val handAdapter = GameBoardAdapter {
-            viewModel.sendMessage(it.getString())
-        }
+        val handAdapter = GameBoardAdapter()
 
         binding.gameboardRecyclerView.adapter = handAdapter
         binding.gameboardRecyclerView.addItemDecoration(OffsetItemDecoration(90))
@@ -170,8 +166,8 @@ class GameBoardFragment : Fragment(), OnDragListener {
             val dropY = event.y
 
 
-            if(dropX < binding.dragContainer.width && dropY < binding.dragContainer.height){
-                val item : GameModelCard = event.localState as GameModelCard
+            if (dropX < binding.dragContainer.width && dropY < binding.dragContainer.height) {
+                val item: GameModelCard = event.localState as GameModelCard
                 viewModel.sendMessage(item.getString())
 
             }
