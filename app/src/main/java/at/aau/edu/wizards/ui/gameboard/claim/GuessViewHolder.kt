@@ -9,7 +9,7 @@ class GuessViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(value: Int) {
-        binding.root.text = value.toString()
+        binding.text.text = value.toString()
         binding.root.setOnClickListener {
             onClick(value)
         }
