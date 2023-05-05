@@ -22,6 +22,18 @@ class LobbyFragment : Fragment() {
 
     private var binding: FragmentLobbyBinding? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel.startAdvertising()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        viewModel.stopAdvertising()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,7 +53,6 @@ class LobbyFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        viewModel.stopAdvertising()
         binding = null
         super.onDestroyView()
     }

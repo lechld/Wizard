@@ -143,7 +143,9 @@ class GameBoardFragment : Fragment(), OnDragListener {
 
     private fun setupHeader(binding: FragmentGameboardBinding) {
         viewModel.headersWithCurrentPlayer.observe(viewLifecycleOwner) {
-            val header = it.first[it.second]
+            val headers = it.first
+            val currentPlayer = it.second
+            val header = headers.getOrNull(currentPlayer) ?: return@observe
 
             binding.header.headerIcon.setImageResource(viewModel.getIconFromId(header.icon))
             binding.header.headerUsername.text = header.name
@@ -161,15 +163,12 @@ class GameBoardFragment : Fragment(), OnDragListener {
     override fun onDrag(view: View, event: DragEvent): Boolean {
         val binding = this.binding
         if (event.action == DragEvent.ACTION_DROP && binding != null) {
-
             val dropX = event.x
             val dropY = event.y
-
 
             if (dropX < binding.dragContainer.width && dropY < binding.dragContainer.height) {
                 val item: GameModelCard = event.localState as GameModelCard
                 viewModel.sendMessage(item.getString())
-
             }
         }
 
