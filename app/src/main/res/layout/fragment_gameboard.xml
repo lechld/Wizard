@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     android:background="?colorPrimaryContainer">
 
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/drag_container"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view" />
+
+
     <include
         layout="@layout/item_gameboard_header"
         android:id="@+id/header"
