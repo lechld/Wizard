@@ -6,8 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/default_margin"
     android:layout_marginVertical="@dimen/default_margin_half"
-    android:background="?colorSurface"
-    android:backgroundTint="@color/wizard_blue">
+    app:cardBackgroundColor="?colorPrimaryContainer">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,7 +19,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/bitter"
             android:gravity="center"
-            android:textColor="@color/wizard_txt"
+            android:textColor="?colorOnPrimaryContainer"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/progress_bar"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,8 +33,7 @@
             android:layout_margin="@dimen/default_margin_half"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:trackColor="@color/wizard_green" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -9,6 +9,7 @@ class GameBoardItemViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: GameModelCard) {
-        binding.root.setImageResource(item.image())
+        binding.image.setImageResource(item.image())
+        binding.text.text=item.getNumber()
     }
 }

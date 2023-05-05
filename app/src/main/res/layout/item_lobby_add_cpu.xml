@@ -4,7 +4,5 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/default_margin"
     android:layout_marginVertical="@dimen/default_margin_half"
-    android:backgroundTint="@color/wizard_blue"
-    android:text="@string/add_cpu_opponent"
-    android:textColor="@color/wizard_txt"
-    android:fontFamily="@font/bitter"/>
+    android:fontFamily="@font/bitter"
+    android:text="@string/add_cpu_opponent" />

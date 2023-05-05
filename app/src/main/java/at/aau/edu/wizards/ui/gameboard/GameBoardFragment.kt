@@ -91,9 +91,14 @@ class GameBoardFragment : Fragment() {
         setupBoard(binding)
         setupGuess(binding)
         setupHeader(binding)
+        setupTrump(binding)
+    }
 
+    private fun setupTrump(binding: FragmentGameboardBinding) {
+        binding.trumpIndicatorCard.text.visibility = View.INVISIBLE
         viewModel.trump.observe(viewLifecycleOwner) { trump ->
-            binding.trumpIndicatorCard.root.setImageResource(trump.image())
+            binding.trumpIndicatorCard.image.setImageResource(trump.image())
+            binding.trumpIndicatorCard.text.text = trump.getNumber()
         }
     }
 

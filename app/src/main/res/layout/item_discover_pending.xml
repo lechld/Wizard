@@ -7,10 +7,10 @@
     android:layout_marginHorizontal="@dimen/default_margin"
     android:layout_marginVertical="@dimen/default_margin_half"
     android:background="?colorSurface"
-    android:backgroundTint="@color/wizard_blue"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?selectableItemBackground">
+    android:foreground="?selectableItemBackground"
+    app:cardBackgroundColor="?colorPrimaryContainer">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -23,12 +23,12 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/bitter"
             android:gravity="center"
-            android:textColor="@color/wizard_txt"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Lobby to join" />
+            tools:text="Lobby to join"
+            android:textColor="?colorOnPrimaryContainer"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
