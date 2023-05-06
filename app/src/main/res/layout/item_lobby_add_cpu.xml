@@ -4,4 +4,5 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/default_margin"
     android:layout_marginVertical="@dimen/default_margin_half"
-    android:text="Add CPU opponent" />
+    android:fontFamily="@font/bitter"
+    android:text="@string/add_cpu_opponent" />

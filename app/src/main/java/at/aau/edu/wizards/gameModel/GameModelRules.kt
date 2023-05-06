@@ -1,5 +1,7 @@
 package at.aau.edu.wizards.gameModel
 
+import android.os.CountDownTimer
+
 class GameModelRules(
     val players: ArrayList<GameModelPlayer>,
     val id: Int,
@@ -20,6 +22,7 @@ class GameModelRules(
     private var dealer = 0
     private var winningPlayer = 0
     var winningCard: GameModelCard = GameModelCard.NoCard
+    var wantsGuess = false
 
     fun init() {
         if (round == 0) {
@@ -41,8 +44,7 @@ class GameModelRules(
     }
 
     private fun getGuess() {
-        players[id].guesses.add(0)
-        //Todo
+        wantsGuess = true
     }
 
     private fun nextRound() {
@@ -69,11 +71,12 @@ class GameModelRules(
             }
         }
         getGuess()
+        parent.listener.update()
     }
 
 
     private fun endGame() {
-        parent.sendMessage("EndGame")
+        parent.sendMessage(END_COMMAND)
     }
 
     fun playCard(card: GameModelCard) {
@@ -195,8 +198,8 @@ class GameModelRules(
         if (currentPlayer == dealer) {
             nextSet()
         }
-        if (!players[currentPlayer].isHuman && round < 11) {
-            parent.receiveMessage(cpu.getMove(players[currentPlayer]).getString())
+        if (!players[currentPlayer].isHuman && everyoneHasGuessed() && round < 11) {
+            getCpuToPlay()
         }
     }
 
@@ -205,7 +208,16 @@ class GameModelRules(
         winningCard = GameModelCard.NoCard
         board.clear()
         if (players[0].cards.isEmpty()) {
-            nextRound()
+            object : CountDownTimer(CPU_TIME_TO_MOVE, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    // We don't want to execute anything while waiting, so this stays empty.
+                }
+
+
+                override fun onFinish() {
+                    nextRound()
+                }
+            }.start()
         }
     }
 
@@ -225,5 +237,47 @@ class GameModelRules(
             }
         }
         return amount
+    }
+
+    fun everyoneHasGuessed(): Boolean {
+        for (player in players) {
+            if (player.guesses.size < round) {
+                return false
+            }
+        }
+        return true
+    }
+
+    fun addGuess(guess: Int) {
+        if (players[getPlayerIdFromGuessInInt(guess)].guesses.size < round) {
+            players[getPlayerIdFromGuessInInt(guess)].guesses.add(getGuessValueFromGuessInInt(guess))
+        }
+        if (getPlayerIdFromGuessInInt(guess) == id) {
+            wantsGuess = false
+        }
+        if (everyoneHasGuessed() && !players[currentPlayer].isHuman) {
+            getCpuToPlay()
+        }
+    }
+
+    private fun getPlayerIdFromGuessInInt(guess: Int): Int {
+        return (guess - 60) / 11
+    }
+
+    private fun getGuessValueFromGuessInInt(guess: Int): Int {
+        return (guess - 60) % 11
+    }
+
+    private fun getCpuToPlay() {
+        object : CountDownTimer(CPU_TIME_TO_MOVE, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                // We don't want to execute anything while waiting, so this stays empty.
+            }
+
+
+            override fun onFinish() {
+                parent.receiveMessage(cpu.getMove(players[currentPlayer]).getString())
+            }
+        }.start()
     }
 }

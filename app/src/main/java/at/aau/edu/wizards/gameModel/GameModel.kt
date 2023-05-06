@@ -1,19 +1,23 @@
 package at.aau.edu.wizards.gameModel
 
-class GameModel {
+import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
+import kotlin.random.Random
+
+class GameModel(private val viewModel: GameBoardViewModel?) {
 
     private val players = ArrayList<GameModelPlayer>()
     private var dealer = GameModelDealer(0)
     private var rules = GameModelRules(players, 0, dealer, this, 0)
-    var listener = GameModelListener(rules, players)
+    var listener = GameModelListener(rules, players, viewModel, this)
         private set
 
     fun sendMessage(move: String): Boolean {
-        if (legalMessageGuessSend(move) || legalMessageCardSend(move) || move == "EndGame") {
-            //TODO send to network
-            return true
+        return if (legalMessageGuessSend(move) || legalMessageCardSend(move) || move == END_COMMAND) {
+            viewModel?.sendMessage(move)
+            true
+        } else {
+            false
         }
-        return false
     }
 
     private fun legalMessageGuessSend(move: String): Boolean {
@@ -21,7 +25,7 @@ class GameModel {
     }
 
     private fun legalMessageCardSend(move: String): Boolean {
-        return legalMessageCard(move) && legalPlayFromLocalPlayer(move)
+        return legalMessageCard(move) && legalPlayFromLocalPlayer(move) && rules.everyoneHasGuessed()
     }
 
     private fun legalPlayFromLocalPlayer(move: String): Boolean {
@@ -48,7 +52,7 @@ class GameModel {
                 }
             }
             else -> {
-                when (legalMessageCard(move)) {
+                when (legalMessageCard(move) && rules.everyoneHasGuessed()) {
                     true -> {
                         rules.playCard(dealer.getCardFromHash(move[0].code))
                         listener.update()
@@ -56,7 +60,7 @@ class GameModel {
                     }
                     else -> {
                         if (legalMessageGuess(move)) {
-                            players[(move[0].code - 60) / 11].guesses.add((move[0].code - 60) % 11)
+                            rules.addGuess(move[0].code)
                             listener.update()
                             true
                         } else {
@@ -114,12 +118,12 @@ class GameModel {
             this,
             move.substring(3, move.length).toInt()
         )
-        listener = GameModelListener(rules, players)
+        listener = GameModelListener(rules, players, viewModel, this)
         for (player in 1..move[1].code) {
-            players.add(GameModelPlayer(players.size, dealer, true))
+            players.add(GameModelPlayer(players.size, dealer, true, Random.nextInt(1, 20)))
         }
         for (cpu in 1..move[2].code) {
-            players.add(GameModelPlayer(players.size, dealer, false))
+            players.add(GameModelPlayer(players.size, dealer, false, Random.nextInt(1, 20)))
         }
         rules.init()
     }
@@ -131,6 +135,14 @@ class GameModel {
             2 -> GameModelCard.Color.Orange
             else -> GameModelCard.Color.Red
         }
+    }
+
+    fun localPlayer(): Int {
+        return rules.id
+    }
+
+    fun sendGuessOfLocalPlayer(guess: Int): Boolean {
+        return sendMessage(buildString { append((60 + rules.id * 11 + guess).toChar().toString()) })
     }
 
 }

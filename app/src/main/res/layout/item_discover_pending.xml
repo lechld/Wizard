@@ -9,7 +9,8 @@
     android:background="?colorSurface"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?selectableItemBackground">
+    android:foreground="?selectableItemBackground"
+    app:cardBackgroundColor="?colorPrimaryContainer">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,13 +21,14 @@
             android:id="@+id/pending_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/bitter"
             android:gravity="center"
-            android:textColor="?colorOnSurface"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Lobby to join" />
+            tools:text="Lobby to join"
+            android:textColor="?colorOnPrimaryContainer"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

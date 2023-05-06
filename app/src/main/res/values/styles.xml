@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="card">
+        <item name="cornerSize">20dp</item>
+        <item name="strokeColor">@android:color/black</item>
+        <item name="android:padding">2dp</item>
+        <item name="strokeWidth">4dp</item>
+    </style>
+</resources>

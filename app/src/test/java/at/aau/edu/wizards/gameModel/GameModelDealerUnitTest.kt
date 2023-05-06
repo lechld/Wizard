@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test
 
 
 class GameModelDealerUnitTest {
-
     @Test
     fun test() {
         val dealer = GameModelDealer(0)

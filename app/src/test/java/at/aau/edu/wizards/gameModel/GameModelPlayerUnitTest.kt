@@ -7,12 +7,11 @@ import org.junit.jupiter.api.assertThrows
 
 
 class GameModelPlayerUnitTest {
-
     @Test
     fun test() {
         val dealer1 = GameModelDealer(420420)
         val dealer2 = GameModelDealer(420420)
-        val player = GameModelPlayer(0, dealer1, true)
+        val player = GameModelPlayer(0, dealer1, true, 1)
 
         assertEquals(true, player.isHuman)
         assertEquals(0, player.id)
