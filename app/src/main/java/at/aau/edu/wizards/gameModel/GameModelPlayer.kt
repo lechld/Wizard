@@ -6,7 +6,8 @@ class GameModelPlayer(
     val id: Int,
     private val dealer: GameModelDealer,
     val isHuman: Boolean,
-    val icon: Int
+    val icon: Int,
+    val name: String
 ) {
 
     val cards = ArrayList<GameModelCard>()
