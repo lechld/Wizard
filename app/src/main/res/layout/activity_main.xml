@@ -11,30 +11,40 @@
         android:id="@+id/server_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_margin"
+        android:layout_marginTop="10dp"
         android:text="Behave as server"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/client_button" />
 
     <Button
         android:id="@+id/client_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_margin"
+        android:layout_marginTop="50dp"
         android:text="Behave as client"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/server_button" />
+        app:layout_constraintTop_toBottomOf="@+id/input_username" />
 
     <EditText
         android:id="@+id/input_username"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:inputType="text"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:hint="Enter username"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@+id/enterUsernameLbl" />
+
+    <TextView
+        android:id="@+id/enterUsernameLbl"
+        android:layout_width="179dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="100dp"
+        android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/client_button" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Enter username to proceed" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
