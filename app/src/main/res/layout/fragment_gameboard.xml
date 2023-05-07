@@ -27,6 +27,15 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_gameboard_header" />
 
+    <Button
+        android:id="@+id/btn_scoreboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scoreboard"
+        android:layout_margin="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/board_recycler"
         android:layout_width="0dp"

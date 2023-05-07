@@ -7,4 +7,5 @@
     <string name="leave_warning">Do you really wan\'t to leave this game?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
+    <string name="scoreboard">Scoreboard</string>
 </resources>

@@ -11,11 +11,13 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import at.aau.edu.wizards.MainActivity
 import at.aau.edu.wizards.R
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
 import at.aau.edu.wizards.gameModel.GameModelCard
+import at.aau.edu.wizards.gameModel.GameModelListener
 import at.aau.edu.wizards.ui.gameboard.claim.GuessAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
@@ -96,6 +98,12 @@ class GameBoardFragment : Fragment(), OnDragListener {
         setupGuess(binding)
         setupHeader(binding)
         setupTrump(binding)
+        setupScoreboard()
+
+        binding.btnScoreboard.setOnClickListener {
+            val mainActivity = activity as? MainActivity
+            mainActivity?.showScoreboard(viewModel.gameModel.listener)
+        }
     }
 
     private fun setupTrump(binding: FragmentGameboardBinding) {
@@ -103,6 +111,16 @@ class GameBoardFragment : Fragment(), OnDragListener {
         viewModel.trump.observe(viewLifecycleOwner) { trump ->
             binding.trumpIndicatorCard.image.setImageResource(trump.image())
             binding.trumpIndicatorCard.text.text = trump.getNumber()
+        }
+    }
+
+    private fun setupScoreboard() {
+        viewModel.scoreboard.observe(viewLifecycleOwner) { finish ->
+            if (finish)
+            {
+                val mainActivity = activity as? MainActivity
+                mainActivity?.showScoreboard(viewModel.gameModel.listener)
+            }
         }
     }
 
@@ -174,6 +192,12 @@ class GameBoardFragment : Fragment(), OnDragListener {
 
         return true
     }
+
+    fun goToScoreboard(listener: GameModelListener) {
+        val mainActivity = activity as? MainActivity
+        mainActivity!!.showScoreboard(listener)
+    }
+
 
     companion object {
         private const val AS_CLIENT_EXTRA = "AS_CLIENT_EXTRA"

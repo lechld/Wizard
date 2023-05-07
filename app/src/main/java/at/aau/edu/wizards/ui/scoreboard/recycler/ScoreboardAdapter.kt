@@ -21,8 +21,7 @@ class ScoreboardAdapter : ListAdapter<Scoreboard, ScoreboardItemViewHolder>(Diff
 
     private class DiffUtlCallback : DiffUtil.ItemCallback<Scoreboard>() {
         override fun areItemsTheSame(oldItem: Scoreboard, newItem: Scoreboard): Boolean {
-            return oldItem.avatar == newItem.avatar
-            return oldItem.points == newItem.points
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: Scoreboard, newItem: Scoreboard): Boolean {

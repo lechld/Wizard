@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import at.aau.edu.wizards.api.impl.REQUIRED_PERMISSIONS
 import at.aau.edu.wizards.databinding.ActivityMainBinding
+import at.aau.edu.wizards.gameModel.GameModelListener
 import at.aau.edu.wizards.ui.discover.DiscoverFragment
 import at.aau.edu.wizards.ui.gameboard.GameBoardFragment
 import at.aau.edu.wizards.ui.lobby.LobbyFragment
@@ -44,9 +45,9 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    fun showScoreboard(asClient: Boolean, amountCpu: Int = 0) {
+    fun showScoreboard(listener: GameModelListener) {
         val fragment = supportFragmentManager.findFragmentByTag(SCOREBOARD_FRAGMENT_TAG)
-            ?: ScoreboardFragment.instance(asClient, amountCpu)
+            ?: ScoreboardFragment(listener)
 
         if (fragment.isAdded) {
             return
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun setupUi() {
+    fun setupUi() {
         binding.clientButton.setOnClickListener {
             showDiscoverFragment()
         }
@@ -66,6 +67,11 @@ class MainActivity : AppCompatActivity() {
         binding.serverButton.setOnClickListener {
             showLobby()
         }
+    }
+
+    fun restart() {
+        finish();
+        startActivity(intent);
     }
 
     private fun showDiscoverFragment() {
