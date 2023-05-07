@@ -2,7 +2,6 @@
     <string name="app_name">Wizards</string>
     <string name="start_game">Start game</string>
     <string name="enter_username">Enter username</string>
-    <string name="enter_username2proceed">Enter username to proceed</string>
     <string name="shared_storage">Shared storage</string>
     <string name="behave_as_server">Create lobbby</string>
     <string name="behave_as_client">Join lobby</string>
