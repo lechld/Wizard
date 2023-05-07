@@ -20,6 +20,7 @@ private const val LOBBY_FRAGMENT_TAG = "LOBBY_FRAGMENT_TAG"
 private const val GAME_BOARD_FRAGMENT_TAG = "GAME_BOARD_FRAGMENT_TAG"
 private const val SHARED_PREFERENCE_USERNAME_KEY = "USERNAME"
 private const val SHARED_PREFERENCE_NAME = "SHARED_DATA"
+public const val AUTOFILL_HINT_USERNAME = "username"
 
 class MainActivity : AppCompatActivity() {
 
@@ -61,7 +62,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.inputUsername.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+                // Not required
+            }
             override fun onTextChanged(typedText: CharSequence, i: Int, i1: Int, i2: Int) {
                 if (typedText.isNotEmpty()) {
                     setButtonsEnableStatus(true)
@@ -71,7 +74,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            override fun afterTextChanged(editable: Editable) {}
+            override fun afterTextChanged(editable: Editable) {
+                // Not required
+            }
         })
         binding.clientButton.setOnClickListener {
             if (binding.clientButton.isEnabled) {
@@ -81,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.serverButton.setOnClickListener {
             if (binding.serverButton.isEnabled) {
-                showLobby();
+                showLobby()
             }
         }
     }
