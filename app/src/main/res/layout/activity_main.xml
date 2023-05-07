@@ -57,24 +57,13 @@
 
     <EditText
         android:id="@+id/input_username"
-        android:autofillHints="{@value #AUTOFILL_HINT_USERNAME}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:autofillHints="{@value #AUTOFILL_HINT_USERNAME}"
         android:hint="@string/enter_username"
         android:inputType="text"
         android:maxLength="5"
-        app:layout_constraintTop_toBottomOf="@+id/enterUsernameLbl" />
-
-    <TextView
-        android:id="@+id/enterUsernameLbl"
-        android:layout_width="179dp"
-        android:layout_height="15dp"
-        android:layout_marginTop="100dp"
-        android:text="@string/enter_username2proceed"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteY="135dp" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
