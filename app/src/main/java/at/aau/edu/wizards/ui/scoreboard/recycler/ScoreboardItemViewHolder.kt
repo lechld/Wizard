@@ -9,11 +9,8 @@ class ScoreboardItemViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Scoreboard) {
-        val s = buildString {
-            append("Total Score " + "\n" + item.score.toString())
-        }
         binding.avatarImage.setImageResource(item.playerIcon)
         binding.tvPlayerName.text = item.playerName
-        binding.tvScore.text = s
+        binding.tvScore.text = "Total Score " + "\n" + item.score.toString()
     }
 }

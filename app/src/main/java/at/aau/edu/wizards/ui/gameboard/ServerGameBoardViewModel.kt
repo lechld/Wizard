@@ -5,7 +5,6 @@ import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.api.model.ServerConnection
 import at.aau.edu.wizards.gameModel.END_COMMAND
 import at.aau.edu.wizards.gameModel.GameModel
-import at.aau.edu.wizards.ui.scoreboard.ScoreboardFragment
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -55,17 +54,15 @@ class ServerGameBoardViewModel(
         if (move == END_COMMAND) {
             _scoreboard.value = true
         } else {
-            viewModelScope.launch {
-                if (gameModel.receiveMessage(move)) {
-                    viewModelScope.launch {
-                        server.getConnections()
-                            .filterIsInstance(ServerConnection.Connected::class.java)
-                            .forEach {
-                                server.send(it, move)
-                            }
-                    }
-                    updateData(gameModel)
+            if (gameModel.receiveMessage(move)) {
+                viewModelScope.launch {
+                    server.getConnections()
+                        .filterIsInstance(ServerConnection.Connected::class.java)
+                        .forEach {
+                            server.send(it, move)
+                        }
                 }
+                updateData(gameModel)
             }
         }
     }
