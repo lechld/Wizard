@@ -31,7 +31,7 @@
         android:id="@+id/btn_scoreboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Scoreboard"
+        android:text="@string/scoreboard"
         android:layout_margin="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -25,7 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="20dp"
-        android:text="Start New Game" />
+        android:text="@string/startnewgame" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/scoreboard_recycler_view"

@@ -1,7 +1,5 @@
 package at.aau.edu.wizards.ui.scoreboard
 
-
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.MainActivity
 import at.aau.edu.wizards.databinding.FragmentScoreboardBinding
-import at.aau.edu.wizards.gameModel.GameModelCard
 import at.aau.edu.wizards.gameModel.GameModelListener
 import at.aau.edu.wizards.ui.scoreboard.recycler.ScoreboardAdapter
 
@@ -30,7 +27,7 @@ class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentScoreboardBinding.inflate(inflater, container, false)
 
         this.binding = binding

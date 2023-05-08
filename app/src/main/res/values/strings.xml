@@ -8,4 +8,7 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="scoreboard">Scoreboard</string>
+    <string name="name">Name</string>
+    <string name="score">Score:</string>
+    <string name="startnewgame">Start New Game</string>
 </resources>

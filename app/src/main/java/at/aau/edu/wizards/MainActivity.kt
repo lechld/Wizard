@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    fun setupUi() {
+    private fun setupUi() {
         binding.clientButton.setOnClickListener {
             showDiscoverFragment()
         }
@@ -70,8 +70,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun restart() {
-        finish();
-        startActivity(intent);
+        finish()
+        startActivity(intent)
     }
 
     private fun showDiscoverFragment() {

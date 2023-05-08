@@ -17,7 +17,6 @@ import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
 import at.aau.edu.wizards.gameModel.GameModelCard
-import at.aau.edu.wizards.gameModel.GameModelListener
 import at.aau.edu.wizards.ui.gameboard.claim.GuessAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
@@ -100,10 +99,6 @@ class GameBoardFragment : Fragment(), OnDragListener {
         setupTrump(binding)
         setupScoreboard()
 
-        binding.btnScoreboard.setOnClickListener {
-            val mainActivity = activity as? MainActivity
-            mainActivity?.showScoreboard(viewModel.gameModel.listener)
-        }
     }
 
     private fun setupTrump(binding: FragmentGameboardBinding) {
@@ -115,9 +110,14 @@ class GameBoardFragment : Fragment(), OnDragListener {
     }
 
     private fun setupScoreboard() {
+
+        binding?.btnScoreboard?.setOnClickListener {
+            val mainActivity = activity as? MainActivity
+            mainActivity?.showScoreboard(viewModel.gameModel.listener)
+        }
+
         viewModel.scoreboard.observe(viewLifecycleOwner) { finish ->
-            if (finish)
-            {
+            if (finish) {
                 val mainActivity = activity as? MainActivity
                 mainActivity?.showScoreboard(viewModel.gameModel.listener)
             }
@@ -193,12 +193,6 @@ class GameBoardFragment : Fragment(), OnDragListener {
         return true
     }
 
-    fun goToScoreboard(listener: GameModelListener) {
-        val mainActivity = activity as? MainActivity
-        mainActivity!!.showScoreboard(listener)
-    }
-
-
     companion object {
         private const val AS_CLIENT_EXTRA = "AS_CLIENT_EXTRA"
         private const val AMOUNT_CPU_EXTRA = "AMOUNT_CPU_EXTRA"
@@ -216,6 +210,4 @@ class GameBoardFragment : Fragment(), OnDragListener {
             }
         }
     }
-
 }
-
