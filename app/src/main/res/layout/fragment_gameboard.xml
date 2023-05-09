@@ -15,6 +15,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view" />
 
+    <Button
+        android:id="@+id/btn_scoreboard"
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+        android:fontFamily="@font/bitter"
+        android:text="@string/scoreboard"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <include
         layout="@layout/item_gameboard_header"
@@ -26,16 +36,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_gameboard_header" />
-
-    <Button
-        android:id="@+id/btn_scoreboard"
-        android:layout_width="130dp"
-        android:layout_height="50dp"
-        android:fontFamily="@font/bitter"
-        android:text="@string/scoreboard"
-        android:layout_margin="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/board_recycler"
