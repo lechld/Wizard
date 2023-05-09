@@ -75,6 +75,5 @@ class LobbyFragment : Fragment() {
 
             mainActivity.showGame(asClient = false, amountCpu = amountCpu)
         }
-        viewModel.startAdvertising()
     }
 }

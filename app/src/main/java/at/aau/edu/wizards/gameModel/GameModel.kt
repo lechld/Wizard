@@ -142,7 +142,6 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
             "GetAGrip",
             "Green Tea"
         )
-        val randomIndex = Random.nextInt(list.size)
         for (player in 1..move[1].code) {
             players.add(
                 GameModelPlayer(
@@ -150,7 +149,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                     dealer,
                     true,
                     Random.nextInt(1, 20),
-                    list[randomIndex]
+                    list[Random.nextInt(list.size)]
                 )
             )
         }
@@ -161,7 +160,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                     dealer,
                     false,
                     Random.nextInt(1, 20),
-                    list[randomIndex]
+                    list[Random.nextInt(list.size)]
                 )
             )
         }
