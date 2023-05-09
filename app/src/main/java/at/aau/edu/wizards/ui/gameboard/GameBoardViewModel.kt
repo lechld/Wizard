@@ -26,6 +26,9 @@ abstract class GameBoardViewModel : ViewModel() {
     private val _guess = MutableLiveData<List<Int>>()
     val guess: LiveData<List<Int>> = _guess.distinctUntilChanged()
 
+    protected val _scoreboard = MutableLiveData<Boolean>()
+    val scoreboard: LiveData<Boolean> = _scoreboard.distinctUntilChanged()
+
     abstract fun sendMessage(move: String)
 
     abstract val gameModel: GameModel
@@ -79,5 +82,4 @@ abstract class GameBoardViewModel : ViewModel() {
         }
     }
 }
-
 

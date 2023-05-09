@@ -11,6 +11,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import at.aau.edu.wizards.MainActivity
 import at.aau.edu.wizards.R
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
@@ -96,6 +97,8 @@ class GameBoardFragment : Fragment(), OnDragListener {
         setupGuess(binding)
         setupHeader(binding)
         setupTrump(binding)
+        setupScoreboard()
+
     }
 
     private fun setupTrump(binding: FragmentGameboardBinding) {
@@ -103,6 +106,21 @@ class GameBoardFragment : Fragment(), OnDragListener {
         viewModel.trump.observe(viewLifecycleOwner) { trump ->
             binding.trumpIndicatorCard.image.setImageResource(trump.image())
             binding.trumpIndicatorCard.text.text = trump.getNumber()
+        }
+    }
+
+    private fun setupScoreboard() {
+
+        binding?.btnScoreboard?.setOnClickListener {
+            val mainActivity = activity as? MainActivity
+            mainActivity?.showScoreboard(viewModel.gameModel.listener)
+        }
+
+        viewModel.scoreboard.observe(viewLifecycleOwner) { finish ->
+            if (finish) {
+                val mainActivity = activity as? MainActivity
+                mainActivity?.showScoreboard(viewModel.gameModel.listener)
+            }
         }
     }
 
@@ -192,6 +210,4 @@ class GameBoardFragment : Fragment(), OnDragListener {
             }
         }
     }
-
 }
-
