@@ -10,5 +10,5 @@
     <string name="scoreboard">Scoreboard</string>
     <string name="name">Name</string>
     <string name="score">Score:</string>
-    <string name="startnewgame">Start New Game</string>
+    <string name="startnewgame">Close</string>
 </resources>
