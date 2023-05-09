@@ -29,10 +29,11 @@
 
     <Button
         android:id="@+id/btn_scoreboard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:fontFamily="@font/bitter"
         android:text="@string/scoreboard"
-        android:layout_margin="4dp"
+        android:layout_margin="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

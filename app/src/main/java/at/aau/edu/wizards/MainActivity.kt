@@ -69,11 +69,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun restart() {
-        finish()
-        startActivity(intent)
-    }
-
     private fun showDiscoverFragment() {
         val fragment = supportFragmentManager.findFragmentByTag(DISCOVER_FRAGMENT_TAG)
             ?: DiscoverFragment()
@@ -100,6 +95,13 @@ class MainActivity : AppCompatActivity() {
             .add(R.id.fragment_container, fragment, LOBBY_FRAGMENT_TAG)
             .addToBackStack(LOBBY_FRAGMENT_TAG)
             .commit()
+    }
+
+    fun scoreboardBack(finished: Boolean) {
+        supportFragmentManager.popBackStack()
+        if (finished) {
+            supportFragmentManager.popBackStack()
+        }
     }
 
     private fun handlePermissions() {

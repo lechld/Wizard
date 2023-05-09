@@ -10,8 +10,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/avatar_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:src="@drawable/icon1"
@@ -22,8 +22,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/header_circle"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:src="@drawable/bhc"

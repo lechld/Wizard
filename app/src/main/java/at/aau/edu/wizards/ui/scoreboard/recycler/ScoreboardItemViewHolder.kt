@@ -11,6 +11,6 @@ class ScoreboardItemViewHolder(
     fun bind(item: Scoreboard) {
         binding.avatarImage.setImageResource(item.playerIcon)
         binding.tvPlayerName.text = item.playerName
-        binding.tvScore.text = "Total Score " + "\n" + item.score.toString()
+        binding.tvScore.text = "Score " + item.score.toString()
     }
 }
