@@ -24,22 +24,17 @@ class GameModelCpuUnitTest {
                 append(5.toChar())
                 append(i.toString())
             })
-            for (k in 1..10) {
-
-                val guess = ran.nextInt(0, k)
-                model.receiveMessage(buildString {
-                    append((60 + guess).toChar())
-                })
-                for (j in 1..k) {
-                    var sent = false
-                    for (card in model.listener.getHandOfPlayer(0)) {
-                        if (!sent && model.sendMessage(card.getString())) {
-                            model.receiveMessage(card.getString())
-                            sent = true
+            while (model.listener.getRound()<=10) {
+                if(model.listener.guessing){
+                    val guess = ran.nextInt(0, model.listener.getRound())
+                    model.receiveMessage(buildString {
+                        append((60 + guess).toChar())
+                    })
+                }else {
+                    for(i in 0 until model.listener.getHandOfPlayer(0).size){
+                        if(model.receiveMessage(model.listener.getHandOfPlayer(0)[i].getString())){
+                            break;
                         }
-                    }
-                    if (!sent) {
-                        continue
                     }
                 }
             }
@@ -53,7 +48,7 @@ class GameModelCpuUnitTest {
         }
 
         //Assertions.assertEquals(1, pZero / limit) //To see the value of random guesses
-        //Assertions.assertEquals(1, scores / limit) //To see the value of cpu guesses
+        Assertions.assertEquals(1, scores / limit) //To see the value of cpu guesses
 
         Assertions.assertTrue(pZero < scores)
         Assertions.assertTrue(scores >= 157) //if you improve cpu - measure performance by de-commenting above code and adjust to new standard
@@ -64,9 +59,9 @@ class GameModelCpuUnitTest {
         val model = GameModel(viewModel)
         val dealer = GameModelDealer(420420)
         val players = ArrayList<GameModelPlayer>()
-        players.add(GameModelPlayer(0, dealer, true, 1))
-        players.add(GameModelPlayer(1, dealer, false, 1))
-        players.add(GameModelPlayer(2, dealer, false, 1))
+        players.add(GameModelPlayer(0, dealer, true, 1, "test"))
+        players.add(GameModelPlayer(1, dealer, false, 1, "test"))
+        players.add(GameModelPlayer(2, dealer, false, 1, "test"))
         val rules = GameModelRules(players, 0, dealer, model, 420420)
         val cpu = GameModelCpu(420420, rules)
 

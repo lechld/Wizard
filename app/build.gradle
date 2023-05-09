@@ -38,6 +38,7 @@ android {
             useJUnitPlatform()
             finalizedBy jacocoTestReport
         }
+        unitTests.returnDefaultValues = true
     }
 
     buildFeatures {
