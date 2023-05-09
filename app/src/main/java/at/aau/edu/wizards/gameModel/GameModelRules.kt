@@ -196,9 +196,17 @@ class GameModelRules(
             currentPlayer = 0
         }
         if (currentPlayer == dealer) {
-            nextSet()
-        }
-        if (!players[currentPlayer].isHuman && everyoneHasGuessed() && round < 11) {
+            object : CountDownTimer(FINALCARD_TIME_TO_CONTINUE, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    // We don't want to execute anything while waiting, so this stays empty.
+                }
+
+
+                override fun onFinish() {
+                    nextSet()
+                }
+            }.start()
+        } else if (!players[currentPlayer].isHuman && everyoneHasGuessed() && round < 11) {
             getCpuToPlay()
         }
     }
@@ -208,16 +216,9 @@ class GameModelRules(
         winningCard = GameModelCard.NoCard
         board.clear()
         if (players[0].cards.isEmpty()) {
-            object : CountDownTimer(FINALCARD_TIME_TO_CONTINUE, 1000) {
-                override fun onTick(millisUntilFinished: Long) {
-                    // We don't want to execute anything while waiting, so this stays empty.
-                }
-
-
-                override fun onFinish() {
-                    nextRound()
-                }
-            }.start()
+            nextRound()
+        } else if (!players[currentPlayer].isHuman && everyoneHasGuessed() && round < 11) {
+            getCpuToPlay()
         }
     }
 
