@@ -1,7 +1,6 @@
 package at.aau.edu.wizards.ui.gameboard
 
 import androidx.lifecycle.viewModelScope
-import at.aau.edu.wizards.MainActivity
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.model.ClientConnection
 import at.aau.edu.wizards.gameModel.END_COMMAND
