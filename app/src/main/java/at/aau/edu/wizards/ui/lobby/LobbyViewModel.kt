@@ -35,6 +35,7 @@ class LobbyViewModel(
         server.stopBroadcasting()
     }
     var numplayer = 1
+    var check_too_many_player = false
     fun clicked(clickedItem: LobbyItem) {
 
         if (numplayer < 6) {
@@ -52,7 +53,7 @@ class LobbyViewModel(
                 }
             }
         }else{
-            println("Too many Player!")
+         check_too_many_player = true
         }
     }
 
