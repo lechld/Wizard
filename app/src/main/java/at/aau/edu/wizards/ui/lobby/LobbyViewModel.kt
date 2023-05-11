@@ -1,15 +1,10 @@
 package at.aau.edu.wizards.ui.lobby
 
-import android.provider.Settings.Global.getString
-import android.widget.PopupWindow
-import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.widget.AlertDialogLayout
 import androidx.lifecycle.*
 import at.aau.edu.wizards.*
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.api.model.ServerConnection
 import at.aau.edu.wizards.gameModel.START_COMMAND
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 
@@ -34,6 +29,7 @@ class LobbyViewModel(
     fun stopAdvertising() {
         server.stopBroadcasting()
     }
+
     var numplayer = 1
     var check_too_many_player = false
     fun clicked(clickedItem: LobbyItem) {
@@ -52,8 +48,8 @@ class LobbyViewModel(
                     // do nothing
                 }
             }
-        }else{
-         check_too_many_player = true
+        } else {
+            check_too_many_player = true
         }
     }
 

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.MainActivity
@@ -18,8 +17,7 @@ class LobbyFragment : Fragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(
-            this,
-            LobbyViewModel.Factory(Server.getInstance(requireContext()))
+            this, LobbyViewModel.Factory(Server.getInstance(requireContext()))
         )[LobbyViewModel::class.java]
     }
 
@@ -38,9 +36,7 @@ class LobbyFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         val binding = FragmentLobbyBinding.inflate(inflater, container, false)
 
@@ -66,12 +62,9 @@ class LobbyFragment : Fragment() {
             viewModel.clicked(clickedItem)
             if (viewModel.check_too_many_player) {
                 activity?.let {
-                    MaterialAlertDialogBuilder(it)
-                        .setMessage(getString(R.string.max_player))
+                    MaterialAlertDialogBuilder(it).setMessage(getString(R.string.max_player))
                         .setPositiveButton(getString(R.string.okay), null)
-                }
-                    ?.create()
-                    ?.show()
+                }?.create()?.show()
             }
 
         }
