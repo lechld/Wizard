@@ -60,7 +60,7 @@ class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
 
         binding.btnMainmenu.setOnClickListener {
             val mainActivity = activity as? MainActivity
-            if(listener.getRound() <= 10){
+            if (listener.getRound() <= 10) {
                 mainActivity?.scoreboardBack(false)
             } else {
                 mainActivity?.scoreboardBack(true)

@@ -25,7 +25,7 @@ class ClientGameBoardViewModel(
     override fun sendMessage(move: String) {
 
         if (move == END_COMMAND) {
-           _scoreboard.value = true
+            _scoreboard.value = true
         } else {
 
             viewModelScope.launch {

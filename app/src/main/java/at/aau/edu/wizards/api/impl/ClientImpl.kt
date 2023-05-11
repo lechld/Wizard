@@ -2,9 +2,9 @@ package at.aau.edu.wizards.api.impl
 
 import at.aau.edu.wizards.BuildConfig
 import at.aau.edu.wizards.api.Client
-import at.aau.edu.wizards.api.model.ClientConnection
 import at.aau.edu.wizards.api.MessageReceiver
 import at.aau.edu.wizards.api.MessageSender
+import at.aau.edu.wizards.api.model.ClientConnection
 import com.google.android.gms.nearby.connection.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

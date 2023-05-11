@@ -206,7 +206,7 @@ sealed class GameModelCard {
     }
 
     fun getNumber(): String {
-        return when(this){
+        return when (this) {
             is Jester -> "J"
             is Normal -> this.value.toString()
             is Wizard -> "W"

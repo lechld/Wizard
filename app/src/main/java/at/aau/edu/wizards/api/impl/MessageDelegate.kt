@@ -1,9 +1,9 @@
 package at.aau.edu.wizards.api.impl
 
-import at.aau.edu.wizards.api.model.Connection
 import at.aau.edu.wizards.api.EMPTY_DATA
 import at.aau.edu.wizards.api.MessageReceiver
 import at.aau.edu.wizards.api.MessageSender
+import at.aau.edu.wizards.api.model.Connection
 import at.aau.edu.wizards.api.model.Data
 import com.google.android.gms.nearby.connection.ConnectionsClient
 import com.google.android.gms.nearby.connection.Payload
