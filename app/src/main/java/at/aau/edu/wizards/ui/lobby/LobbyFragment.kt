@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.MainActivity
+import at.aau.edu.wizards.R
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentLobbyBinding
 import at.aau.edu.wizards.ui.lobby.recycler.LobbyAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class LobbyFragment : Fragment() {
 
