@@ -1,5 +1,6 @@
 package at.aau.edu.wizards.gameModel
 
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -9,7 +10,7 @@ class GameModelCpuUnitTest {
     private val viewModel = null
 
     @Test
-    fun metric() {
+    fun metric() = runTest {
         //I think it makes more sense to test for a metric here, since the specific cpu implementation might change in future versions. We should just make sure it stays at a considerable level, namely staying better than previous versions.
         val limit = 1000
         var scores = 0
@@ -24,15 +25,15 @@ class GameModelCpuUnitTest {
                 append(5.toChar())
                 append(i.toString())
             })
-            while (model.listener.getRound()<=10) {
-                if(model.listener.guessing){
+            while (model.listener.getRound() <= 10) {
+                if (model.listener.guessing) {
                     val guess = ran.nextInt(0, model.listener.getRound())
                     model.receiveMessage(buildString {
                         append((60 + guess).toChar())
                     })
-                }else {
-                    for(i in 0 until model.listener.getHandOfPlayer(0).size){
-                        if(model.receiveMessage(model.listener.getHandOfPlayer(0)[i].getString())){
+                } else {
+                    for (i in 0 until model.listener.getHandOfPlayer(0).size) {
+                        if (model.receiveMessage(model.listener.getHandOfPlayer(0)[i].getString())) {
                             break;
                         }
                     }
@@ -55,7 +56,7 @@ class GameModelCpuUnitTest {
     }
 
     @Test
-    fun noCard() {
+    fun noCard() = runTest {
         val model = GameModel(viewModel)
         val dealer = GameModelDealer(420420)
         val players = ArrayList<GameModelPlayer>()

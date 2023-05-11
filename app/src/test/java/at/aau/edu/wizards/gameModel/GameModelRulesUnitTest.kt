@@ -1,5 +1,6 @@
 package at.aau.edu.wizards.gameModel
 
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
@@ -10,7 +11,7 @@ class GameModelRulesUnitTest {
     private val viewModel = null
 
     @Test
-    fun test() {
+    fun test()= runTest {
         val model = GameModel(viewModel)
         val dealer = GameModelDealer(420420)
         val player0 = GameModelPlayer(0, dealer, true, 1, "test")
@@ -158,7 +159,7 @@ class GameModelRulesUnitTest {
     }
 
     @Test
-    fun testWizardTrump() {
+    fun testWizardTrump() = runTest{
         val model = GameModel(viewModel)
         val dealer = GameModelDealer(420420)
         val player0 = GameModelPlayer(0, dealer, true, 1, "test")
@@ -208,7 +209,7 @@ class GameModelRulesUnitTest {
     }
 
     @Test
-    fun testWizardTrump2() {
+    fun testWizardTrump2() = runTest{
         val model = GameModel(viewModel)
         val dealer = GameModelDealer(22)
         val player0 = GameModelPlayer(0, dealer, true, 1, "test")
@@ -249,7 +250,7 @@ class GameModelRulesUnitTest {
     }
 
     @Test
-    fun testJesterTrump() {
+    fun testJesterTrump() = runTest{
         val model = GameModel(viewModel)
         val dealer = GameModelDealer(23)
         val player0 = GameModelPlayer(0, dealer, true, 1, "test")

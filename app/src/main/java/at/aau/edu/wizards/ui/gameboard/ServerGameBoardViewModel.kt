@@ -54,8 +54,8 @@ class ServerGameBoardViewModel(
         if (move == END_COMMAND) {
             _scoreboard.value = true
         } else {
-            if (gameModel.receiveMessage(move)) {
-                viewModelScope.launch {
+            viewModelScope.launch {
+                if (gameModel.receiveMessage(move)) {
                     server.getConnections()
                         .filterIsInstance(ServerConnection.Connected::class.java)
                         .forEach {

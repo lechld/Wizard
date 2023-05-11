@@ -1,6 +1,6 @@
 package at.aau.edu.wizards.gameModel
 
-import android.os.CountDownTimer
+import kotlinx.coroutines.delay
 
 class GameModelRules(
     val players: ArrayList<GameModelPlayer>,
@@ -79,7 +79,7 @@ class GameModelRules(
         parent.sendMessage(END_COMMAND)
     }
 
-    fun playCard(card: GameModelCard) {
+    suspend fun playCard(card: GameModelCard) {
         if (card is GameModelCard.NoCard) {
             throw (Exception("Failed to play card: It is of type NoCard!"))
         } else if (winningCard is GameModelCard.NoCard) {
@@ -99,7 +99,7 @@ class GameModelRules(
         }
     }
 
-    private fun checkNormal(card: GameModelCard) {
+    private suspend fun checkNormal(card: GameModelCard) {
         when (winningCard) {
             is GameModelCard.Normal -> {
                 if ((winningCard as GameModelCard.Normal).color == (card as GameModelCard.Normal).color
@@ -116,11 +116,11 @@ class GameModelRules(
         }
     }
 
-    private fun addJester(card: GameModelCard) {
+    private suspend fun addJester(card: GameModelCard) {
         addLoosingCard(card)
     }
 
-    private fun addWizard(card: GameModelCard) {
+    private suspend fun addWizard(card: GameModelCard) {
         when (winningCard) {
             is GameModelCard.Wizard -> {
                 addLoosingCard(card)
@@ -131,7 +131,7 @@ class GameModelRules(
         }
     }
 
-    private fun addNormal(card: GameModelCard) {
+    private suspend fun addNormal(card: GameModelCard) {
         when (winningCard) {
             is GameModelCard.Jester -> {
                 addWinningCard(card)
@@ -153,7 +153,7 @@ class GameModelRules(
         }
     }
 
-    private fun addNormalCompareToTrump(card: GameModelCard) {
+    private suspend fun addNormalCompareToTrump(card: GameModelCard) {
         when (trump) {
             is GameModelCard.Normal -> {
                 if ((card as GameModelCard.Normal).color == (trump as GameModelCard.Normal).color) {
@@ -175,7 +175,7 @@ class GameModelRules(
         }
     }
 
-    private fun addWinningCard(card: GameModelCard) {
+    private suspend fun addWinningCard(card: GameModelCard) {
         winningPlayer = currentPlayer
         if (winningCard !is GameModelCard.NoCard) {
             board.add(winningCard)
@@ -185,33 +185,25 @@ class GameModelRules(
         nextPlayer()
     }
 
-    private fun addLoosingCard(card: GameModelCard) {
+    private suspend fun addLoosingCard(card: GameModelCard) {
         board.add(card)
         players[currentPlayer].cards.remove(card)
         nextPlayer()
     }
 
-    private fun nextPlayer() {
+    private suspend fun nextPlayer() {
         if (++currentPlayer >= players.size) {
             currentPlayer = 0
         }
         if (currentPlayer == dealer) {
-            object : CountDownTimer(FINALCARD_TIME_TO_CONTINUE, 1000) {
-                override fun onTick(millisUntilFinished: Long) {
-                    // We don't want to execute anything while waiting, so this stays empty.
-                }
-
-
-                override fun onFinish() {
-                    nextSet()
-                }
-            }.start()
+            delay(1000)
+            nextSet()
         } else if (!players[currentPlayer].isHuman && everyoneHasGuessed() && round < 11) {
             getCpuToPlay()
         }
     }
 
-    private fun nextSet() {
+    private suspend fun nextSet() {
         wins.add(winningPlayer)
         winningCard = GameModelCard.NoCard
         board.clear()
@@ -249,7 +241,7 @@ class GameModelRules(
         return true
     }
 
-    fun addGuess(guess: Int) {
+    suspend fun addGuess(guess: Int) {
         if (players[getPlayerIdFromGuessInInt(guess)].guesses.size < round) {
             players[getPlayerIdFromGuessInInt(guess)].guesses.add(getGuessValueFromGuessInInt(guess))
         }
@@ -269,16 +261,9 @@ class GameModelRules(
         return (guess - 60) % 11
     }
 
-    private fun getCpuToPlay() {
-        object : CountDownTimer(CPU_TIME_TO_MOVE, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                // We don't want to execute anything while waiting, so this stays empty.
-            }
+    private suspend fun getCpuToPlay() {
+        delay(1000)
 
-
-            override fun onFinish() {
-                parent.receiveMessage(cpu.getMove(players[currentPlayer]).getString())
-            }
-        }.start()
+        parent.receiveMessage(cpu.getMove(players[currentPlayer]).getString())
     }
 }
