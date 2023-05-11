@@ -31,25 +31,25 @@ class LobbyViewModel(
     }
 
     var numplayer = 1
-    var check_too_many_player = false
+    var checktoomanyplayer = false
     fun clicked(clickedItem: LobbyItem) {
 
         if (numplayer < 6) {
             when (clickedItem) {
                 is LobbyItem.AddCpu -> {
                     addCpuPlayer()
-                    numplayer = numplayer + 1
+                    numplayer += 1
                 }
                 is LobbyItem.Requested -> {
                     accept(clickedItem)
-                    numplayer = numplayer + 1
+                    numplayer += 1
                 }
                 else -> {
                     // do nothing
                 }
             }
         } else {
-            check_too_many_player = true
+            checktoomanyplayer = true
         }
     }
 
