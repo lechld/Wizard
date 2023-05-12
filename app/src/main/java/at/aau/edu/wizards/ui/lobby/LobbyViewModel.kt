@@ -33,11 +33,8 @@ class LobbyViewModel(
     var numPlayer: Int = 1
         private set
 
-    private var checkTooManyPlayer = false
-
-    fun getCheckTooManyPlayer(): Boolean {
-        return checkTooManyPlayer
-    }
+    var checkTooManyPlayer = false
+        private set
 
     fun clicked(clickedItem: LobbyItem) {
 

@@ -9,9 +9,10 @@ import junit.framework.TestCase.assertFalse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.mockito.internal.matchers.Null
 import org.mockito.kotlin.mock
 
-class TooManyPlayerUnitTest {
+class LobbyViewModelUnitTest {
 
     private val server = mock<Server>()
     private val lobbyItemFactory = mock<LobbyItemFactory>()
@@ -50,7 +51,7 @@ class TooManyPlayerUnitTest {
     fun `Testing numPlayer over 6 player`() {
         val requestedConnection = mock<ServerConnection.ClientRequest>()
 
-        assertFalse(viewModel.getCheckTooManyPlayer())
+        assertFalse(viewModel.checkTooManyPlayer)
 
         viewModel.clicked(LobbyItem.Requested(requestedConnection))
         viewModel.clicked(LobbyItem.AddCpu)
@@ -60,7 +61,7 @@ class TooManyPlayerUnitTest {
         viewModel.clicked(LobbyItem.AddCpu)
         viewModel.clicked(LobbyItem.AddCpu)
 
-        assertTrue(viewModel.getCheckTooManyPlayer())
+        assertTrue(viewModel.checkTooManyPlayer)
     }
 
 }
