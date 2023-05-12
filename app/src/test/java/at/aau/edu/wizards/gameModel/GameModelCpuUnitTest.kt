@@ -1,5 +1,6 @@
 package at.aau.edu.wizards.gameModel
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -9,6 +10,7 @@ import kotlin.random.Random
 class GameModelCpuUnitTest {
     private val viewModel = null
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun metric() = runTest {
         //I think it makes more sense to test for a metric here, since the specific cpu implementation might change in future versions. We should just make sure it stays at a considerable level, namely staying better than previous versions.
@@ -25,17 +27,22 @@ class GameModelCpuUnitTest {
                 append(5.toChar())
                 append(i.toString())
             })
-            while (model.listener.getRound() <= 10) {
-                if (model.listener.guessing) {
-                    val guess = ran.nextInt(0, model.listener.getRound())
-                    model.receiveMessage(buildString {
-                        append((60 + guess).toChar())
-                    })
-                } else {
-                    for (i in 0 until model.listener.getHandOfPlayer(0).size) {
-                        if (model.receiveMessage(model.listener.getHandOfPlayer(0)[i].getString())) {
-                            break;
+            for (k in 1..10) {
+
+                val guess = ran.nextInt(0, k)
+                model.receiveMessage(buildString {
+                    append((60 + guess).toChar())
+                })
+                for (j in 1..k) {
+                    var sent = false
+                    for (card in model.listener.getHandOfPlayer(0)) {
+                        if (!sent && model.sendMessage(card.getString())) {
+                            model.receiveMessage(card.getString())
+                            sent = true
                         }
+                    }
+                    if (!sent) {
+                        continue
                     }
                 }
             }
@@ -49,12 +56,13 @@ class GameModelCpuUnitTest {
         }
 
         //Assertions.assertEquals(1, pZero / limit) //To see the value of random guesses
-        Assertions.assertEquals(1, scores / limit) //To see the value of cpu guesses
+        //Assertions.assertEquals(1, scores / limit) //To see the value of cpu guesses
 
         Assertions.assertTrue(pZero < scores)
         Assertions.assertTrue(scores >= 157) //if you improve cpu - measure performance by de-commenting above code and adjust to new standard
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun noCard() = runTest {
         val model = GameModel(viewModel)
