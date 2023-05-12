@@ -30,26 +30,34 @@ class LobbyViewModel(
         server.stopBroadcasting()
     }
 
-    var numplayer = 1
-    var checktoomanyplayer = false
+    var numPlayer: Int = 1
+        private set // the setter is private and has the default implementation
+
+    var checkTooManyPlayer = false
+        private set
+
+    fun getCheckTooManyPlayer(): Boolean {
+        return checkTooManyPlayer
+    }
+
     fun clicked(clickedItem: LobbyItem) {
 
-        if (numplayer < 6) {
+        if (numPlayer < 6) {
             when (clickedItem) {
                 is LobbyItem.AddCpu -> {
                     addCpuPlayer()
-                    numplayer += 1
+                    numPlayer += 1
                 }
                 is LobbyItem.Requested -> {
                     accept(clickedItem)
-                    numplayer += 1
+                    numPlayer += 1
                 }
                 else -> {
                     // do nothing
                 }
             }
         } else {
-            checktoomanyplayer = true
+            checkTooManyPlayer = true
         }
     }
 

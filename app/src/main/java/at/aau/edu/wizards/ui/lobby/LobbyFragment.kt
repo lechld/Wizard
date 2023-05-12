@@ -60,7 +60,8 @@ class LobbyFragment : Fragment() {
         val binding = this.binding ?: return
         val adapter = LobbyAdapter { clickedItem ->
             viewModel.clicked(clickedItem)
-            if (viewModel.checktoomanyplayer) {
+
+            if (viewModel.getCheckTooManyPlayer()) {
                 activity?.let {
                     MaterialAlertDialogBuilder(it).setMessage(getString(R.string.max_player))
                         .setPositiveButton(getString(R.string.okay), null)
