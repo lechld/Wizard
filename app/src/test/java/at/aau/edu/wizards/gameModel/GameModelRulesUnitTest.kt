@@ -13,7 +13,7 @@ class GameModelRulesUnitTest {
     @Test
     fun test()= runTest {
         val model = GameModel(viewModel)
-        /*
+
         val dealer = GameModelDealer(420420)
         val player0 = GameModelPlayer(0, dealer, true, 1, "test")
         val player1 = GameModelPlayer(1, dealer, true, 1, "test")
@@ -291,7 +291,5 @@ class GameModelRulesUnitTest {
         assertEquals(30, player4.scores[player4.scores.lastIndex])
         assertEquals(20, player2.scores[player2.scores.lastIndex])
         assertEquals(-10, player3.scores[player3.scores.lastIndex])
-
-         */
     }
 }
