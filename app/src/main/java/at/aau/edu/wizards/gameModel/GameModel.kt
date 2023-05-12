@@ -40,7 +40,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         ))
     }
 
-    fun receiveMessage(move: String): Boolean {
+    suspend fun receiveMessage(move: String): Boolean {
         return when (players.isEmpty()) {
             true -> {
                 if (legalMessageInit(move)) {
