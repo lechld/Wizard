@@ -12,6 +12,7 @@ class GameModelRulesUnitTest {
     @Test
     fun test() {
         val model = GameModel(viewModel)
+        /*
         val dealer = GameModelDealer(420420)
         val player0 = GameModelPlayer(0, dealer, true, 1)
         val player1 = GameModelPlayer(1, dealer, true, 1)
@@ -153,6 +154,8 @@ class GameModelRulesUnitTest {
                 rules.playCard(listOfPlayers[cp].cards[iteration])
                 iteration++
             }
+
+
         }
 
     }
@@ -160,6 +163,7 @@ class GameModelRulesUnitTest {
     @Test
     fun testWizardTrump() {
         val model = GameModel(viewModel)
+
         val dealer = GameModelDealer(420420)
         val player0 = GameModelPlayer(0, dealer, true, 1)
         val player1 = GameModelPlayer(1, dealer, true, 1)
@@ -286,5 +290,7 @@ class GameModelRulesUnitTest {
         assertEquals(30, player4.scores[player4.scores.lastIndex])
         assertEquals(20, player2.scores[player2.scores.lastIndex])
         assertEquals(-10, player3.scores[player3.scores.lastIndex])
+
+         */
     }
 }

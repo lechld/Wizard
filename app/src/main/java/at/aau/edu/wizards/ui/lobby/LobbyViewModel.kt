@@ -31,10 +31,9 @@ class LobbyViewModel(
     }
 
     var numPlayer: Int = 1
-        private set // the setter is private and has the default implementation
-
-    var checkTooManyPlayer = false
         private set
+
+    private var checkTooManyPlayer = false
 
     fun getCheckTooManyPlayer(): Boolean {
         return checkTooManyPlayer

@@ -28,7 +28,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Lobby to join"
-            android:textColor="?colorOnPrimaryContainer"/>
+            android:textColor="?colorOnPrimaryContainer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
