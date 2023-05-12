@@ -1,5 +1,6 @@
 package at.aau.edu.wizards.gameModel
 
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -7,7 +8,7 @@ class GameModelListenerUnitTest {
     private val viewModel = null
 
     @Test
-    fun test() {
+    fun test() = runTest {
         val model = GameModel(viewModel)
         var listener = model.listener
 

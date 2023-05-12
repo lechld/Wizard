@@ -1,5 +1,6 @@
 package at.aau.edu.wizards.gameModel
 
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
@@ -8,7 +9,7 @@ import kotlin.random.Random
 class GameModelUnitTest {
     private val viewModel = null
     @Test
-    fun test() {
+    fun test() = runTest{
         val model = GameModel(viewModel)
         assertFalse(model.receiveMessage(buildString {
             append(61.toChar())
@@ -112,7 +113,7 @@ class GameModelUnitTest {
     }
 
     @Test
-    fun sendUpdate() {
+    fun sendUpdate() = runTest{
         val ran = Random(420420)
         val model = GameModel(viewModel)
         model.receiveMessage(buildString {
