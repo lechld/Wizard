@@ -1,5 +1,6 @@
 package at.aau.edu.wizards.gameModel
 
+import at.aau.edu.wizards.R
 import at.aau.edu.wizards.ui.gameboard.GameBoardHeader
 import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
 
@@ -75,13 +76,6 @@ class GameModelListener(
         }
     }
 
-    private fun getNameOfPlayer(id: Int): String {
-        return buildString {
-            append("Player")
-            append(id.toString())
-        }
-    }
-
     private fun getCurrentWins(id: Int): Int {
         return rules.getAmountWon(id)
     }
@@ -109,10 +103,6 @@ class GameModelListener(
         }
         calculateHeader()
         viewModel?.updateData(parent)
-    }
-
-    fun localPlayer(): Int {
-        return rules.id
     }
 
     private fun calculateHeader() {
@@ -160,5 +150,38 @@ class GameModelListener(
 
     fun getRound(): Int {
         return rules.round
+    }
+
+    fun getNameOfPlayer(id: Int): String {
+        for (player in players) {
+            if (player.id == id) {
+                return player.name
+            }
+        }
+        return "MissingPlayer"
+    }
+
+    fun getIconFromId(icon:Int) : Int{
+        return when (icon) {
+            1 -> R.drawable.icon1
+            2 -> R.drawable.icon2
+            3 -> R.drawable.icon3
+            4 -> R.drawable.icon4
+            5 -> R.drawable.icon5
+            6 -> R.drawable.icon6
+            7 -> R.drawable.icon7
+            8 -> R.drawable.icon8
+            9 -> R.drawable.icon9
+            10 -> R.drawable.icon10
+            11 -> R.drawable.icon11
+            12 -> R.drawable.icon12
+            13 -> R.drawable.icon13
+            14 -> R.drawable.icon14
+            15 -> R.drawable.icon15
+            16 -> R.drawable.icon16
+            17 -> R.drawable.icon17
+            18 -> R.drawable.icon18
+            else -> R.drawable.icon19
+        }
     }
 }

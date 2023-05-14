@@ -1,5 +1,6 @@
 package at.aau.edu.wizards.gameModel
 
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
@@ -10,15 +11,15 @@ class GameModelRulesUnitTest {
     private val viewModel = null
 
     @Test
-    fun test() {
+    fun test()= runTest {
         val model = GameModel(viewModel)
         val dealer = GameModelDealer(420420)
-        val player0 = GameModelPlayer(0, dealer, true, 1)
-        val player1 = GameModelPlayer(1, dealer, true, 1)
-        val player2 = GameModelPlayer(2, dealer, true, 1)
-        val player3 = GameModelPlayer(3, dealer, true, 1)
-        val player4 = GameModelPlayer(4, dealer, true, 1)
-        val player5 = GameModelPlayer(5, dealer, true, 1)
+        val player0 = GameModelPlayer(0, dealer, true, 1, "test")
+        val player1 = GameModelPlayer(1, dealer, true, 1, "test")
+        val player2 = GameModelPlayer(2, dealer, true, 1, "test")
+        val player3 = GameModelPlayer(3, dealer, true, 1, "test")
+        val player4 = GameModelPlayer(4, dealer, true, 1, "test")
+        val player5 = GameModelPlayer(5, dealer, true, 1, "test")
         val listOfPlayers = ArrayList<GameModelPlayer>()
         listOfPlayers.add(player0)
         listOfPlayers.add(player1)
@@ -158,15 +159,15 @@ class GameModelRulesUnitTest {
     }
 
     @Test
-    fun testWizardTrump() {
+    fun testWizardTrump() = runTest{
         val model = GameModel(viewModel)
         val dealer = GameModelDealer(420420)
-        val player0 = GameModelPlayer(0, dealer, true, 1)
-        val player1 = GameModelPlayer(1, dealer, true, 1)
-        val player2 = GameModelPlayer(2, dealer, true, 1)
-        val player3 = GameModelPlayer(3, dealer, true, 1)
-        val player4 = GameModelPlayer(4, dealer, true, 1)
-        val player5 = GameModelPlayer(5, dealer, true, 1)
+        val player0 = GameModelPlayer(0, dealer, true, 1, "test")
+        val player1 = GameModelPlayer(1, dealer, true, 1, "test")
+        val player2 = GameModelPlayer(2, dealer, true, 1, "test")
+        val player3 = GameModelPlayer(3, dealer, true, 1, "test")
+        val player4 = GameModelPlayer(4, dealer, true, 1, "test")
+        val player5 = GameModelPlayer(5, dealer, true, 1, "test")
         val listOfPlayers = ArrayList<GameModelPlayer>()
         listOfPlayers.add(player0)
         listOfPlayers.add(player1)
@@ -208,15 +209,15 @@ class GameModelRulesUnitTest {
     }
 
     @Test
-    fun testWizardTrump2() {
+    fun testWizardTrump2() = runTest{
         val model = GameModel(viewModel)
         val dealer = GameModelDealer(22)
-        val player0 = GameModelPlayer(0, dealer, true, 1)
-        val player1 = GameModelPlayer(1, dealer, true, 1)
-        val player2 = GameModelPlayer(2, dealer, true, 1)
-        val player3 = GameModelPlayer(3, dealer, true, 1)
-        val player4 = GameModelPlayer(4, dealer, true, 1)
-        val player5 = GameModelPlayer(5, dealer, true, 1)
+        val player0 = GameModelPlayer(0, dealer, true, 1, "test")
+        val player1 = GameModelPlayer(1, dealer, true, 1, "test")
+        val player2 = GameModelPlayer(2, dealer, true, 1, "test")
+        val player3 = GameModelPlayer(3, dealer, true, 1, "test")
+        val player4 = GameModelPlayer(4, dealer, true, 1, "test")
+        val player5 = GameModelPlayer(5, dealer, true, 1, "test")
         val listOfPlayers = ArrayList<GameModelPlayer>()
         listOfPlayers.add(player0)
         listOfPlayers.add(player1)
@@ -249,15 +250,15 @@ class GameModelRulesUnitTest {
     }
 
     @Test
-    fun testJesterTrump() {
+    fun testJesterTrump() = runTest{
         val model = GameModel(viewModel)
         val dealer = GameModelDealer(23)
-        val player0 = GameModelPlayer(0, dealer, true, 1)
-        val player1 = GameModelPlayer(1, dealer, true, 1)
-        val player2 = GameModelPlayer(2, dealer, true, 1)
-        val player3 = GameModelPlayer(3, dealer, true, 1)
-        val player4 = GameModelPlayer(4, dealer, true, 1)
-        val player5 = GameModelPlayer(5, dealer, true, 1)
+        val player0 = GameModelPlayer(0, dealer, true, 1, "test")
+        val player1 = GameModelPlayer(1, dealer, true, 1, "test")
+        val player2 = GameModelPlayer(2, dealer, true, 1, "test")
+        val player3 = GameModelPlayer(3, dealer, true, 1, "test")
+        val player4 = GameModelPlayer(4, dealer, true, 1, "test")
+        val player5 = GameModelPlayer(5, dealer, true, 1, "test")
         val listOfPlayers = ArrayList<GameModelPlayer>()
         listOfPlayers.add(player0)
         listOfPlayers.add(player1)

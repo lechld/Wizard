@@ -9,9 +9,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import at.aau.edu.wizards.api.impl.REQUIRED_PERMISSIONS
 import at.aau.edu.wizards.databinding.ActivityMainBinding
-import at.aau.edu.wizards.ui.gameboard.GameBoardFragment
+import at.aau.edu.wizards.gameModel.GameModelListener
 import at.aau.edu.wizards.ui.discover.DiscoverFragment
+import at.aau.edu.wizards.ui.gameboard.GameBoardFragment
 import at.aau.edu.wizards.ui.lobby.LobbyFragment
+import at.aau.edu.wizards.ui.scoreboard.ScoreboardFragment
 import at.aau.edu.wizards.util.permission.PermissionHandler
 import com.google.android.material.snackbar.Snackbar
 
@@ -21,6 +23,7 @@ private const val GAME_BOARD_FRAGMENT_TAG = "GAME_BOARD_FRAGMENT_TAG"
 private const val SHARED_PREFERENCE_USERNAME_KEY = "USERNAME"
 private const val SHARED_PREFERENCE_NAME = "SHARED_DATA"
 public const val AUTOFILL_HINT_USERNAME = "username"
+private const val SCOREBOARD_FRAGMENT_TAG = "SCOREBOARD_FRAGMENT_TAG"
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,6 +51,20 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container, fragment, GAME_BOARD_FRAGMENT_TAG)
             .addToBackStack(GAME_BOARD_FRAGMENT_TAG)
+            .commit()
+    }
+
+    fun showScoreboard(listener: GameModelListener) {
+        val fragment = supportFragmentManager.findFragmentByTag(SCOREBOARD_FRAGMENT_TAG)
+            ?: ScoreboardFragment(listener)
+
+        if (fragment.isAdded) {
+            return
+        }
+
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_container, fragment, SCOREBOARD_FRAGMENT_TAG)
+            .addToBackStack(SCOREBOARD_FRAGMENT_TAG)
             .commit()
     }
 
@@ -126,6 +143,13 @@ class MainActivity : AppCompatActivity() {
             .add(R.id.fragment_container, fragment, LOBBY_FRAGMENT_TAG)
             .addToBackStack(LOBBY_FRAGMENT_TAG)
             .commit()
+    }
+
+    fun scoreboardBack(finished: Boolean) {
+        supportFragmentManager.popBackStack()
+        if (finished) {
+            supportFragmentManager.popBackStack()
+        }
     }
 
     private fun handlePermissions() {

@@ -40,7 +40,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         ))
     }
 
-    fun receiveMessage(move: String): Boolean {
+    suspend fun receiveMessage(move: String): Boolean {
         return when (players.isEmpty()) {
             true -> {
                 if (legalMessageInit(move)) {
@@ -119,11 +119,50 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
             move.substring(3, move.length).toInt()
         )
         listener = GameModelListener(rules, players, viewModel, this)
+        //TEMPORARY PLEASE REMOVE WHEN YOU IMPLEMENTED PROPER NAMING
+        val list = listOf(
+            "Pengu",
+            "Angel",
+            "Adolf",
+            "Marley",
+            "Smoker",
+            "Crack",
+            "Bamboo",
+            "Tasty",
+            "Staly",
+            "Mickey",
+            "Goofy",
+            "Pink",
+            "City",
+            "Papaya",
+            "Mango",
+            "Jack",
+            "Donald",
+            "YouSuck",
+            "GetAGrip",
+            "Green Tea"
+        )
         for (player in 1..move[1].code) {
-            players.add(GameModelPlayer(players.size, dealer, true, Random.nextInt(1, 20)))
+            players.add(
+                GameModelPlayer(
+                    players.size,
+                    dealer,
+                    true,
+                    Random.nextInt(1, 20),
+                    list[Random.nextInt(list.size)]
+                )
+            )
         }
         for (cpu in 1..move[2].code) {
-            players.add(GameModelPlayer(players.size, dealer, false, Random.nextInt(1, 20)))
+            players.add(
+                GameModelPlayer(
+                    players.size,
+                    dealer,
+                    false,
+                    Random.nextInt(1, 20),
+                    list[Random.nextInt(list.size)]
+                )
+            )
         }
         rules.init()
     }
