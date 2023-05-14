@@ -19,7 +19,7 @@ class MainViewModel constructor(private val sharedPreferences: SharedPreferences
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
                 MainViewModel(sharedPreferences) as T
-            } else throw IllegalStateException("Wrong Factory for instantiating ${modelClass::class.java.canonicalName}")
+            } else error("Wrong Factory for instantiating ${modelClass::class.java.canonicalName}")
         }
     }
 }
