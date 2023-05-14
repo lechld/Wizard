@@ -9,9 +9,7 @@ import junit.framework.TestCase.assertFalse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
 
 class LobbyViewModelUnitTest {
 
@@ -30,7 +28,6 @@ class LobbyViewModelUnitTest {
         val requestedConnection = mock<ServerConnection.ClientRequest>()
         viewModel.clicked(LobbyItem.Requested(requestedConnection))
         assertEquals(2, viewModel.numPlayer)
-
     }
 
     @Test
@@ -45,7 +42,6 @@ class LobbyViewModelUnitTest {
         viewModel.clicked(LobbyItem.AddCpu)
 
         assertEquals(6, viewModel.numPlayer)
-
     }
 
     @Test
@@ -63,13 +59,11 @@ class LobbyViewModelUnitTest {
         viewModel.clicked(LobbyItem.AddCpu)
 
         assertTrue(viewModel.checkTooManyPlayer)
-
     }
 
     @Test
     fun `Testing5`() {
         viewModel.clicked(LobbyItem.Header(""))
         assertEquals(1, viewModel.numPlayer)
-
     }
 }
