@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.api.impl.REQUIRED_PERMISSIONS
 import at.aau.edu.wizards.databinding.ActivityMainBinding
 import at.aau.edu.wizards.gameModel.GameModelListener
@@ -15,24 +15,25 @@ import at.aau.edu.wizards.ui.gameboard.GameBoardFragment
 import at.aau.edu.wizards.ui.lobby.LobbyFragment
 import at.aau.edu.wizards.ui.scoreboard.ScoreboardFragment
 import at.aau.edu.wizards.util.permission.PermissionHandler
-import com.google.android.material.snackbar.Snackbar
 
 private const val DISCOVER_FRAGMENT_TAG = "DISCOVER_FRAGMENT_TAG"
 private const val LOBBY_FRAGMENT_TAG = "LOBBY_FRAGMENT_TAG"
 private const val GAME_BOARD_FRAGMENT_TAG = "GAME_BOARD_FRAGMENT_TAG"
-private const val SHARED_PREFERENCE_USERNAME_KEY = "USERNAME"
-private const val SHARED_PREFERENCE_NAME = "SHARED_DATA"
-public const val AUTOFILL_HINT_USERNAME = "username"
+const val SHARED_PREFERENCE_USERNAME_KEY = "USERNAME"
 private const val SCOREBOARD_FRAGMENT_TAG = "SCOREBOARD_FRAGMENT_TAG"
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        val sharedPreferences = getSharedPreferences(getString(R.string.shared_storage), Context.MODE_PRIVATE)
+        mainViewModel = ViewModelProvider(this, MainViewModel.Factory(sharedPreferences)).get(MainViewModel::class.java)
 
         setContentView(binding.root)
 
@@ -69,12 +70,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUi() {
-        val sharedPrefs: SharedPreferences = getSharedPreferences(getString(R.string.shared_storage), Context.MODE_PRIVATE)
-        if (usernameAlreadyExists(sharedPrefs)) {
-            binding.inputUsername.setText(sharedPrefs.getString(SHARED_PREFERENCE_USERNAME_KEY, ""))
+        val username = mainViewModel.getUsername()
+        if (username != null) {
+            binding.inputUsername.setText(username)
             setButtonsEnableStatus(true)
-        }
-        else {
+        } else {
             setButtonsEnableStatus(false)
         }
 
@@ -95,14 +95,19 @@ class MainActivity : AppCompatActivity() {
                 // Not required
             }
         })
+
         binding.clientButton.setOnClickListener {
             if (binding.clientButton.isEnabled) {
+                val username = binding.inputUsername.text.toString()
+                mainViewModel.saveUsername(username)
                 showDiscoverFragment()
             }
         }
 
         binding.serverButton.setOnClickListener {
             if (binding.serverButton.isEnabled) {
+                val username = binding.inputUsername.text.toString()
+                mainViewModel.saveUsername(username)
                 showLobby()
             }
         }
