@@ -30,7 +30,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-
+        //kotlin:S6291 ---> Make sure using an unencrypted database is safe here.
+        @SuppressWarnings("kotlin:S6291")
         val sharedPreferences = getSharedPreferences(getString(R.string.shared_storage), Context.MODE_PRIVATE)
         mainViewModel = ViewModelProvider(this, MainViewModel.Factory(sharedPreferences))[MainViewModel::class.java]
 
