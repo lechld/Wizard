@@ -79,7 +79,9 @@
         app:layout_constraintBottom_toTopOf="@id/server_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/wizards_header" />
+        app:layout_constraintTop_toBottomOf="@id/wizards_header"
+        android:autofillHints="@string/autofill_hint_username"
+        />
 
     <FrameLayout
         android:id="@+id/fragment_container"
