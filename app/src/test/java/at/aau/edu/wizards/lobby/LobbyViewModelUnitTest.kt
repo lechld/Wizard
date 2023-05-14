@@ -1,4 +1,4 @@
-package at.aau.edu.wizards
+package at.aau.edu.wizards.lobby
 
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.api.model.ServerConnection
@@ -9,7 +9,6 @@ import junit.framework.TestCase.assertFalse
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.mockito.internal.matchers.Null
 import org.mockito.kotlin.mock
 
 class LobbyViewModelUnitTest {
@@ -62,6 +61,6 @@ class LobbyViewModelUnitTest {
         viewModel.clicked(LobbyItem.AddCpu)
 
         assertTrue(viewModel.checkTooManyPlayer)
-    }
 
+    }
 }
