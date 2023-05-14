@@ -113,10 +113,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun usernameAlreadyExists(sharedPrefs: SharedPreferences): Boolean {
-        return sharedPrefs.getString(SHARED_PREFERENCE_USERNAME_KEY, null) != null
-    }
-
     private fun setButtonsEnableStatus(enabled: Boolean) {
         binding.clientButton.isEnabled = enabled
         binding.serverButton.isEnabled = enabled
