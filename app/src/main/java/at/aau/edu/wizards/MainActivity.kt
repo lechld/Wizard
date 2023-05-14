@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         val sharedPreferences = getSharedPreferences(getString(R.string.shared_storage), Context.MODE_PRIVATE)
-        mainViewModel = ViewModelProvider(this, MainViewModel.Factory(sharedPreferences)).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProvider(this, MainViewModel.Factory(sharedPreferences))[MainViewModel::class.java]
 
         setContentView(binding.root)
 
