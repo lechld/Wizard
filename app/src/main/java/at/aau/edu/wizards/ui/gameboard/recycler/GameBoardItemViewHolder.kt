@@ -10,6 +10,6 @@ class GameBoardItemViewHolder(
 
     fun bind(item: GameModelCard) {
         binding.image.setImageResource(item.image())
-        binding.text.text=item.getNumber()
+        binding.text.text = item.getNumber()
     }
 }

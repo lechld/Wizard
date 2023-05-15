@@ -1,6 +1,6 @@
 package at.aau.edu.wizards.api.model
 
-sealed interface ServerConnection: Connection {
+sealed interface ServerConnection : Connection {
 
     data class ClientRequest(
         override val endpointId: String,

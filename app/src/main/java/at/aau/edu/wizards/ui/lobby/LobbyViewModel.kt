@@ -9,8 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 
 class LobbyViewModel(
-    private val server: Server,
-    private val lobbyItemFactory: LobbyItemFactory = LobbyItemFactory()
+    private val server: Server, private val lobbyItemFactory: LobbyItemFactory = LobbyItemFactory()
 ) : ViewModel() {
 
     private val cpuPlayers = MutableStateFlow(0)
@@ -30,17 +29,31 @@ class LobbyViewModel(
         server.stopBroadcasting()
     }
 
+    var numPlayer: Int = 1
+        private set
+
+    var checkTooManyPlayer = false
+        private set
+
     fun clicked(clickedItem: LobbyItem) {
-        when (clickedItem) {
-            is LobbyItem.AddCpu -> {
-                addCpuPlayer()
+
+        if (numPlayer < 6) {
+            when (clickedItem) {
+                is LobbyItem.AddCpu -> {
+                    addCpuPlayer()
+                    numPlayer += 1
+                }
+                is LobbyItem.Requested -> {
+                    accept(clickedItem)
+                    numPlayer += 1
+                }
+                else -> {
+                    // do nothing
+                    println("do nothing")
+                }
             }
-            is LobbyItem.Requested -> {
-                accept(clickedItem)
-            }
-            else -> {
-                // do nothing
-            }
+        } else {
+            checkTooManyPlayer = true
         }
     }
 
@@ -57,8 +70,8 @@ class LobbyViewModel(
     }
 
     fun startGame(): Int {
-        val connections = server.getConnections()
-            .filterIsInstance(ServerConnection.Connected::class.java)
+        val connections =
+            server.getConnections().filterIsInstance(ServerConnection.Connected::class.java)
 
         connections.forEach { connection ->
             server.send(connection, START_COMMAND)

@@ -7,16 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.MainActivity
+import at.aau.edu.wizards.R
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentLobbyBinding
 import at.aau.edu.wizards.ui.lobby.recycler.LobbyAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class LobbyFragment : Fragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(
-            this,
-            LobbyViewModel.Factory(Server.getInstance(requireContext()))
+            this, LobbyViewModel.Factory(Server.getInstance(requireContext()))
         )[LobbyViewModel::class.java]
     }
 
@@ -35,9 +36,7 @@ class LobbyFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         val binding = FragmentLobbyBinding.inflate(inflater, container, false)
 
@@ -61,6 +60,14 @@ class LobbyFragment : Fragment() {
         val binding = this.binding ?: return
         val adapter = LobbyAdapter { clickedItem ->
             viewModel.clicked(clickedItem)
+
+            if (viewModel.checkTooManyPlayer) {
+                activity?.let {
+                    MaterialAlertDialogBuilder(it).setMessage(getString(R.string.max_player))
+                        .setPositiveButton(getString(R.string.okay), null)
+                }?.create()?.show()
+            }
+
         }
 
         binding.lobbyRecycler.adapter = adapter

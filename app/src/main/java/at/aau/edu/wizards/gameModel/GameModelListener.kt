@@ -161,7 +161,7 @@ class GameModelListener(
         return "MissingPlayer"
     }
 
-    fun getIconFromId(icon:Int) : Int{
+    fun getIconFromId(icon: Int): Int {
         return when (icon) {
             1 -> R.drawable.icon1
             2 -> R.drawable.icon2

@@ -13,6 +13,7 @@ class GameModelRulesUnitTest {
     @Test
     fun test()= runTest {
         val model = GameModel(viewModel)
+
         val dealer = GameModelDealer(420420)
         val player0 = GameModelPlayer(0, dealer, true, 1, "test")
         val player1 = GameModelPlayer(1, dealer, true, 1, "test")
@@ -154,6 +155,8 @@ class GameModelRulesUnitTest {
                 rules.playCard(listOfPlayers[cp].cards[iteration])
                 iteration++
             }
+
+
         }
 
     }
@@ -161,6 +164,7 @@ class GameModelRulesUnitTest {
     @Test
     fun testWizardTrump() = runTest{
         val model = GameModel(viewModel)
+
         val dealer = GameModelDealer(420420)
         val player0 = GameModelPlayer(0, dealer, true, 1, "test")
         val player1 = GameModelPlayer(1, dealer, true, 1, "test")

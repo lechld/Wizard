@@ -1,7 +1,6 @@
 package at.aau.edu.wizards.ui.gameboard
 
 import androidx.lifecycle.viewModelScope
-import at.aau.edu.wizards.MainActivity
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.model.ClientConnection
 import at.aau.edu.wizards.gameModel.END_COMMAND
@@ -26,7 +25,7 @@ class ClientGameBoardViewModel(
     override fun sendMessage(move: String) {
 
         if (move == END_COMMAND) {
-           _scoreboard.value = true
+            _scoreboard.value = true
         } else {
 
             viewModelScope.launch {

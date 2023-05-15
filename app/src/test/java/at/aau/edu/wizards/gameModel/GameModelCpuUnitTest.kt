@@ -72,6 +72,7 @@ class GameModelCpuUnitTest {
         players.add(GameModelPlayer(1, dealer, false, 1, "test"))
         players.add(GameModelPlayer(2, dealer, false, 1, "test"))
         val rules = GameModelRules(players, 0, dealer, model, 420420)
+
         val cpu = GameModelCpu(420420, rules)
 
         Assertions.assertEquals(GameModelCard.NoCard, cpu.getMove(players[1]))
@@ -89,4 +90,5 @@ class GameModelCpuUnitTest {
         Assertions.assertEquals(0, cpu.getGuess(players[1]))
         Assertions.assertEquals(GameModelCard.NoCard, cpu.getMove(players[1]))
     }
+    
 }
