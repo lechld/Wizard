@@ -4,7 +4,9 @@ import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class MainViewModel constructor(private val sharedPreferences: SharedPreferences) : ViewModel() {
+private const val SHARED_PREFERENCE_USERNAME_KEY = "USERNAME"
+class MainViewModel (private val sharedPreferences: SharedPreferences) : ViewModel() {
+
 
     fun getUsername(): String? {
         return sharedPreferences.getString(SHARED_PREFERENCE_USERNAME_KEY, null)

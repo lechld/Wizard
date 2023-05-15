@@ -18,8 +18,9 @@ import at.aau.edu.wizards.util.permission.PermissionHandler
 private const val DISCOVER_FRAGMENT_TAG = "DISCOVER_FRAGMENT_TAG"
 private const val LOBBY_FRAGMENT_TAG = "LOBBY_FRAGMENT_TAG"
 private const val GAME_BOARD_FRAGMENT_TAG = "GAME_BOARD_FRAGMENT_TAG"
-const val SHARED_PREFERENCE_USERNAME_KEY = "USERNAME"
 private const val SCOREBOARD_FRAGMENT_TAG = "SCOREBOARD_FRAGMENT_TAG"
+
+private const val SHARED_PREFERENCES_KEY = "SHARED_PREFS_USERDATA"
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,9 +31,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        //kotlin:S6291 ---> Make sure using an unencrypted database is safe here.
+
+        // kotlin:S6291 ---> Make sure using an unencrypted database is safe here.
         @SuppressWarnings("kotlin:S6291")
-        val sharedPreferences = getSharedPreferences(getString(R.string.shared_storage), Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
+
         mainViewModel = ViewModelProvider(this, MainViewModel.Factory(sharedPreferences))[MainViewModel::class.java]
 
         setContentView(binding.root)
@@ -98,16 +101,16 @@ class MainActivity : AppCompatActivity() {
 
         binding.clientButton.setOnClickListener {
             if (binding.clientButton.isEnabled) {
-                val username = binding.inputUsername.text.toString()
-                mainViewModel.saveUsername(username)
+                val newUsername = binding.inputUsername.text.toString()
+                mainViewModel.saveUsername(newUsername)
                 showDiscoverFragment()
             }
         }
 
         binding.serverButton.setOnClickListener {
             if (binding.serverButton.isEnabled) {
-                val username = binding.inputUsername.text.toString()
-                mainViewModel.saveUsername(username)
+                val newUsername = binding.inputUsername.text.toString()
+                mainViewModel.saveUsername(newUsername)
                 showLobby()
             }
         }

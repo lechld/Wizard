@@ -53,7 +53,6 @@
         android:layout_margin="10dp"
         android:layout_marginBottom="0dp"
         android:fontFamily="@font/bitter"
-        android:rotationY="0"
         android:text="@string/behave_as_client"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,17 +70,19 @@
         android:id="@+id/input_username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="-20dp"
+        android:layout_marginEnd="100dp"
+        android:autofillHints="@string/autofill_hint_username"
         android:hint="@string/enter_username"
         android:inputType="text"
         android:maxLength="5"
         android:minHeight="48dp"
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@id/server_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/wizards_header"
-        android:autofillHints="@string/autofill_hint_username"
-        />
+        app:layout_constraintTop_toBottomOf="@id/wizards_header" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -92,7 +93,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
