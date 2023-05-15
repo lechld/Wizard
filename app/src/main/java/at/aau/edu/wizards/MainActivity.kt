@@ -14,6 +14,7 @@ import at.aau.edu.wizards.ui.gameboard.GameBoardFragment
 import at.aau.edu.wizards.ui.lobby.LobbyFragment
 import at.aau.edu.wizards.ui.scoreboard.ScoreboardFragment
 import at.aau.edu.wizards.util.permission.PermissionHandler
+import com.google.android.material.snackbar.Snackbar
 
 private const val DISCOVER_FRAGMENT_TAG = "DISCOVER_FRAGMENT_TAG"
 private const val LOBBY_FRAGMENT_TAG = "LOBBY_FRAGMENT_TAG"
@@ -73,45 +74,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUi() {
-        val username = mainViewModel.getUsername()
-        if (username != null) {
-            binding.inputUsername.setText(username)
-            setButtonsEnableStatus(true)
-        } else {
-            setButtonsEnableStatus(false)
-        }
+        binding.inputUsername.setText(mainViewModel.getUsername())
 
         binding.inputUsername.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                // Not required
-            }
-            override fun onTextChanged(typedText: CharSequence, i: Int, i1: Int, i2: Int) {
-                if (typedText.isNotEmpty()) {
-                    setButtonsEnableStatus(true)
-                }
-                else {
-                    setButtonsEnableStatus(false)
-                }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                // Not used
             }
 
-            override fun afterTextChanged(editable: Editable) {
-                // Not required
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                mainViewModel.saveUsername(binding.inputUsername.text.toString())
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                // Not used
             }
         })
 
         binding.clientButton.setOnClickListener {
-            if (binding.clientButton.isEnabled) {
-                val newUsername = binding.inputUsername.text.toString()
-                mainViewModel.saveUsername(newUsername)
+            if (!binding.inputUsername.text.toString().isNullOrEmpty()) {
                 showDiscoverFragment()
+            } else {
+                Snackbar.make(binding.root, "Please enter username first!", Snackbar.LENGTH_LONG).show()
             }
         }
 
         binding.serverButton.setOnClickListener {
-            if (binding.serverButton.isEnabled) {
-                val newUsername = binding.inputUsername.text.toString()
-                mainViewModel.saveUsername(newUsername)
+            if (!binding.inputUsername.text.toString().isNullOrEmpty()) {
                 showLobby()
+            } else {
+                Snackbar.make(binding.root, "Please enter username first!", Snackbar.LENGTH_LONG).show()
             }
         }
     }
