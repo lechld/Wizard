@@ -110,7 +110,6 @@ class MainActivity : AppCompatActivity() {
             permissions = REQUIRED_PERMISSIONS
         ) { permissions ->
             val anyDenied = permissions.any { !it.value }
-
             println("Any permissions denied = $anyDenied")
             // TODO: Need to properly handle denied permissions. App won't work without
         }
