@@ -107,11 +107,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setButtonsEnableStatus(enabled: Boolean) {
-        binding.clientButton.isEnabled = enabled
-        binding.serverButton.isEnabled = enabled
-    }
-
     private fun showDiscoverFragment() {
         val fragment = supportFragmentManager.findFragmentByTag(DISCOVER_FRAGMENT_TAG)
             ?: DiscoverFragment()

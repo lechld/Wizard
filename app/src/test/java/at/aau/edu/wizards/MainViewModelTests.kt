@@ -8,7 +8,7 @@ import org.mockito.Mockito
 import org.mockito.kotlin.*
 
 class MainViewModelTests {
-    private val sharedPrefs = Mockito.mock(SharedPreferences::class.java, Mockito.RETURNS_DEEP_STUBS)
+    private val sharedPrefs = mock<SharedPreferences>()
     private val mainViewModel = MainViewModel.Factory(sharedPrefs).create(MainViewModel::class.java)
 
     @Test
@@ -32,12 +32,16 @@ class MainViewModelTests {
 
     @Test
     fun saveUsernameTests_setUsername_accepted() {
-        val editor = createEditor()
-        whenever(sharedPrefs.edit()).doReturn(editor)
+        val editor = mock<SharedPreferences.Editor>()
+        val username = "dummy"
 
-        val username = "some username here"
+        whenever(sharedPrefs.edit()).doReturn(editor)
+        whenever(editor.putString(SHARED_PREFERENCE_USERNAME_KEY, username)).doReturn(editor)
+
         mainViewModel.saveUsername(username)
-        verify(sharedPrefs, times(1)).edit()
+
+        then(sharedPrefs).should().edit()
+        then(editor).should().putString(SHARED_PREFERENCE_USERNAME_KEY, username)
     }
 
     companion object {
