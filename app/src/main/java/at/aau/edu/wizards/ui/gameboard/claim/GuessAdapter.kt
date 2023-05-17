@@ -14,7 +14,7 @@ class GuessAdapter(
         val from = LayoutInflater.from(parent.context)
         val binding = ItemGuessBinding.inflate(from, parent, false)
 
-        return GuessViewHolder(binding, onClick)
+        return GuessViewHolder(binding, onClick, parent.context)
     }
 
     override fun onBindViewHolder(holder: GuessViewHolder, position: Int) {
