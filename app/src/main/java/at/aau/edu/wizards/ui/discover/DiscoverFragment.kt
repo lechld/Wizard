@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import at.aau.edu.wizards.MainActivity
 import at.aau.edu.wizards.R
 import at.aau.edu.wizards.api.Client
@@ -69,7 +70,7 @@ class DiscoverFragment : Fragment() {
 
         binding.discoverRecycler.adapter = adapter
 
-        viewModel.items.observe(viewLifecycleOwner) { endpoints ->
+        viewModel.items.asLiveData().observe(viewLifecycleOwner) { endpoints ->
             adapter.submitList(endpoints)
         }
 
