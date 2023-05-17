@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface Server : MessageSender, MessageReceiver {
     val connections: Flow<List<ServerConnection>>
-    fun getConnections(): List<ServerConnection>
+    fun getConnectionsSync(): List<ServerConnection>
 
     fun startBroadcasting()
     fun stopBroadcasting()

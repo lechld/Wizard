@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface Client : MessageSender, MessageReceiver {
     val connections: Flow<List<ClientConnection>>
-    fun getConnections(): List<ClientConnection>
+    fun connectionsSync(): List<ClientConnection>
 
     fun startDiscovery()
     fun stopDiscovery()

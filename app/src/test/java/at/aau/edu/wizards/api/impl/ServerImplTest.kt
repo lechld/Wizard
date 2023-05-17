@@ -50,7 +50,7 @@ internal class ServerImplTest {
     @Test
     fun `given server, without starting broadcasting, assert connections are empty`() = runTest {
         Assertions.assertEquals(emptyList<ServerConnection>(), server.connections.first())
-        Assertions.assertEquals(emptyList<ServerConnection>(), server.getConnections())
+        Assertions.assertEquals(emptyList<ServerConnection>(), server.getConnectionsSync())
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -104,7 +104,7 @@ internal class ServerImplTest {
                 server.connections.first()
             )
             Assertions.assertEquals(
-                server.getConnections(),
+                server.getConnectionsSync(),
                 server.connections.first()
             )
 
@@ -127,7 +127,7 @@ internal class ServerImplTest {
                 server.connections.first()
             )
             Assertions.assertEquals(
-                server.getConnections(),
+                server.getConnectionsSync(),
                 server.connections.first()
             )
 
@@ -149,7 +149,7 @@ internal class ServerImplTest {
                 server.connections.first()
             )
             Assertions.assertEquals(
-                server.getConnections(),
+                server.getConnectionsSync(),
                 server.connections.first()
             )
 
@@ -166,7 +166,7 @@ internal class ServerImplTest {
                 server.connections.first()
             )
             Assertions.assertEquals(
-                server.getConnections(),
+                server.getConnectionsSync(),
                 server.connections.first()
             )
         }

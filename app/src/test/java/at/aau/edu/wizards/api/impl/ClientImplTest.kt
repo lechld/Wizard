@@ -29,7 +29,7 @@ internal class ClientImplTest {
     @Test
     fun `given client, without starting discovery, assert connections are empty`() = runTest {
         Assertions.assertEquals(emptyList<ClientConnection>(), client.connections.first())
-        Assertions.assertEquals(emptyList<ClientConnection>(), client.getConnections())
+        Assertions.assertEquals(emptyList<ClientConnection>(), client.connectionsSync())
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -72,7 +72,7 @@ internal class ClientImplTest {
         )
         Assertions.assertEquals(
             listOf(expected),
-            client.getConnections()
+            client.connectionsSync()
         )
 
         // Test onEndpointLost
@@ -85,7 +85,7 @@ internal class ClientImplTest {
         )
         Assertions.assertEquals(
             emptyList<ClientConnection>(),
-            client.getConnections()
+            client.connectionsSync()
         )
     }
 
@@ -136,7 +136,7 @@ internal class ClientImplTest {
             )
             Assertions.assertEquals(
                 listOf(expected),
-                client.getConnections()
+                client.connectionsSync()
             )
         }
 
@@ -186,7 +186,7 @@ internal class ClientImplTest {
             )
             Assertions.assertEquals(
                 listOf(expected),
-                client.getConnections()
+                client.connectionsSync()
             )
         }
 
@@ -236,7 +236,7 @@ internal class ClientImplTest {
             )
             Assertions.assertEquals(
                 listOf(expected),
-                client.getConnections()
+                client.connectionsSync()
             )
         }
 
@@ -280,7 +280,7 @@ internal class ClientImplTest {
             )
             Assertions.assertEquals(
                 listOf(expected),
-                client.getConnections()
+                client.connectionsSync()
             )
         }
 }

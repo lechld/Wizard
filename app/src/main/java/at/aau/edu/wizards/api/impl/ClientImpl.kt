@@ -21,7 +21,7 @@ internal class ClientImpl(
     private val _connections = MutableStateFlow(emptyList<ClientConnection>())
     override val connections: Flow<List<ClientConnection>> = _connections
 
-    override fun getConnections(): List<ClientConnection> {
+    override fun connectionsSync(): List<ClientConnection> {
         return _connections.value
     }
 
@@ -61,7 +61,7 @@ internal class ClientImpl(
         // As long we are automatically calling acceptConnection below
         // it's fine to update connections immediately
         // Move to Requested state, server needs to approve connection too
-        val immediateUpdate = getConnections().toMutableList()
+        val immediateUpdate = connectionsSync().toMutableList()
         immediateUpdate.removeAll { it.endpointId == connection.endpointId }
         immediateUpdate.add(
             ClientConnection.Requested(
@@ -81,7 +81,7 @@ internal class ClientImpl(
                 }
 
                 override fun onConnectionResult(endpointId: String, result: ConnectionResolution) {
-                    val connections = getConnections().toMutableList()
+                    val connections = connectionsSync().toMutableList()
                     val old = connections.first { it.endpointId == endpointId }
                     val new = if (result.status.isSuccess) {
                         ClientConnection.Connected(endpointId, old.endpointName)

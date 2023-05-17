@@ -71,7 +71,7 @@ class LobbyViewModel(
 
     fun startGame(): Int {
         val connections =
-            server.getConnections().filterIsInstance(ServerConnection.Connected::class.java)
+            server.getConnectionsSync().filterIsInstance(ServerConnection.Connected::class.java)
 
         connections.forEach { connection ->
             server.send(connection, START_COMMAND)
