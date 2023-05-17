@@ -3,7 +3,6 @@ package at.aau.edu.wizards.api.impl
 import at.aau.edu.wizards.api.model.ClientConnection
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.nearby.connection.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -25,14 +24,12 @@ internal class ClientImplTest {
         messageDelegate
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given client, without starting discovery, assert connections are empty`() = runTest {
         Assertions.assertEquals(emptyList<ClientConnection>(), client.connections.first())
         Assertions.assertEquals(emptyList<ClientConnection>(), client.connectionsSync())
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given client, on starting discovery, assert connections are mapped properly`() = runTest {
         val callbackCaptor = ArgumentCaptor.forClass(EndpointDiscoveryCallback::class.java)
@@ -95,7 +92,6 @@ internal class ClientImplTest {
         then(connectionsClient).should().stopDiscovery()
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given client, on connect with initialised, assert connections are properly reflected`() =
         runTest {
@@ -140,7 +136,6 @@ internal class ClientImplTest {
             )
         }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given client, on connect with success result, assert connections are properly reflected`() =
         runTest {
@@ -190,7 +185,6 @@ internal class ClientImplTest {
             )
         }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given client, on connect with failure result, assert connections are properly reflected`() =
         runTest {
@@ -240,7 +234,6 @@ internal class ClientImplTest {
             )
         }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given client, on connect with disconnection, assert connections are properly reflected`() =
         runTest {

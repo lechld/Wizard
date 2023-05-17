@@ -5,7 +5,6 @@ import com.google.android.gms.common.api.Status
 import com.google.android.gms.nearby.connection.ConnectionInfo
 import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback
 import com.google.android.gms.nearby.connection.ConnectionsClient
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -46,14 +45,12 @@ internal class ServerImplTest {
         connectionInfo = mock { on { it.endpointName } doReturn "endpointName2" },
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given server, without starting broadcasting, assert connections are empty`() = runTest {
         Assertions.assertEquals(emptyList<ServerConnection>(), server.connections.first())
         Assertions.assertEquals(emptyList<ServerConnection>(), server.getConnectionsSync())
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given server, on starting to broadcast, assert lifecycle callbacks are mapped properly to connections`() =
         runTest {

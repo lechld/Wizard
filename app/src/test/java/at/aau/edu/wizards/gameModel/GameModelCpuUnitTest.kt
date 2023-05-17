@@ -1,6 +1,5 @@
 package at.aau.edu.wizards.gameModel
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -10,7 +9,6 @@ import kotlin.random.Random
 class GameModelCpuUnitTest {
     private val viewModel = null
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun metric() = runTest {
         //I think it makes more sense to test for a metric here, since the specific cpu implementation might change in future versions. We should just make sure it stays at a considerable level, namely staying better than previous versions.
@@ -62,7 +60,6 @@ class GameModelCpuUnitTest {
         Assertions.assertTrue(scores >= 157) //if you improve cpu - measure performance by de-commenting above code and adjust to new standard
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun noCard() = runTest {
         val model = GameModel(viewModel)
