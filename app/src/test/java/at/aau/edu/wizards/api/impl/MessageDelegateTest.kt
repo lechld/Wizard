@@ -7,7 +7,6 @@ import com.google.android.gms.nearby.connection.ConnectionsClient
 import com.google.android.gms.nearby.connection.Payload
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate
 import com.google.android.gms.tasks.Task
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -21,7 +20,6 @@ internal class MessageDelegateTest {
     private val encoding: Charset = Charsets.UTF_8
     private val messageDelegate = MessageDelegate(connectionsClient, encoding)
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given plain delegate, on collecting messages, assert EMPTY_DATA is delivered`() = runTest {
         val initial = messageDelegate.messages.first()
@@ -51,7 +49,6 @@ internal class MessageDelegateTest {
         )
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given delegate, on receiving payload with null bytes, assert data is created with empty string`() =
         runTest {
@@ -70,7 +67,6 @@ internal class MessageDelegateTest {
             Assertions.assertEquals(expected, message)
         }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given delegate, on receiving payload with bytes, assert data is created with proper string`() =
         runTest {
