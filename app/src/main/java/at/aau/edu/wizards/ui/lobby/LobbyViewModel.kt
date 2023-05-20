@@ -48,6 +48,10 @@ class LobbyViewModel(
                     accept(clickedItem)
                     numPlayer += 1
                 }
+                is LobbyItem.RemoveCpu -> {
+                    removeCpuPlayer()
+                    numPlayer -= 1
+                }
                 else -> {
                     // do nothing
                     println("do nothing")
@@ -68,6 +72,10 @@ class LobbyViewModel(
 
     private fun addCpuPlayer() {
         cpuPlayers.tryEmit(cpuPlayers.value + 1)
+    }
+
+    private fun removeCpuPlayer() {
+        cpuPlayers.tryEmit(cpuPlayers.value - 1)
     }
 
     fun startGame(): Int {
