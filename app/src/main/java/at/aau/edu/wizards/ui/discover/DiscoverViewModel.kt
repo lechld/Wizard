@@ -15,7 +15,7 @@ class DiscoverViewModel(
     private val discoverItemFactory: DiscoverItemFactory = DiscoverItemFactory()
 ) : ViewModel() {
 
-    val items: LiveData<List<DiscoverItem>> = client.connections.map { connections ->
+    val items: LiveData<List<DiscoverItem>> = client.compound.map { connections ->
         discoverItemFactory.create(connections)
     }.asLiveData()
 

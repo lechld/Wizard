@@ -28,7 +28,7 @@ internal class ClientImplTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given client, without starting discovery, assert connections are empty`() = runTest {
-        Assertions.assertEquals(emptyList<ClientConnection>(), client.connections.first())
+        Assertions.assertEquals(emptyList<ClientConnection>(), client.compound.first())
         Assertions.assertEquals(emptyList<ClientConnection>(), client.getConnections())
     }
 
@@ -68,7 +68,7 @@ internal class ClientImplTest {
 
         Assertions.assertEquals(
             listOf(expected),
-            client.connections.first()
+            client.compound.first()
         )
         Assertions.assertEquals(
             listOf(expected),
@@ -81,7 +81,7 @@ internal class ClientImplTest {
 
         Assertions.assertEquals(
             emptyList<ClientConnection>(),
-            client.connections.first()
+            client.compound.first()
         )
         Assertions.assertEquals(
             emptyList<ClientConnection>(),
@@ -132,7 +132,7 @@ internal class ClientImplTest {
 
             Assertions.assertEquals(
                 listOf(expected),
-                client.connections.first()
+                client.compound.first()
             )
             Assertions.assertEquals(
                 listOf(expected),
@@ -182,7 +182,7 @@ internal class ClientImplTest {
 
             Assertions.assertEquals(
                 listOf(expected),
-                client.connections.first()
+                client.compound.first()
             )
             Assertions.assertEquals(
                 listOf(expected),
@@ -232,7 +232,7 @@ internal class ClientImplTest {
 
             Assertions.assertEquals(
                 listOf(expected),
-                client.connections.first()
+                client.compound.first()
             )
             Assertions.assertEquals(
                 listOf(expected),
@@ -276,7 +276,7 @@ internal class ClientImplTest {
 
             Assertions.assertEquals(
                 listOf(expected),
-                client.connections.first()
+                client.compound.first()
             )
             Assertions.assertEquals(
                 listOf(expected),

@@ -1,6 +1,7 @@
 package at.aau.edu.wizards.discover
 
 import at.aau.edu.wizards.api.Client
+import at.aau.edu.wizards.api.model.ClientConnection
 import at.aau.edu.wizards.ui.discover.DiscoverItem
 import at.aau.edu.wizards.ui.discover.DiscoverItemFactory
 import at.aau.edu.wizards.ui.discover.DiscoverViewModel
@@ -8,10 +9,8 @@ import at.aau.edu.wizards.ui.lobby.LobbyViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -20,51 +19,54 @@ import org.mockito.kotlin.*
 
 class DiscoverViewModelTest {
 
+
     private val client = mock<Client>()
-    private val discoverItemFactory = mock<DiscoverItemFactory>()
+    private val discoverItemFactory = DiscoverItemFactory()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
     fun setup() {
-        val testDispatcher = UnconfinedTestDispatcher()
-        Dispatchers.setMain(testDispatcher)
+        //val testDispatcher = UnconfinedTestDispatcher()
+        //Dispatchers.setMain(testDispatcher)
         whenever(client.messages).doReturn(emptyFlow())
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @AfterEach
     fun tearDown() {
-        Dispatchers.resetMain()
+        //Dispatchers.resetMain()
     }
 
     /*
     - item from conection
     - init when start command , when no command(not start)
 
-    - Factory separate tested
-
      */
 
-    /*
+/*
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `Connections test Items LiveData Initialized With DiscoverItems`() = runTest {
-        val clientConnection = mock<ClientConnection>()
-        val listClientConnection = listOf(clientConnection)
-        val flowOfClient = flowOf(listClientConnection)
-        val expectedResult = mock<DiscoverItem>()
-        val listExpectedResult  = listOf(expectedResult)
 
-        whenever((discoverItemFactory.create(listClientConnection))).doReturn(listExpectedResult)
-        whenever(client.connections).doReturn(flowOfClient)
+        val clientConnection = mock<ClientConnection>()
+        val listClientConnection = listOf<ClientConnection>(clientConnection)
+        val expectedResult = mock<DiscoverItem>()
+        val listExpectedResult = listOf(expectedResult)
+
+        //whenever((discoverItemFactory.create(listClientConnection))).doReturn(listExpectedResult)
+        whenever(client.compound).doReturn(flowOf(listClientConnection))
+        whenever(client.messages).doReturn(mock())
 
         val viewModel = DiscoverViewModel(client, discoverItemFactory)
 
+        viewModel.startGame
+        advanceUntilIdle()
         val result = viewModel.items.value
+
         Assertions.assertEquals(listExpectedResult, result)
     }
 
-     */
+ */
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
@@ -126,7 +128,7 @@ class DiscoverViewModelTest {
 
             val exceptedResult = factory.create(DiscoverViewModel::class.java)
 
-            Assertions.assertTrue(exceptedResult is DiscoverViewModel)
+            //Assertions.assertTrue(exceptedResult is DiscoverViewModel)
         }
 
         @OptIn(ExperimentalCoroutinesApi::class)

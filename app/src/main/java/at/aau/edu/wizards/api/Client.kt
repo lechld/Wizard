@@ -7,7 +7,7 @@ import com.google.android.gms.nearby.Nearby
 import kotlinx.coroutines.flow.Flow
 
 interface Client : MessageSender, MessageReceiver {
-    val connections: Flow<List<ClientConnection>>
+    val compound: Flow<List<ClientConnection>>
     fun getConnections(): List<ClientConnection>
 
     fun startDiscovery()
