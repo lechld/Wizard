@@ -32,11 +32,12 @@ import org.mockito.kotlin.*
 )
 class DiscoverViewModelTest {
     private val client = mock<Client> {
-        on { messages } doReturn flowOf(Data("1",START_COMMAND))
+        on { messages } doReturn flowOf(Data("1", START_COMMAND))
     }
     private val discoverItemFactory = mock<DiscoverItemFactory>()
+
     @BeforeEach
-    fun setup(){
+    fun setup() {
         val connection = mock<ClientConnection>()
         val connections = listOf(connection)
         val discoverItem = mock<DiscoverItem>()
