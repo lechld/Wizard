@@ -48,7 +48,19 @@ class LobbyViewModel(
                     accept(clickedItem)
                     numPlayer += 1
                 }
+                else -> {
+                    // do nothing
+                    println("do nothing")
+                }
+            }
+        } else {
+            checkTooManyPlayer = true
+        }
+
+        if (numPlayer <= 6) {
+            when (clickedItem) {
                 is LobbyItem.RemoveCpu -> {
+                    checkTooManyPlayer = false
                     removeCpuPlayer()
                     numPlayer -= 1
                 }
@@ -57,8 +69,6 @@ class LobbyViewModel(
                     println("do nothing")
                 }
             }
-        } else {
-            checkTooManyPlayer = true
         }
     }
 
