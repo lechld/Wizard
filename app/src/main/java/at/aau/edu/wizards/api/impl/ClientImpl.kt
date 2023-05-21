@@ -19,7 +19,7 @@ internal class ClientImpl(
     MessageReceiver by messageDelegate {
 
     private val _connections = MutableStateFlow(emptyList<ClientConnection>())
-    override val compound: Flow<List<ClientConnection>> = _connections
+    override val connections: Flow<List<ClientConnection>> = _connections
 
     override fun getConnections(): List<ClientConnection> {
         return _connections.value
