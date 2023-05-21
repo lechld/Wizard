@@ -5,6 +5,8 @@ import at.aau.edu.wizards.InstantTaskExecutorExtension
 import at.aau.edu.wizards.TestCoroutineDispatcherExtension
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.model.ClientConnection
+import at.aau.edu.wizards.api.model.Data
+import at.aau.edu.wizards.gameModel.START_COMMAND
 import at.aau.edu.wizards.ui.discover.DiscoverItem
 import at.aau.edu.wizards.ui.discover.DiscoverItemFactory
 import at.aau.edu.wizards.ui.discover.DiscoverViewModel
@@ -29,26 +31,42 @@ import org.mockito.kotlin.*
     ]
 )
 class DiscoverViewModelTest {
+    private val client = mock<Client> {
+        on { messages } doReturn flowOf(Data("1",START_COMMAND))
+    }
+    private val discoverItemFactory = mock<DiscoverItemFactory>()
+    @BeforeEach
+    fun setup(){
+        val connection = mock<ClientConnection>()
+        val connections = listOf(connection)
+        val discoverItem = mock<DiscoverItem>()
+        val discoverItems = listOf(discoverItem)
+
+        whenever(client.connections).doReturn(flowOf(connections))
+        whenever(discoverItemFactory.create(connections)).doReturn(discoverItems)
+
+    }
 
     @Test
     fun `given view model, when client posts new connections, assert they are reflected inside items`() =
         runTest {
-            val client = mock<Client> {
-                on { messages } doReturn emptyFlow()
-            }
-            val factory = mock<DiscoverItemFactory>()
+
             val connection = mock<ClientConnection>()
             val connections = listOf(connection)
             val discoverItem = mock<DiscoverItem>()
-            val discoverItems = listOf(discoverItem)
+            val exceptedResult = listOf(discoverItem)
 
             whenever(client.connections).doReturn(flowOf(connections))
-            whenever(factory.create(connections)).doReturn(discoverItems)
+            whenever(discoverItemFactory.create(connections)).doReturn(exceptedResult)
 
-            val viewModel = DiscoverViewModel(client, factory)
+            val viewModel = DiscoverViewModel(client, discoverItemFactory)
+
             val items = viewModel.items.first()
+            viewModel.startGame
 
-            Assertions.assertEquals(discoverItems, items)
+            //println(test)
+
+            Assertions.assertEquals(exceptedResult, items)
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -56,7 +74,6 @@ class DiscoverViewModelTest {
     fun `Testing startDiscovery`() = runTest {
 
         val viewModel = DiscoverViewModel(client, discoverItemFactory)
-
         viewModel.startDiscovery()
 
         then(client).should().startDiscovery()
@@ -82,7 +99,7 @@ class DiscoverViewModelTest {
 
         viewModel.connectEndpoint(discoverItemPending)
 
-        then(client).should().getConnections()
+        then(client).should().connections
     }
 
     class FactoryTest() {
@@ -121,7 +138,7 @@ class DiscoverViewModelTest {
             val factory = DiscoverViewModel.Factory(client)
             try {
 
-                val exceptedResult = factory.create(LobbyViewModel::class.java)
+                factory.create(LobbyViewModel::class.java)
 
             } catch (e: IllegalStateException) {
 
