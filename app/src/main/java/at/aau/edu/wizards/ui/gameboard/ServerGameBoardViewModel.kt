@@ -16,7 +16,7 @@ class ServerGameBoardViewModel(
 
     init {
         val connections =
-            server.getConnections().filterIsInstance(ServerConnection.Connected::class.java)
+            server.getConnectionsSync().filterIsInstance(ServerConnection.Connected::class.java)
 
         viewModelScope.launch {
             server.messages.collect { message ->
@@ -56,7 +56,7 @@ class ServerGameBoardViewModel(
         } else {
             viewModelScope.launch {
                 if (gameModel.receiveMessage(move)) {
-                    server.getConnections()
+                    server.getConnectionsSync()
                         .filterIsInstance(ServerConnection.Connected::class.java)
                         .forEach {
                             server.send(it, move)

@@ -29,7 +29,7 @@ class ClientGameBoardViewModel(
         } else {
 
             viewModelScope.launch {
-                client.getConnections().filterIsInstance(ClientConnection.Connected::class.java)
+                client.connectionsSync().filterIsInstance(ClientConnection.Connected::class.java)
                     .forEach {
                         client.send(it, move)
                     }

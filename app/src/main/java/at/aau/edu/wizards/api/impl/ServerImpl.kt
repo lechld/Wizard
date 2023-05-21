@@ -25,7 +25,7 @@ internal class ServerImpl(
     private val _connections = MutableStateFlow<List<ServerConnection>>(emptyList())
     override val connections: StateFlow<List<ServerConnection>> = _connections.asStateFlow()
 
-    override fun getConnections(): List<ServerConnection> {
+    override fun getConnectionsSync(): List<ServerConnection> {
         return _connections.value
     }
 

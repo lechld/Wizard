@@ -6,18 +6,19 @@ import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.gameModel.START_COMMAND
 import at.aau.edu.wizards.util.SingleLiveEvent
 import com.google.android.gms.nearby.connection.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 
 class DiscoverViewModel(
     private val client: Client,
-    private val discoverItemFactory: DiscoverItemFactory = DiscoverItemFactory()
+    private val discoverItemFactory: DiscoverItemFactory = DiscoverItemFactory(),
 ) : ViewModel() {
 
-    val items: LiveData<List<DiscoverItem>> = client.connections.map { connections ->
+    val items: Flow<List<DiscoverItem>> = client.connections.map { connections ->
         discoverItemFactory.create(connections)
-    }.asLiveData()
+    }
 
     private val _startGame = SingleLiveEvent<Unit>()
     val startGame: LiveData<Unit> = _startGame

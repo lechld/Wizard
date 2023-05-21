@@ -5,6 +5,7 @@ import at.aau.edu.wizards.*
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.api.model.ServerConnection
 import at.aau.edu.wizards.gameModel.START_COMMAND
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 
@@ -16,10 +17,10 @@ class LobbyViewModel(
 
     private val connections = server.connections
 
-    val items: LiveData<List<LobbyItem>> =
+    val items: Flow<List<LobbyItem>> =
         connections.combine(cpuPlayers) { connections, cpuPlayers ->
             lobbyItemFactory.create(connections, cpuPlayers)
-        }.asLiveData()
+        }
 
     fun startAdvertising() {
         server.startBroadcasting()
@@ -71,7 +72,7 @@ class LobbyViewModel(
 
     fun startGame(): Int {
         val connections =
-            server.getConnections().filterIsInstance(ServerConnection.Connected::class.java)
+            server.getConnectionsSync().filterIsInstance(ServerConnection.Connected::class.java)
 
         connections.forEach { connection ->
             server.send(connection, START_COMMAND)
