@@ -1,6 +1,8 @@
 package at.aau.edu.wizards.ui.gameboard
 
 
+import android.content.Intent
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.view.DragEvent
 import android.view.LayoutInflater
@@ -20,6 +22,7 @@ import at.aau.edu.wizards.gameModel.GameModelCard
 import at.aau.edu.wizards.ui.gameboard.claim.GuessAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
+import at.aau.edu.wizards.ui.gameboard.shake.ShakeService
 import at.aau.edu.wizards.util.OffsetItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -46,6 +49,12 @@ class GameBoardFragment : Fragment(), OnDragListener {
         ViewModelProvider(this, factory)[GameBoardViewModel::class.java]
     }
 
+    private var sensorManager: SensorManager? = null
+    private var acceleration = 0f
+    private var currentAcceleration = 0f
+    private var lastAcceleration = 0f
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -64,6 +73,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
                     .show()
             }
         })
+
     }
 
     override fun onCreateView(
@@ -76,12 +86,18 @@ class GameBoardFragment : Fragment(), OnDragListener {
         this.binding = binding
 
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupUI()
+
+        val intent = Intent(context, ShakeService::class.java)
+        //Start Service
+        context?.startService(intent)
+
     }
 
     override fun onDestroyView() {
@@ -99,7 +115,9 @@ class GameBoardFragment : Fragment(), OnDragListener {
         setupTrump(binding)
         setupScoreboard()
 
+
     }
+
 
     private fun setupTrump(binding: FragmentGameboardBinding) {
         binding.trumpIndicatorCard.text.visibility = View.INVISIBLE
