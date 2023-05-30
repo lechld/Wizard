@@ -51,6 +51,7 @@ internal class ServerImplTest {
         Assertions.assertEquals(emptyList<ServerConnection>(), server.getConnectionsSync())
     }
 
+    // FIXME split into individual tests
     @Test
     fun `given server, on starting to broadcast, assert lifecycle callbacks are mapped properly to connections`() =
         runTest {

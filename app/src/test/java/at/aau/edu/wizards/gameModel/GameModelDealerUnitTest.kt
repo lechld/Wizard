@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 
 
 class GameModelDealerUnitTest {
+    // FIXME split into individual tests
     @Test
     fun test() {
         val dealer = GameModelDealer(0)
@@ -87,6 +88,7 @@ class GameModelDealerUnitTest {
         return amount
     }
 
+    // FIXME 4 methods duplicate code
     private fun getAmountOfNormal(list: ArrayList<GameModelCard>): Int {
         var amount = 0
         for (card in list) {

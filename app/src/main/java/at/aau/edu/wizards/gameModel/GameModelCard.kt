@@ -27,6 +27,7 @@ sealed class GameModelCard {
         object Red : Color()
     }
 
+    // FIXME refactor for clarity, its always type+color, magic constants
     fun getString(): String {
         when (this) {
             is Jester -> {

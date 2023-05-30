@@ -8,6 +8,7 @@ import kotlin.random.Random
 
 class GameModelUnitTest {
     private val viewModel = null
+    // FIXME readability maintainability
     @Test
     fun test() = runTest{
         val model = GameModel(viewModel)

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 class GameModelListenerUnitTest {
     private val viewModel = null
 
+    // FIXME too large test
     @Test
     fun test() = runTest {
         val model = GameModel(viewModel)
