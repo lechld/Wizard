@@ -2,6 +2,7 @@ package at.aau.edu.wizards.gameModel
 
 import kotlin.random.Random
 
+// FIXME why does cpu need a gamemodelplayer in most methods
 class GameModelCpu(seed: Int, private val rules: GameModelRules) {
     private val random = Random(seed)
 

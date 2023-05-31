@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 
+// FIXME too large tests
+// FIXME extract setup parts
 class GameModelRulesUnitTest {
     private val viewModel = null
 

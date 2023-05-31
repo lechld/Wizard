@@ -30,6 +30,7 @@ internal class ClientImplTest {
         Assertions.assertEquals(emptyList<ClientConnection>(), client.connectionsSync())
     }
 
+    // FIXME split up the two states into two tests (one for found, one for lost)
     @Test
     fun `given client, on starting discovery, assert connections are mapped properly`() = runTest {
         val callbackCaptor = ArgumentCaptor.forClass(EndpointDiscoveryCallback::class.java)

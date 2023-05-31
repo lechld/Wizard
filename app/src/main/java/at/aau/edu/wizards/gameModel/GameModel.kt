@@ -3,6 +3,9 @@ package at.aau.edu.wizards.gameModel
 import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
 import kotlin.random.Random
 
+// FIXME refactor for maintainability/readability
+// FIXME what does move represent
+// FIXME extract magic constants (what do 60, 11 mean)
 class GameModel(private val viewModel: GameBoardViewModel?) {
 
     private val players = ArrayList<GameModelPlayer>()
@@ -40,6 +43,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         ))
     }
 
+    // FIXME meaningful message content (eg, GameCommand), or message parsing in dedicated class for maintainability
     suspend fun receiveMessage(move: String): Boolean {
         return when (players.isEmpty()) {
             true -> {

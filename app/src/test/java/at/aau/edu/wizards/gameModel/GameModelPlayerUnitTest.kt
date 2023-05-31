@@ -8,6 +8,7 @@ import org.junit.jupiter.api.assertThrows
 
 class GameModelPlayerUnitTest {
 
+    // FIXME too large test
     @Test
     fun test() {
         val dealer1 = GameModelDealer(420420)

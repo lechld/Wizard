@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.nio.charset.Charset
 
+// FIXME meaningful message content (eg, GameCommand), or message parsing in dedicated class for maintainability
 class MessageDelegate(
     private val connectionsClient: ConnectionsClient,
     private val encoding: Charset = Charsets.UTF_8,
