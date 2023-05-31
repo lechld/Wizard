@@ -58,6 +58,18 @@ abstract class GameBoardViewModel : ViewModel() {
         return guesses
     }
 
+    fun updateGuess() {
+
+        //gameModel.listener.printtest()
+
+        _guess.postValue(buildGuessList(gameModel))
+        gameModel.updateGuessCount()
+        // überprüfen ob sich der wert de Gusses wirklich ändert??
+        println("Update")
+        //gameModel.listener.printtest()
+
+    }
+
     fun getIconFromId(icon: Int): Int {
         return when (icon) {
             1 -> R.drawable.icon1

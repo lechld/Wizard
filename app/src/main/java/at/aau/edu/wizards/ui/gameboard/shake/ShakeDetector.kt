@@ -25,6 +25,33 @@ class ShakeDetector : SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent) {
+        if (shakeListener != null && event != null) {
+            val x = event.values[0]
+            val y = event.values[1]
+            val z = event.values[2]
+
+            if (x > 2 || x < -2 || y > 12 || y < -12|| z > 2 || z < -2){
+
+                val now = System.currentTimeMillis()
+
+                if (shakeTimestamp + SHAKE_SLOP_TIME_MS > now) {
+                    return
+                }
+
+                if (shakeTimestamp + SHAKE_COUNT_RESET_TIME_MS < now) {
+                    shakeCount = 0
+                }
+                shakeTimestamp = now
+                shakeCount++
+
+                shakeListener!!.onShake(shakeCount)
+            }
+
+        }
+
+        }
+
+    /*override fun onSensorChanged(event: SensorEvent) {
 
         if (shakeListener != null) {
             val x = event.values[0]
@@ -55,6 +82,8 @@ class ShakeDetector : SensorEventListener {
             }
         }
     }
+
+     */
 
     companion object {
         private val SHAKE_THRESHOLD_GRAVITY = 2.7f

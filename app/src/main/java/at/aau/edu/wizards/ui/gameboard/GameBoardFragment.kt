@@ -1,7 +1,8 @@
 package at.aau.edu.wizards.ui.gameboard
 
 
-import android.content.Intent
+import android.content.Context
+import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.view.DragEvent
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnDragListener
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -22,7 +24,7 @@ import at.aau.edu.wizards.gameModel.GameModelCard
 import at.aau.edu.wizards.ui.gameboard.claim.GuessAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
-import at.aau.edu.wizards.ui.gameboard.shake.ShakeService
+import at.aau.edu.wizards.ui.gameboard.shake.ShakeDetector
 import at.aau.edu.wizards.util.OffsetItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -49,12 +51,6 @@ class GameBoardFragment : Fragment(), OnDragListener {
         ViewModelProvider(this, factory)[GameBoardViewModel::class.java]
     }
 
-    private var sensorManager: SensorManager? = null
-    private var acceleration = 0f
-    private var currentAcceleration = 0f
-    private var lastAcceleration = 0f
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,24 +58,20 @@ class GameBoardFragment : Fragment(), OnDragListener {
 
         activity.onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                MaterialAlertDialogBuilder(activity)
-                    .setMessage(getString(R.string.leave_warning))
+                MaterialAlertDialogBuilder(activity).setMessage(getString(R.string.leave_warning))
                     .setPositiveButton(getString(R.string.no), null)
                     .setNegativeButton(getString(R.string.yes)) { _, _ ->
                         isEnabled = false
                         activity.onBackPressedDispatcher.onBackPressed()
-                    }
-                    .create()
-                    .show()
+                    }.create().show()
             }
         })
+
 
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         val binding = FragmentGameboardBinding.inflate(inflater, container, false)
 
@@ -93,11 +85,8 @@ class GameBoardFragment : Fragment(), OnDragListener {
         super.onViewCreated(view, savedInstanceState)
 
         setupUI()
-
-        val intent = Intent(context, ShakeService::class.java)
-        //Start Service
-        context?.startService(intent)
-
+        // Registriere den Shake-Listener
+        registerShakeListener()
     }
 
     override fun onDestroyView() {
@@ -205,11 +194,36 @@ class GameBoardFragment : Fragment(), OnDragListener {
             if (dropX < binding.dragContainer.width && dropY < binding.dragContainer.height) {
                 val item: GameModelCard = event.localState as GameModelCard
                 viewModel.sendMessage(item.getString())
+            } else {
+                return false
             }
         }
 
         return true
     }
+
+    private fun registerShakeListener() {
+        val shakeDetector = ShakeDetector()
+        shakeDetector.setOnShakeListener(object : ShakeDetector.OnShakeListener {
+            override fun onShake(count: Int) {
+
+                viewModel.updateGuess()
+
+                // Optional: Zeige eine Toast-Nachricht an, um das Schütteln zu bestätigen
+                Toast.makeText(
+                    requireContext(), "Shake event detected. Guess updated", Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+
+        val sensorManager =
+            requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        sensorManager.registerListener(
+            shakeDetector, accelerometer, SensorManager.SENSOR_DELAY_NORMAL
+        )
+    }
+
 
     companion object {
         private const val AS_CLIENT_EXTRA = "AS_CLIENT_EXTRA"
@@ -222,8 +236,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
 
             return GameBoardFragment().apply {
                 arguments = bundleOf(
-                    AS_CLIENT_EXTRA to asClient,
-                    AMOUNT_CPU_EXTRA to amountCpu
+                    AS_CLIENT_EXTRA to asClient, AMOUNT_CPU_EXTRA to amountCpu
                 )
             }
         }

@@ -10,6 +10,9 @@ import android.hardware.SensorManager
 import android.os.Handler
 import android.os.IBinder
 import android.widget.Toast
+import at.aau.edu.wizards.api.Server
+import at.aau.edu.wizards.ui.gameboard.GameBoardFragment
+import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
 import kotlin.math.sqrt
 
 class ShakeService : Service(), SensorEventListener {
@@ -19,6 +22,8 @@ class ShakeService : Service(), SensorEventListener {
     private var accel: Float = 0.toFloat()
     private var accelCurrent: Float = 0.toFloat()
     private var accelLast: Float = 0.toFloat()
+
+    private val gameBoardFragment = GameBoardFragment()
 
     override fun onBind(intent: Intent): IBinder? {
         return null
@@ -47,8 +52,8 @@ class ShakeService : Service(), SensorEventListener {
         accel = accel * 0.9f + delta
 
         if (accel > 11) {
-
             Toast.makeText(applicationContext, "Shake event detected", Toast.LENGTH_SHORT).show()
+
         }
     }
 

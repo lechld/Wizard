@@ -184,4 +184,13 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         return sendMessage(buildString { append((60 + rules.id * 11 + guess).toChar().toString()) })
     }
 
+    fun updateGuessCount() {
+
+        val newGuessList = listener.sendGuessList()
+
+        newGuessList[localPlayer()] =
+            GameModelListener.Guess(listener.getCurrentGuessOfPlayer(localPlayer()), localPlayer())
+
+        listener.updatedGuess(newGuessList)
+    }
 }
