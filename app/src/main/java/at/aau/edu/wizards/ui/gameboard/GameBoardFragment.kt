@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnDragListener
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -103,7 +102,6 @@ class GameBoardFragment : Fragment(), OnDragListener {
         setupHeader(binding)
         setupTrump(binding)
         setupScoreboard()
-
 
     }
 
@@ -206,13 +204,27 @@ class GameBoardFragment : Fragment(), OnDragListener {
         val shakeDetector = ShakeDetector()
         shakeDetector.setOnShakeListener(object : ShakeDetector.OnShakeListener {
             override fun onShake(count: Int) {
+                //viewModel.updateGuess()
+                val arrayGuessesPossibilities = viewModel.getBuildGuess()
+                var selectedOption = 0
+                var selectedGuess: CharSequence
 
-                viewModel.updateGuess()
 
-                // Optional: Zeige eine Toast-Nachricht an, um das Schütteln zu bestätigen
-                Toast.makeText(
-                    requireContext(), "Shake event detected. Guess updated", Toast.LENGTH_SHORT
-                ).show()
+                activity?.let {
+                    MaterialAlertDialogBuilder(it)
+                        .setTitle("Shake event detected. Guess updated")
+                        .setNeutralButton("Cancel", null)
+                        .setSingleChoiceItems(arrayGuessesPossibilities, selectedOption) { dialog, which ->
+                            selectedOption = which
+                        }
+                        .setPositiveButton("Ok") { dialog, which ->
+                            // Verwende das ausgewählte Element basierend auf dem gespeicherten Index
+                            var selectedGuess = arrayGuessesPossibilities[selectedOption]
+                            var selectedGuessInt = selectedGuess.toString().toInt()
+                            // hier muss die GUess Updathe Methof´de von GameBoardViewModal aufrufen
+                        }
+                        .show()
+                }
             }
         })
 
@@ -232,6 +244,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
             if (asClient && amountCpu > 0) {
                 // This is not handled ideally, but fine for now
                 throw IllegalArgumentException("Only Server is allowed to define cpu players")
+
             }
 
             return GameBoardFragment().apply {

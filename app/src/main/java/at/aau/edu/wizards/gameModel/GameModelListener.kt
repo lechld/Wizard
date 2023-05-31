@@ -185,24 +185,14 @@ class GameModelListener(
         }
     }
 
-    fun sendGuessList(): ArrayList<Guess> {
-        return guesses
-    }
-
     fun updatedGuess(newGuess: ArrayList<Guess>) {
-        guessing = true
+        //println(guesses)
+        //guessing = true
         guesses.clear()
         guesses.addAll(newGuess)
-    }
-/*
-    fun printtest() {
-        for (player in players) {
-
-            for (guess in player.guesses) {
-                println(guesses[player.id])
-            }
-        }
+        //println("Update")
+        //println(guesses)
+       // println("-----------------------------------")
     }
 
- */
 }

@@ -60,14 +60,16 @@ abstract class GameBoardViewModel : ViewModel() {
 
     fun updateGuess() {
 
-        //gameModel.listener.printtest()
-
-        _guess.postValue(buildGuessList(gameModel))
         gameModel.updateGuessCount()
-        // überprüfen ob sich der wert de Gusses wirklich ändert??
-        println("Update")
-        //gameModel.listener.printtest()
 
+    }
+
+    fun getBuildGuess(): Array<CharSequence> {
+
+        val charSequenceArray: Array<CharSequence> =
+            buildGuessList(gameModel).map { it.toString() }.toTypedArray()
+
+        return charSequenceArray
     }
 
     fun getIconFromId(icon: Int): Int {
