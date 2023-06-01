@@ -214,13 +214,17 @@ class GameBoardFragment : Fragment(), OnDragListener {
                     MaterialAlertDialogBuilder(it)
                         .setTitle("Shake event detected. Guess updated")
                         .setNeutralButton("Cancel", null)
-                        .setSingleChoiceItems(arrayGuessesPossibilities, selectedOption) { dialog, which ->
+                        .setSingleChoiceItems(
+                            arrayGuessesPossibilities,
+                            selectedOption
+                        ) { dialog, which ->
                             selectedOption = which
                         }
                         .setPositiveButton("Ok") { dialog, which ->
                             // Verwende das ausgewählte Element basierend auf dem gespeicherten Index
                             var selectedGuess = arrayGuessesPossibilities[selectedOption]
                             var selectedGuessInt = selectedGuess.toString().toInt()
+                            viewModel.updateGuess(selectedGuessInt)
                             // hier muss die GUess Updathe Methof´de von GameBoardViewModal aufrufen
                         }
                         .show()

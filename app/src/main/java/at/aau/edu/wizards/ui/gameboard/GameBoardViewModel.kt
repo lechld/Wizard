@@ -58,9 +58,9 @@ abstract class GameBoardViewModel : ViewModel() {
         return guesses
     }
 
-    fun updateGuess() {
+    fun updateGuess(guessInt: Int) {
 
-        gameModel.updateGuessCount()
+        gameModel.updateGuessCount(guessInt)
 
     }
 
