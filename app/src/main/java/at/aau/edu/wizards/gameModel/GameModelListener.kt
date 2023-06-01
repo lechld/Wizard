@@ -187,7 +187,7 @@ class GameModelListener(
 
     fun updatedGuess(newGuess: Guess) {
         println(guesses)
-        guesses.set(newGuess.playerId, newGuess)
+        guesses.set(activePlayer, newGuess)
         println("Update")
         println(guesses)
         println("-----------------------------------")
