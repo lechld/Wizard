@@ -6,6 +6,5 @@ data class GameBoardHeader(
     val name: String,
     val guess: Int,
     val wins: Int,
-    val score: Int,
-    val theme: GameBoardTheme
+    val score: Int
 )

@@ -183,5 +183,4 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
     fun sendGuessOfLocalPlayer(guess: Int): Boolean {
         return sendMessage(buildString { append((60 + rules.id * 11 + guess).toChar().toString()) })
     }
-
 }
