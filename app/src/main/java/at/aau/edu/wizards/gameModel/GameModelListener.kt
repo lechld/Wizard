@@ -111,8 +111,7 @@ class GameModelListener(
                 headerList[player] = headerList[player].copy(
                     guess = getCurrentGuessOfPlayer(player),
                     wins = getCurrentWins(player),
-                    score = getCurrentScoreOfPlayer(player),
-                    theme = trump.getGameBoardTheme()
+                    score = getCurrentScoreOfPlayer(player)
                 )
             }
         } else {
@@ -124,8 +123,7 @@ class GameModelListener(
                         getNameOfPlayer(player),
                         getCurrentGuessOfPlayer(player),
                         getCurrentWins(player),
-                        getCurrentScoreOfPlayer(player),
-                        trump.getGameBoardTheme()
+                        getCurrentScoreOfPlayer(player)
                     )
                 )
             }

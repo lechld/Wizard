@@ -1,7 +1,6 @@
 package at.aau.edu.wizards.gameModel
 
 import at.aau.edu.wizards.R
-import at.aau.edu.wizards.ui.gameboard.GameBoardTheme
 
 sealed class GameModelCard {
 
@@ -180,28 +179,6 @@ sealed class GameModelCard {
                     else -> R.drawable.r13
                 }
             }
-        }
-    }
-
-    fun getGameBoardTheme(): GameBoardTheme {
-        return when (this) {
-            is Normal -> {
-                when (this.color) {
-                    Color.Blue -> GameBoardTheme.Blue
-                    Color.Green -> GameBoardTheme.Green
-                    Color.Orange -> GameBoardTheme.Orange
-                    Color.Red -> GameBoardTheme.Red
-                }
-            }
-            is Wizard -> {
-                when (this.color) {
-                    Color.Blue -> GameBoardTheme.Blue
-                    Color.Green -> GameBoardTheme.Green
-                    Color.Orange -> GameBoardTheme.Orange
-                    Color.Red -> GameBoardTheme.Red
-                }
-            }
-            else -> GameBoardTheme.No
         }
     }
 
