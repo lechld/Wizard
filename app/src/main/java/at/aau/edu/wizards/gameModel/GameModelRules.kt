@@ -198,7 +198,7 @@ class GameModelRules(
         if (currentPlayer == dealer) {
             delay(1000)
             nextSet()
-        } else if (!players[currentPlayer].isHuman && everyoneHasGuessed() && round < 11) {
+        } else if (!players[currentPlayer].isHuman) {
             getCpuToPlay()
         }
     }
@@ -209,7 +209,7 @@ class GameModelRules(
         board.clear()
         if (players[0].cards.isEmpty()) {
             nextRound()
-        } else if (!players[currentPlayer].isHuman && everyoneHasGuessed() && round < 11) {
+        } else if (!players[currentPlayer].isHuman) {
             getCpuToPlay()
         }
     }

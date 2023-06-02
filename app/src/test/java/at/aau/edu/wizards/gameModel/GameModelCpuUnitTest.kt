@@ -1,19 +1,21 @@
 package at.aau.edu.wizards.gameModel
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.random.Random
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class GameModelCpuUnitTest {
     private val viewModel = null
 
-    /*
     @Test
-    fun metric() = runTest {
+    fun metric() = runTest(EmptyCoroutineContext, 60_000L) {
         //I think it makes more sense to test for a metric here, since the specific cpu implementation might change in future versions. We should just make sure it stays at a considerable level, namely staying better than previous versions.
-        val limit = 1000
+        val limit = 100
         var scores = 0
         var pZero = 0
 
@@ -39,9 +41,9 @@ class GameModelCpuUnitTest {
                             model.receiveMessage(card.getString())
                             sent = true
                         }
-                    }
-                    if (!sent) {
-                        continue
+                        if (!sent) {
+                            continue
+                        }
                     }
                 }
             }
@@ -60,8 +62,6 @@ class GameModelCpuUnitTest {
         Assertions.assertTrue(pZero < scores)
         Assertions.assertTrue(scores >= 157) //if you improve cpu - measure performance by de-commenting above code and adjust to new standard
     }
-    
-     */
 
     @Test
     fun noCard() = runTest {
@@ -72,7 +72,6 @@ class GameModelCpuUnitTest {
         players.add(GameModelPlayer(1, dealer, false, 1, "test"))
         players.add(GameModelPlayer(2, dealer, false, 1, "test"))
         val rules = GameModelRules(players, 0, dealer, model, 420420)
-
         val cpu = GameModelCpu(420420, rules)
 
         Assertions.assertEquals(GameModelCard.NoCard, cpu.getMove(players[1]))
@@ -90,5 +89,4 @@ class GameModelCpuUnitTest {
         Assertions.assertEquals(0, cpu.getGuess(players[1]))
         Assertions.assertEquals(GameModelCard.NoCard, cpu.getMove(players[1]))
     }
-    
 }
