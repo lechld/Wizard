@@ -74,19 +74,19 @@ class GameModelCpuUnitTest {
         val rules = GameModelRules(players, 0, dealer, model, 420420)
         val cpu = GameModelCpu(420420, rules)
 
-        Assertions.assertEquals(GameModelCard.NoCard, cpu.getMove(players[1]))
+        Assertions.assertEquals(GameModelCard.NoCard, cpu.getMove(1))
 
         for (player in players) {
             player.cards.add(GameModelCard.NoCard)
         }
 
-        Assertions.assertEquals(0, cpu.getGuess(players[1]))
+        Assertions.assertEquals(0, cpu.getGuess(1))
 
-        Assertions.assertEquals(GameModelCard.NoCard, cpu.getMove(players[1]))
+        Assertions.assertEquals(GameModelCard.NoCard, cpu.getMove(1))
 
         players[0].cards.add(GameModelCard.Jester(GameModelCard.Color.Orange))
         assertThrows<Exception> { rules.playCard(GameModelCard.Jester(GameModelCard.Color.Orange)) }
-        Assertions.assertEquals(0, cpu.getGuess(players[1]))
-        Assertions.assertEquals(GameModelCard.NoCard, cpu.getMove(players[1]))
+        Assertions.assertEquals(0, cpu.getGuess(1))
+        Assertions.assertEquals(GameModelCard.NoCard, cpu.getMove(1))
     }
 }
