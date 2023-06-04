@@ -13,7 +13,6 @@ import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentLobbyBinding
 import at.aau.edu.wizards.ui.lobby.recycler.LobbyAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 
 class LobbyFragment : Fragment() {
 
