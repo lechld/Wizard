@@ -13,6 +13,7 @@ import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentLobbyBinding
 import at.aau.edu.wizards.ui.lobby.recycler.LobbyAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 
 class LobbyFragment : Fragment() {
 
@@ -78,10 +79,16 @@ class LobbyFragment : Fragment() {
         }
 
         binding.startGameButton.setOnClickListener {
-            val amountCpu = viewModel.startGame()
-            val mainActivity = activity as? MainActivity ?: return@setOnClickListener
 
-            mainActivity.showGame(asClient = false, amountCpu = amountCpu)
+            if (viewModel.numPlayer < 3) {
+                Snackbar.make(binding.root, "Not enough players connected (minimum 3 required). Add some CPU players or wait for someone to connect!", Snackbar.LENGTH_LONG).show()
+            }
+            else {
+                val amountCpu = viewModel.startGame()
+                val mainActivity = activity as? MainActivity ?: return@setOnClickListener
+
+                mainActivity.showGame(asClient = false, amountCpu = amountCpu)
+            }
         }
     }
 }
