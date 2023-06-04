@@ -1,9 +1,10 @@
 package at.aau.edu.wizards
 
-import android.app.AlertDialog
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
+import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -13,6 +14,7 @@ import at.aau.edu.wizards.ui.discover.DiscoverFragment
 import at.aau.edu.wizards.ui.gameboard.GameBoardFragment
 import at.aau.edu.wizards.ui.lobby.LobbyFragment
 import at.aau.edu.wizards.ui.scoreboard.ScoreboardFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 private const val DISCOVER_FRAGMENT_TAG = "DISCOVER_FRAGMENT_TAG"
@@ -33,12 +35,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        //binding.permissionsButton.visibility = View.INVISIBLE
         setContentView(binding.root)
 
         setupUi()
-        // handlePermissions()
-        setupPermissions()
+        setupSettings()
         if (!checkPermission) {
             recheckPermissions(
                 android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -86,13 +86,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupPermissions() {
-        binding.permissionsButton.setOnClickListener {
-            recheckPermissions(
-                android.Manifest.permission.ACCESS_FINE_LOCATION,
-                "Location",
-                FINE_LOCATION
+    private fun setupSettings() {
+        binding.settingsButton.setOnClickListener {
+            val appSettings = Intent(
+                Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse(
+                    "package:$packageName"
+                )
             )
+            appSettings.addCategory(Intent.CATEGORY_DEFAULT)
+            appSettings.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(appSettings)
         }
     }
 
@@ -147,73 +150,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /* private fun handlePermissions() {
-        val permissionHandler = PermissionHandler(
-            activity = this,
-            permissions = REQUIRED_PERMISSIONS
-        ) { permissions ->
-            val anyDenied = permissions.any { !it.value }
-
-            if (anyDenied) {
-                recheckPermissions(android.Manifest.permission.ACCESS_FINE_LOCATION, "location", FINE_LOCATION)
-            }
-        }
-        lifecycle.addObserver(permissionHandler)
-    } */
-
     private fun recheckPermissions(permission: String, name: String, requestCode: Int) {
-        when {
+        when (PackageManager.PERMISSION_GRANTED) {
             ContextCompat.checkSelfPermission(
                 applicationContext,
                 permission
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                Toast.makeText(
-                    applicationContext,
-                    "$name permission granted",
-                    Toast.LENGTH_SHORT
-                ).show()
+            ) -> {
                 checkPermission = true
+                MaterialAlertDialogBuilder(this)
+                    .setMessage("$name permission granted")
+                    .setPositiveButton("Ok", null)
+                    .show()
             }
-            shouldShowRequestPermissionRationale(permission) -> showPermissionDialog(
-                permission,
-                name,
-                requestCode
-            )
             else -> {
-                ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
-                checkPermission = false
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        fun innerCheck(name: String) {
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(applicationContext, "$name permission refused", Toast.LENGTH_SHORT)
-                    .show()
-                checkPermission = false
-            } else {
-                Toast.makeText(applicationContext, "$name permission grandted", Toast.LENGTH_SHORT)
-                    .show()
-                checkPermission = true
-            }
-        }
-        when (requestCode) {
-            FINE_LOCATION -> innerCheck("Location")
-            else -> checkPermission = false
-        }
-    }
-
-    private fun showPermissionDialog(permission: String, name: String, requestCode: Int) {
-        val builder = AlertDialog.Builder(this)
-
-        builder.apply {
-            setPositiveButton("OK") { dialog, which ->
                 ActivityCompat.requestPermissions(
                     this@MainActivity,
                     arrayOf(permission),
@@ -221,7 +170,31 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
-        val dialog = builder.create()
-        dialog.show()
+    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        fun innerCheck(name: String) {
+            checkPermission = if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+
+                MaterialAlertDialogBuilder(this)
+                    .setMessage("$name permission refused")
+                    .setPositiveButton("Ok", null)
+                    .show()
+                false
+            } else {
+                MaterialAlertDialogBuilder(this)
+                    .setMessage("$name permission granted")
+                    .setPositiveButton("Ok", null)
+                    .show()
+                true
+            }
+        }
+        when (requestCode) {
+            FINE_LOCATION -> innerCheck("Location")
+        }
     }
 }
