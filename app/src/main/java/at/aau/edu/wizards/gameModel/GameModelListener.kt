@@ -24,6 +24,7 @@ class GameModelListener(
         private set
     var guessing = false
     val headerList = ArrayList<GameBoardHeader>()
+    var cheatingFunction = true
 
     data class Card(val card: GameModelCard, val playerId: Int)
     data class Guess(val guess: Int, val playerId: Int)
@@ -86,6 +87,7 @@ class GameModelListener(
         trump = rules.trump
         winningCard = rules.winningCard
         guessing = rules.wantsGuess
+        cheatingFunction = true
         calculateBoard()
         hands.clear()
         guesses.clear()
@@ -187,5 +189,6 @@ class GameModelListener(
 
     fun updatedGuess(newGuess: Guess) {
         guesses[activePlayer] = newGuess
+        cheatingFunction = false
     }
 }

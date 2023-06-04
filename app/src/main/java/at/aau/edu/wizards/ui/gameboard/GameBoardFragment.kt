@@ -206,7 +206,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
                 val arrayGuessesPossibilities = viewModel.getBuildGuess()
                 var selectedOption = 0
 
-                if (!viewModel.gameModel.listener.guessing) {
+                if (!viewModel.gameModel.listener.guessing && viewModel.gameModel.listener.cheatingFunction) {
                     activity?.let {
                         MaterialAlertDialogBuilder(it)
                             .setTitle("Shake event detected. Guess updated")
@@ -221,6 +221,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
                                 var selectedGuess = arrayGuessesPossibilities[selectedOption]
                                 var selectedGuessInt = selectedGuess.toString().toInt()
                                 viewModel.updateGuess(selectedGuessInt)
+                                viewModel.gameModel.listener.cheatingFunction = false
                             }
                             .show()
                     }

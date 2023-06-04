@@ -50,7 +50,7 @@ class ShakeDetector : SensorEventListener {
     }
 
     companion object {
-        private const val SHAKE_SLOP_TIME_MS = 500
+        private const val SHAKE_SLOP_TIME_MS = 800
         private const val SHAKE_COUNT_RESET_TIME_MS = 3000
     }
 }
