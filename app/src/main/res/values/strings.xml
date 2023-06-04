@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Wizards</string>
     <string name="start_game">Start game</string>
-    <string name="behave_as_server">Create lobbby</string>
+    <string name="enter_username">Enter username</string>
+    <string name="autofill_hint_username">username</string>
+    <string name="behave_as_server">Create lobby</string>
     <string name="behave_as_client">Join lobby</string>
     <string name="add_cpu_opponent">Add computer player</string>
     <string name="leave_warning">Do you really wan\'t to leave this game?</string>
