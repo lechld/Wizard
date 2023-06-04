@@ -25,7 +25,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="33">
-        <service android:name="at.aau.edu.wizards.ui.gameboard.shake.ShakeService"></service>
         <activity
             android:name=".MainActivity"
             android:exported="true">

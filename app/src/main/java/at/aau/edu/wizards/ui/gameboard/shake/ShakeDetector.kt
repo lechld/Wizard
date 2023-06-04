@@ -14,7 +14,7 @@ class ShakeDetector : SensorEventListener {
         this.shakeListener = listener
     }
 
-    interface OnShakeListener {
+    fun interface OnShakeListener {
         fun onShake(count: Int)
     }
 
@@ -23,7 +23,7 @@ class ShakeDetector : SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent) {
-        if (shakeListener != null && event != null) {
+        if (shakeListener != null) {
             val x = event.values[0]
             val y = event.values[1]
             val z = event.values[2]
@@ -50,8 +50,7 @@ class ShakeDetector : SensorEventListener {
     }
 
     companion object {
-        private val SHAKE_THRESHOLD_GRAVITY = 2.7f
-        private val SHAKE_SLOP_TIME_MS = 500
-        private val SHAKE_COUNT_RESET_TIME_MS = 3000
+        private const val SHAKE_SLOP_TIME_MS = 500
+        private const val SHAKE_COUNT_RESET_TIME_MS = 3000
     }
 }

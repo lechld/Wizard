@@ -186,15 +186,6 @@ class GameModelListener(
     }
 
     fun updatedGuess(newGuess: Guess) {
-        println(guesses)
-        guesses.set(activePlayer, newGuess)
-        println("Update")
-        println(guesses)
-        println("-----------------------------------")
+        guesses[activePlayer] = newGuess
     }
-
-    fun sendGuessList(): ArrayList<Guess> {
-        return guesses
-    }
-
 }

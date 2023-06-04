@@ -84,7 +84,6 @@ class GameBoardFragment : Fragment(), OnDragListener {
         super.onViewCreated(view, savedInstanceState)
 
         setupUI()
-        // Registriere den Shake-Listener
         registerShakeListener()
     }
 
@@ -204,10 +203,8 @@ class GameBoardFragment : Fragment(), OnDragListener {
         val shakeDetector = ShakeDetector()
         shakeDetector.setOnShakeListener(object : ShakeDetector.OnShakeListener {
             override fun onShake(count: Int) {
-                //viewModel.updateGuess()
                 val arrayGuessesPossibilities = viewModel.getBuildGuess()
                 var selectedOption = 0
-                var selectedGuess: CharSequence
 
                 if (!viewModel.gameModel.listener.guessing) {
                     activity?.let {
@@ -217,15 +214,13 @@ class GameBoardFragment : Fragment(), OnDragListener {
                             .setSingleChoiceItems(
                                 arrayGuessesPossibilities,
                                 selectedOption
-                            ) { dialog, which ->
+                            ) { _, which ->
                                 selectedOption = which
                             }
-                            .setPositiveButton("Ok") { dialog, which ->
-                                // Verwende das ausgewählte Element basierend auf dem gespeicherten Index
+                            .setPositiveButton("Ok") { _, _ ->
                                 var selectedGuess = arrayGuessesPossibilities[selectedOption]
                                 var selectedGuessInt = selectedGuess.toString().toInt()
                                 viewModel.updateGuess(selectedGuessInt)
-                                // hier muss die GUess Updathe Methof´de von GameBoardViewModal aufrufen
                             }
                             .show()
                     }
