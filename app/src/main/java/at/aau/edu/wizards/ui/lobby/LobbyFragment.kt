@@ -81,7 +81,10 @@ class LobbyFragment : Fragment() {
         binding.startGameButton.setOnClickListener {
 
             if (viewModel.numPlayer < 3) {
-                Snackbar.make(binding.root, "Not enough players connected (minimum 3 required). Add some CPU players or wait for someone to connect!", Snackbar.LENGTH_LONG).show()
+                activity?.let {
+                    MaterialAlertDialogBuilder(it).setMessage(getString(R.string.min_player))
+                        .setPositiveButton(getString(R.string.okay), null)
+                }?.create()?.show()
             }
             else {
                 val amountCpu = viewModel.startGame()
