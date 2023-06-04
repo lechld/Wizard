@@ -98,6 +98,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
         setupHeader(binding)
         setupTrump(binding)
         setupScoreboard()
+        setupPopUp()
 
     }
 
@@ -120,6 +121,21 @@ class GameBoardFragment : Fragment(), OnDragListener {
             if (finish) {
                 val mainActivity = activity as? MainActivity
                 mainActivity?.showScoreboard(viewModel.gameModel.listener)
+            }
+        }
+    }
+
+    private fun setupPopUp() {
+
+        binding?.btnPopup?.setOnClickListener {
+            val mainActivity = activity as? MainActivity
+            mainActivity?.showPopUp(viewModel.gameModel.listener)
+        }
+
+        viewModel.popup.observe(viewLifecycleOwner) { finish ->
+            if (finish) {
+                val mainActivity = activity as? MainActivity
+                mainActivity?.showPopUp(viewModel.gameModel.listener)
             }
         }
     }

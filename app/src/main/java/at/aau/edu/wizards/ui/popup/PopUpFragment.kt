@@ -1,27 +1,27 @@
-package at.aau.edu.wizards.ui.scoreboard
+package at.aau.edu.wizards.ui.popup
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.MainActivity
-import at.aau.edu.wizards.databinding.FragmentScoreboardBinding
+import at.aau.edu.wizards.databinding.FragmentPopUpBinding
 import at.aau.edu.wizards.gameModel.GameModelListener
-import at.aau.edu.wizards.ui.scoreboard.recycler.ScoreboardAdapter
+import at.aau.edu.wizards.ui.popup.recycler.PopUpAdapter
 
 
-class ScoreboardFragment(val listener: GameModelListener) : DialogFragment() {
+class PopUpFragment(val listener: GameModelListener) : Fragment() {
 
 
-    private var binding: FragmentScoreboardBinding? = null
+    private var binding: FragmentPopUpBinding? = null
 
     private val viewModel by lazy {
-        val factory = ScoreboardViewModel.Factory(
+        val factory = PopUpViewModel.Factory(
             listener
         )
-        ViewModelProvider(this, factory)[ScoreboardViewModel::class.java]
+        ViewModelProvider(this, factory)[PopUpViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -29,7 +29,7 @@ class ScoreboardFragment(val listener: GameModelListener) : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentScoreboardBinding.inflate(inflater, container, false)
+        val binding = FragmentPopUpBinding.inflate(inflater, container, false)
 
         this.binding = binding
 
@@ -50,15 +50,15 @@ class ScoreboardFragment(val listener: GameModelListener) : DialogFragment() {
     private fun setupUI() {
         val binding = this.binding ?: return
 
-        val adapter = ScoreboardAdapter()
+        val adapter = PopUpAdapter()
 
-        binding.scoreboardRecyclerView.adapter = adapter
+        binding.popupRecyclerView.adapter = adapter
 
-        viewModel.score.observe(viewLifecycleOwner) { score ->
-            adapter.submitList(score)
+        viewModel.winningcard.observe(viewLifecycleOwner) { winningcard ->
+            adapter.submitList(winningcard)
         }
 
-        binding.btnMainmenu.setOnClickListener {
+        binding.btnNextround.setOnClickListener {
             val mainActivity = activity as? MainActivity
             if (listener.getRound() <= 10) {
                 mainActivity?.scoreboardBack(false)

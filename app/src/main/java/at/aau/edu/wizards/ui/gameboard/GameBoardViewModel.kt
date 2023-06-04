@@ -29,6 +29,9 @@ abstract class GameBoardViewModel : ViewModel() {
     protected val _scoreboard = MutableLiveData<Boolean>()
     val scoreboard: LiveData<Boolean> = _scoreboard.distinctUntilChanged()
 
+    protected val _popup = MutableLiveData<Boolean>()
+    val popup: LiveData<Boolean> = _popup.distinctUntilChanged()
+
     abstract fun sendMessage(move: String)
 
     abstract val gameModel: GameModel
