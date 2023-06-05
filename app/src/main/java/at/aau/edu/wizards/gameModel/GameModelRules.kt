@@ -195,11 +195,11 @@ class GameModelRules(
         if (++currentPlayer >= players.size) {
             currentPlayer = 0
         }
+        parent.listener.update()
         if (currentPlayer == dealer) {
             delay(1000)
             nextSet()
         } else if (!players[currentPlayer].isHuman) {
-            parent.listener.update()
             getCpuToPlay()
         }
     }
