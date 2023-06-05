@@ -199,6 +199,7 @@ class GameModelRules(
             delay(1000)
             nextSet()
         } else if (!players[currentPlayer].isHuman) {
+            parent.listener.update()
             getCpuToPlay()
         }
     }
@@ -210,6 +211,7 @@ class GameModelRules(
         if (players[0].cards.isEmpty()) {
             nextRound()
         } else if (!players[currentPlayer].isHuman) {
+            parent.listener.update()
             getCpuToPlay()
         }
     }
@@ -249,6 +251,7 @@ class GameModelRules(
             wantsGuess = false
         }
         if (everyoneHasGuessed() && !players[currentPlayer].isHuman) {
+            parent.listener.update()
             getCpuToPlay()
         }
     }
@@ -263,7 +266,6 @@ class GameModelRules(
 
     private suspend fun getCpuToPlay() {
         delay(1000)
-
         parent.receiveMessage(cpu.getMove(currentPlayer).getString())
     }
 }
