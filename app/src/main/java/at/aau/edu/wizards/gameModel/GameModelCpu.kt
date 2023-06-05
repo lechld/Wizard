@@ -5,25 +5,26 @@ import kotlin.random.Random
 class GameModelCpu(seed: Int, private val rules: GameModelRules) {
     private val random = Random(seed)
 
-    fun getGuess(player: GameModelPlayer): Int {
+    fun getGuess(player: Int): Int {
         var guess = 0
-        for (card in player.cards) {
+        for (card in rules.players[player].cards) {
             if (willWinTotal(card, player)) {
                 guess++
             }
         }
 
-        return guess + ((player.cards.size - guess) / 8)
+        return guess + ((rules.players[player].cards.size - guess) / 8)
     }
 
 
-    fun getMove(player: GameModelPlayer): GameModelCard {
+    fun getMove(player: Int): GameModelCard {
         val playableCards = ArrayList<GameModelCard>()
-        for (card in player.cards) {
+        for (card in rules.players[player].cards) {
             if (willWin(
-                    card,
+                    card, player
+                ) && rules.players[player].guesses[rules.players[player].guesses.lastIndex] > rules.getAmountWon(
                     player
-                ) && player.guesses[player.guesses.lastIndex] > rules.getAmountWon(player.id)
+                )
             ) {
                 return card
             } else if (legalCard(rules.winningCard, card, player)) {
@@ -38,15 +39,14 @@ class GameModelCpu(seed: Int, private val rules: GameModelRules) {
         return playableCards[random.nextInt(0, playableCards.lastIndex)]
     }
 
-    private fun willWinTotal(card: GameModelCard, player: GameModelPlayer): Boolean {
+    private fun willWinTotal(card: GameModelCard, player: Int): Boolean {
         for (playerId in 0 until rules.players.size) {
-            if (playerId == player.id) {
+            if (playerId == player) {
                 continue
             }
             for (cardNew in rules.players[playerId].cards) {
-                if (legalCard(card, cardNew, rules.players[playerId]) && cardBeatsCard(
-                        card,
-                        cardNew
+                if (legalCard(card, cardNew, player) && cardBeatsCard(
+                        card, cardNew
                     )
                 ) {
                     return false
@@ -56,13 +56,12 @@ class GameModelCpu(seed: Int, private val rules: GameModelRules) {
         return true
     }
 
-    private fun willWin(card: GameModelCard, player: GameModelPlayer): Boolean {
+    private fun willWin(card: GameModelCard, player: Int): Boolean {
         if (legalCard(rules.winningCard, card, player) && cardBeatsCard(rules.winningCard, card)) {
-            for (playerId in player.id + 1 until rules.players.size) {
+            for (playerId in player + 1 until rules.players.size) {
                 for (cardNew in rules.players[playerId].cards) {
-                    if (legalCard(card, cardNew, rules.players[playerId]) && cardBeatsCard(
-                            card,
-                            cardNew
+                    if (legalCard(card, cardNew, player) && cardBeatsCard(
+                            card, cardNew
                         )
                     ) {
                         return false
@@ -108,9 +107,7 @@ class GameModelCpu(seed: Int, private val rules: GameModelRules) {
     }
 
     private fun legalCard(
-        cardToBeat: GameModelCard,
-        card: GameModelCard,
-        player: GameModelPlayer
+        cardToBeat: GameModelCard, card: GameModelCard, player: Int
     ): Boolean {
         return when (cardToBeat) {
             is GameModelCard.Jester -> true
@@ -118,7 +115,9 @@ class GameModelCpu(seed: Int, private val rules: GameModelRules) {
             is GameModelCard.Normal -> {
                 when (card) {
                     is GameModelCard.Normal -> {
-                        (cardToBeat.color == card.color || !player.hasColor(cardToBeat.color))
+                        (cardToBeat.color == card.color || !rules.players[player].hasColor(
+                            cardToBeat.color
+                        ))
                     }
                     else -> true
                 }

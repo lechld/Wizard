@@ -19,10 +19,11 @@ class GameModelListener(
         private set
     val guesses = ArrayList<Guess>()
     private val scores = ArrayList<Score>()
-    val board = ArrayList<GameModelCard>()
+    private val board = ArrayList<GameModelCard>()
     var winningCard: GameModelCard = GameModelCard.NoCard
         private set
     var guessing = false
+        private set
     val headerList = ArrayList<GameBoardHeader>()
     var cheatingFunction = true
 
@@ -69,12 +70,8 @@ class GameModelListener(
         return returnScore
     }
 
-    private fun getIconOfPlayer(id: Int): Int {
-        return if (id in 0 until numberOfPlayers) {
-            players[id].icon
-        } else {
-            1
-        }
+    fun getIconOfPlayer(id: Int): Int {
+        return players[id].icon
     }
 
     private fun getCurrentWins(id: Int): Int {
@@ -113,21 +110,18 @@ class GameModelListener(
                 headerList[player] = headerList[player].copy(
                     guess = getCurrentGuessOfPlayer(player),
                     wins = getCurrentWins(player),
-                    score = getCurrentScoreOfPlayer(player),
-                    theme = trump.getGameBoardTheme()
+                    score = getCurrentScoreOfPlayer(player)
                 )
             }
         } else {
             for (player in 0 until numberOfPlayers) {
                 headerList.add(
                     GameBoardHeader(
-                        player,
                         getIconOfPlayer(player),
                         getNameOfPlayer(player),
                         getCurrentGuessOfPlayer(player),
                         getCurrentWins(player),
-                        getCurrentScoreOfPlayer(player),
-                        trump.getGameBoardTheme()
+                        getCurrentScoreOfPlayer(player)
                     )
                 )
             }
