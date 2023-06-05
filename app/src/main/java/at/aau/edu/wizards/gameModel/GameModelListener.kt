@@ -108,9 +108,7 @@ class GameModelListener(
                 headerList[player] = headerList[player].copy(
                     guess = getCurrentGuessOfPlayer(player),
                     wins = getCurrentWins(player),
-                    score = getCurrentScoreOfPlayer(player),
-                    icon = getIconOfPlayer(player),
-                    name = getNameOfPlayer(player)
+                    score = getCurrentScoreOfPlayer(player)
                 )
             }
         } else {
