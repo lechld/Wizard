@@ -62,7 +62,7 @@ class LobbyViewModelUnitTest {
     }
 
     @Test
-    fun `Testing5`() {
+    fun `Testing if nothing is specified`() {
         viewModel.clicked(LobbyItem.Header(""))
         assertEquals(1, viewModel.numPlayer)
     }

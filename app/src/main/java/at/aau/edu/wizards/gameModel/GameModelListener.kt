@@ -17,7 +17,7 @@ class GameModelListener(
     private val hands = ArrayList<Card>()
     var trump: GameModelCard = GameModelCard.NoCard
         private set
-    private val guesses = ArrayList<Guess>()
+    val guesses = ArrayList<Guess>()
     private val scores = ArrayList<Score>()
     val board = ArrayList<GameModelCard>()
     var winningCard: GameModelCard = GameModelCard.NoCard

@@ -1,8 +1,11 @@
 package at.aau.edu.wizards.gameModel
 
+import at.aau.edu.wizards.ui.discover.DiscoverViewModel
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.mock
 
 class GameModelListenerUnitTest {
     private val viewModel = null
@@ -124,6 +127,5 @@ class GameModelListenerUnitTest {
         assertEquals(20, listener.getAllScoresOfPlayer(4)[1])
         assertEquals(20, listener.getAllScoresOfPlayer(5)[0])
         assertEquals(0, listener.getAllScoresOfPlayer(5)[1])
-
     }
 }
