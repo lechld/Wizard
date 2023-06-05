@@ -73,10 +73,9 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
     }
 
     private fun legalMessageInit(move: String): Boolean {
-        return move.length > 3
-                && move[0].code < move[1].code + move[2].code
-                && move[1].code + move[2].code in 3..6
-                && legalIntInStringFormat(move.substring(3, move.length))
+        return move.length > 3 && move[0].code < move[1].code + move[2].code && move[1].code + move[2].code in 3..6 && legalIntInStringFormat(
+            move.substring(3, move.length)
+        )
     }
 
     private fun legalIntInStringFormat(int: String): Boolean {
@@ -89,9 +88,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
     }
 
     private fun legalMessageCard(move: String): Boolean {
-        if (move.length == 1
-            && move[0].code < 60
-            && rules.currentPlayerOwns(
+        if (move.length == 1 && move[0].code < 60 && rules.currentPlayerOwns(
                 dealer.getCardFromHash(
                     move[0].code
                 )
@@ -112,11 +109,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
     private fun init(move: String) {
         dealer = GameModelDealer(move.substring(3, move.length).toInt())
         rules = GameModelRules(
-            players,
-            move[0].code,
-            dealer,
-            this,
-            move.substring(3, move.length).toInt()
+            players, move[0].code, dealer, this, move.substring(3, move.length).toInt()
         )
         listener = GameModelListener(rules, players, viewModel, this)
         //TEMPORARY PLEASE REMOVE WHEN YOU IMPLEMENTED PROPER NAMING
@@ -182,5 +175,11 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
 
     fun sendGuessOfLocalPlayer(guess: Int): Boolean {
         return sendMessage(buildString { append((60 + rules.id * 11 + guess).toChar().toString()) })
+    }
+
+    fun updateGuessCount(newGuess_Int: Int) {
+
+        val newGuess = GameModelListener.Guess(newGuess_Int, localPlayer())
+        listener.updatedGuess(newGuess)
     }
 }
