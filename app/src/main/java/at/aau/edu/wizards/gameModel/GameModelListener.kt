@@ -69,7 +69,7 @@ class GameModelListener(
         return returnScore
     }
 
-    private fun getIconOfPlayer(id: Int): Int {
+    fun getIconOfPlayer(id: Int): Int {
         return players[id].icon
     }
 
@@ -108,14 +108,15 @@ class GameModelListener(
                 headerList[player] = headerList[player].copy(
                     guess = getCurrentGuessOfPlayer(player),
                     wins = getCurrentWins(player),
-                    score = getCurrentScoreOfPlayer(player)
+                    score = getCurrentScoreOfPlayer(player),
+                    icon = getIconOfPlayer(player),
+                    name = getNameOfPlayer(player)
                 )
             }
         } else {
             for (player in 0 until numberOfPlayers) {
                 headerList.add(
                     GameBoardHeader(
-                        player,
                         getIconOfPlayer(player),
                         getNameOfPlayer(player),
                         getCurrentGuessOfPlayer(player),
