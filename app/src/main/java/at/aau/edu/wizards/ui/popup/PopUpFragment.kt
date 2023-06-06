@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
-import at.aau.edu.wizards.MainActivity
 import at.aau.edu.wizards.databinding.FragmentPopUpBinding
 import at.aau.edu.wizards.gameModel.GameModelListener
 import at.aau.edu.wizards.ui.popup.recycler.PopUpAdapter
@@ -47,6 +47,7 @@ class PopUpFragment(val listener: GameModelListener) : Fragment() {
         super.onDestroyView()
     }
 
+
     private fun setupUI() {
         val binding = this.binding ?: return
 
@@ -58,13 +59,11 @@ class PopUpFragment(val listener: GameModelListener) : Fragment() {
             adapter.submitList(winningcard)
         }
 
-        binding.btnNextround.setOnClickListener {
-            val mainActivity = activity as? MainActivity
-            if (listener.getRound() <= 10) {
-                mainActivity?.scoreboardBack(false)
-            } else {
-                mainActivity?.scoreboardBack(true)
-            }
+        binding.btnClosepopup.setOnClickListener {
+            val transaction = activity?.supportFragmentManager?.beginTransaction()
+
+            transaction?.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            transaction?.remove(this)?.commitAllowingStateLoss()
         }
     }
 }

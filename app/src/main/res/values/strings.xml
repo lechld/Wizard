@@ -9,6 +9,7 @@
     <string name="yes">Yes</string>
     <string name="scoreboard">Score</string>
     <string name="popup">PopUp</string>
+    <string name="closepopup">Close</string>
     <string name="nextround">Next Round</string>
     <string name="name">Name</string>
     <string name="score">Score:</string>

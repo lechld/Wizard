@@ -161,6 +161,15 @@ class GameModelListener(
         return "MissingPlayer"
     }
 
+    fun getWonPlayer(id: Int): String {
+        for (player in players) {
+            if (player.id == id) {
+                return player.name
+            }
+        }
+        return "MissingPlayer"
+    }
+
     fun getIconFromId(icon: Int): Int {
         return when (icon) {
             1 -> R.drawable.icon1
