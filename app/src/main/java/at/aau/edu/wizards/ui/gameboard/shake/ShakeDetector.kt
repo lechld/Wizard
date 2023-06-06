@@ -28,7 +28,7 @@ class ShakeDetector : SensorEventListener {
             val y = event.values[1]
             val z = event.values[2]
 
-            if (x > 2 || x < -2 || y > 12 || y < -12 || z > 2 || z < -2) {
+            if (x > 5 || x < -5 || y >15 || y < -15 || z > 5 || z < -5) {
 
                 val now = System.currentTimeMillis()
 

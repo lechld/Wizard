@@ -18,7 +18,8 @@ class ScoreboardViewModel(
                 Scoreboard(
                     listener.getIconFromId(listener.getIconOfPlayer(player)),
                     listener.getNameOfPlayer(player),
-                    listener.getCurrentScoreOfPlayer(player)
+                    listener.getCurrentScoreOfPlayer(player),
+                    listener.getCurrentGuessOfPlayer(player)
                 )
             )
         }
