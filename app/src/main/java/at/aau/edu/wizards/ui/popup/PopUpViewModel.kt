@@ -7,21 +7,12 @@ class PopUpViewModel(
     val listener: GameModelListener
 ) : ViewModel() {
 
-    private val _winningcard = MutableLiveData<ArrayList<PopUp>>()
-    val winningcard: LiveData<ArrayList<PopUp>> = _winningcard.distinctUntilChanged()
+    private val _winningcard = MutableLiveData<GameModelListener.WinningCardPopUp>()
+    val winningcard: LiveData<GameModelListener.WinningCardPopUp> = _winningcard.distinctUntilChanged()
 
 
     init {
-        val winningcard = ArrayList<PopUp>()
 
-        for (player in 0 until listener.numberOfPlayers) {
-            winningcard.add(
-                PopUp(
-                    listener.getIconFromId(player)
-                )
-            )
-        }
-        _winningcard.value = winningcard
     }
 
     class Factory(

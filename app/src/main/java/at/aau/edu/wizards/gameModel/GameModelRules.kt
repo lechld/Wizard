@@ -23,6 +23,9 @@ class GameModelRules(
     private var winningPlayer = 0
     var winningCard: GameModelCard = GameModelCard.NoCard
     var wantsGuess = false
+    var lastPlayerWon = 0
+    var lastCardWon : GameModelCard = GameModelCard.NoCard
+    var numberOfSet = 0
 
     fun init() {
         if (round == 0) {
@@ -204,7 +207,9 @@ class GameModelRules(
     }
 
     private suspend fun nextSet() {
-        //showWinningCard
+        numberOfSet++
+        lastCardWon = winningCard
+        lastPlayerWon = winningPlayer
         wins.add(winningPlayer)
         winningCard = GameModelCard.NoCard
         board.clear()

@@ -24,10 +24,12 @@ class GameModelListener(
         private set
     var guessing = false
     val headerList = ArrayList<GameBoardHeader>()
+    var winningCardPopUp = WinningCardPopUp(GameModelCard.NoCard, 0,0)
 
     data class Card(val card: GameModelCard, val playerId: Int)
     data class Guess(val guess: Int, val playerId: Int)
     data class Score(val score: Int, val playerId: Int)
+    data class WinningCardPopUp(val lastCardWon: GameModelCard, val lastPlayerWon: Int, val currentSet: Int)
 
     fun getHandOfPlayer(id: Int): ArrayList<GameModelCard> { //potential to internally store hands and only update when player makes a turn, would reduce cpu overhead slightly
         val hand = ArrayList<GameModelCard>()
@@ -87,6 +89,7 @@ class GameModelListener(
         winningCard = rules.winningCard
         guessing = rules.wantsGuess
         calculateBoard()
+        calculateWinningCardPopUp()
         hands.clear()
         guesses.clear()
         scores.clear()
@@ -132,6 +135,11 @@ class GameModelListener(
         }
     }
 
+    private fun calculateWinningCardPopUp() {
+        winningCardPopUp = WinningCardPopUp(rules.lastCardWon, rules.lastPlayerWon, rules.numberOfSet)
+    }
+
+
     private fun calculateBoard() {
         this.board.clear()
         for (card in rules.board) {
@@ -153,15 +161,6 @@ class GameModelListener(
     }
 
     fun getNameOfPlayer(id: Int): String {
-        for (player in players) {
-            if (player.id == id) {
-                return player.name
-            }
-        }
-        return "MissingPlayer"
-    }
-
-    fun getWonPlayer(id: Int): String {
         for (player in players) {
             if (player.id == id) {
                 return player.name
