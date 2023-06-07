@@ -181,8 +181,10 @@ class GameModelListener(
         }
     }
 
+    var cheaterPlayerid: Int = 0
     fun updatedGuess(newGuess: Guess) {
         guesses[newGuess.playerId] = newGuess
+        cheaterPlayerid = newGuess.playerId
 
         guesses.clear()
         for (player in players) {
@@ -195,7 +197,6 @@ class GameModelListener(
         //TODO: Update Scorboard Guess
     }
 
-
     fun listOFPlayer(): Array<String> {
 
         var listPlayerName = mutableListOf<String>()
@@ -205,4 +206,17 @@ class GameModelListener(
         var arrayPlayerName: Array<String> = listPlayerName.map { it.toString() }.toTypedArray()
         return arrayPlayerName
     }
+
+    fun foundCheater(cheater: Int) {
+        for (player in players) {
+            if (cheater == player.id) {
+                val newScore: Int = getCurrentScoreOfPlayer(cheater) - 10
+                scores[scores[cheater].playerId] = Score(cheater,newScore)
+            }
+
+
+        }
+    }
+
+
 }

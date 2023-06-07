@@ -68,14 +68,14 @@ class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
             }
         }
 
-        binding.btnCheatingFunction .setOnClickListener {
+        binding.btnCheatingFunction.setOnClickListener {
             //TODO: Cheater aufdecken
             var selectedOption = 0
 
             activity?.let {
                 MaterialAlertDialogBuilder(it)
                     .setTitle("Choose Cheater")
-                    .setNeutralButton("Cancel", null)
+                    //.setNeutralButton("Cancel", null)
                     .setSingleChoiceItems(
                         listener.listOFPlayer(),
                         selectedOption
@@ -83,7 +83,7 @@ class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
                         selectedOption = which
                     }
                     .setPositiveButton("Ok") { _, _ ->
-
+                        listener.foundCheater(selectedOption)
                     }
                     .show()
             }

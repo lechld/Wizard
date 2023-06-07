@@ -209,7 +209,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
                 activity?.let {
                     MaterialAlertDialogBuilder(it)
                         .setTitle("Shake event detected. Guess updated")
-                        .setNeutralButton("Cancel", null)
+                        //.setNeutralButton("Cancel", null)
                         .setSingleChoiceItems(
                             arrayGuessesPossibilities,
                             selectedOption
@@ -220,6 +220,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
                             val selectedGuess = arrayGuessesPossibilities[selectedOption]
                             val selectedGuessInt = selectedGuess.toString().toInt()
                             viewModel.updateGuess(selectedGuessInt)
+
                         }
                         .show()
                 }
