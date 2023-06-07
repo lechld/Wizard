@@ -10,6 +10,7 @@ import at.aau.edu.wizards.MainActivity
 import at.aau.edu.wizards.databinding.FragmentScoreboardBinding
 import at.aau.edu.wizards.gameModel.GameModelListener
 import at.aau.edu.wizards.ui.scoreboard.recycler.ScoreboardAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
@@ -64,6 +65,27 @@ class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
                 mainActivity?.scoreboardBack(false)
             } else {
                 mainActivity?.scoreboardBack(true)
+            }
+        }
+
+        binding.btnCheatingFunction .setOnClickListener {
+            //TODO: Cheater aufdecken
+            var selectedOption = 0
+
+            activity?.let {
+                MaterialAlertDialogBuilder(it)
+                    .setTitle("Choose Cheater")
+                    .setNeutralButton("Cancel", null)
+                    .setSingleChoiceItems(
+                        listener.listOFPlayer(),
+                        selectedOption
+                    ) { _, which ->
+                        selectedOption = which
+                    }
+                    .setPositiveButton("Ok") { _, _ ->
+
+                    }
+                    .show()
             }
         }
     }

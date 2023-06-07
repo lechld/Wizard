@@ -182,7 +182,27 @@ class GameModelListener(
     }
 
     fun updatedGuess(newGuess: Guess) {
-        guesses[activePlayer] = newGuess
+        guesses[newGuess.playerId] = newGuess
+
+        guesses.clear()
+        for (player in players) {
+            for (guess in player.guesses) {
+                guesses.add(Guess(guess, player.id))
+            }
+        }
+        calculateHeader()
         cheatingFunction = false
+        //TODO: Update Scorboard Guess
+    }
+
+
+    fun listOFPlayer(): Array<String> {
+
+        var listPlayerName = mutableListOf<String>()
+        for (player in players) {
+            listPlayerName.add(getNameOfPlayer(player.id))
+        }
+        var arrayPlayerName: Array<String> = listPlayerName.map { it.toString() }.toTypedArray()
+        return arrayPlayerName
     }
 }
