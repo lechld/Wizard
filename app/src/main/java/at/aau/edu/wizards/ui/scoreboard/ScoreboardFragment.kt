@@ -75,7 +75,7 @@ class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
             activity?.let {
                 MaterialAlertDialogBuilder(it)
                     .setTitle("Choose Cheater")
-                    //.setNeutralButton("Cancel", null)
+                    .setNeutralButton("Cancel", null)
                     .setSingleChoiceItems(
                         listener.listOFPlayer(),
                         selectedOption
