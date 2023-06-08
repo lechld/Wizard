@@ -213,11 +213,10 @@ class GameModelListener(
 
         if (cheater == cheaterPlayerid) {
             val newScore: Int = getCurrentScoreOfPlayer(cheater) - 10
-            scores[scores[cheater + ((guesses.size/players.size)-1)].playerId] = Score(newScore,cheater)
+            scores[scores[cheater + ((guesses.size / players.size) - 1)].playerId] = Score(newScore, cheater)
         } else {
             val newScore: Int = getCurrentScoreOfPlayer(viewModel!!.gameModel.localPlayer()) - 10
-            //val test = scores[viewModel.gameModel.localPlayer() + ((guesses.size/players.size)-1)].playerId
-            scores[scores[viewModel.gameModel.localPlayer() + ((guesses.size/players.size)-1)].playerId] = Score(newScore, viewModel.gameModel.localPlayer())
+            scores[scores[viewModel.gameModel.localPlayer() + ((guesses.size / players.size) - 1)].playerId] = Score(newScore, viewModel.gameModel.localPlayer())
         }
         fundCheaterButton = false
         calculateHeader()
