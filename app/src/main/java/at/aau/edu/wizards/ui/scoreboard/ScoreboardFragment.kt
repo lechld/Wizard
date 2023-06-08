@@ -16,7 +16,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
 
-
     private var binding: FragmentScoreboardBinding? = null
 
     private val viewModel by lazy {
@@ -71,27 +70,32 @@ class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
         binding.btnCheatingFunction.setOnClickListener {
             var selectedOption = 0
 
-            if (viewModel.listener.guessing) {
-                Toast.makeText(activity, "Everyone must have made their guess!", Toast.LENGTH_SHORT)
-                    .show()
-            } else if (!viewModel.listener.fundCheaterButton) {
-                Toast.makeText(activity, "Found Cheater Button pressed before!", Toast.LENGTH_SHORT)
-                    .show()
-            } else if (viewModel.listener.getRound() <= 1) {
-                Toast.makeText(activity, "You can only find cheaters from round 2 onwards!", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                activity?.let {
-                    MaterialAlertDialogBuilder(it).setTitle("Choose Cheater")
-                        .setNeutralButton("Cancel", null).setSingleChoiceItems(
-                            listener.listOFPlayer(), selectedOption
-                        ) { _, which ->
-                            selectedOption = which
-                        }.setPositiveButton("Ok") { _, _ ->
-                            listener.foundCheater(selectedOption)
-                        }.show()
+            when {
+                viewModel.listener.guessing -> {
+                    Toast.makeText(activity, "Everyone must have made their guess!", Toast.LENGTH_SHORT).show()
+                }
+                !viewModel.listener.fundCheaterButton -> {
+                    Toast.makeText(activity, "Found Cheater Button pressed before!", Toast.LENGTH_SHORT).show()
+                }
+                viewModel.listener.getRound() <= 1 -> {
+                    Toast.makeText(activity, "You can only find cheaters from round 2 onwards!", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    activity?.let {
+                        MaterialAlertDialogBuilder(it)
+                            .setTitle("Choose Cheater")
+                            .setNeutralButton("Cancel", null)
+                            .setSingleChoiceItems(listener.listOFPlayer(), selectedOption) { _, which ->
+                                selectedOption = which
+                            }
+                            .setPositiveButton("Ok") { _, _ ->
+                                listener.foundCheater(selectedOption)
+                            }
+                            .show()
+                    }
                 }
             }
+
 
         }
     }

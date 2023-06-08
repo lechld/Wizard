@@ -16,4 +16,5 @@
     <string name="max_player">There can only be a maximum of 6 players</string>
     <string name="okay">Okay</string>
     <string name="guess">Guess:</string>
+    <string name="foundCheater">Found Cheater</string>
 </resources>
