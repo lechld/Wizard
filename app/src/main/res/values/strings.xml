@@ -14,5 +14,6 @@
     <string name="score">Score:</string>
     <string name="startnewgame">Close</string>
     <string name="max_player">There can only be a maximum of 6 players</string>
+    <string name="min_player">There are not enough players to start the game (minimum 3 required). \n\nAdd some CPU players or wait for someone to connect!</string>
     <string name="okay">Okay</string>
 </resources>
