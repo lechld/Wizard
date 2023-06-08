@@ -181,7 +181,7 @@ class GameModelListener(
         }
     }
 
-    var cheaterPlayerid: Int = 7
+    private var cheaterPlayerid: Int = 7
     fun updatedGuess(newGuess: Guess) {
         cheaterPlayerid = newGuess.playerId
         guesses[newGuess.playerId] = newGuess
@@ -193,9 +193,9 @@ class GameModelListener(
                 guesses.add(Guess(guess, player.id))
             }
         }
-        calculateHeader()
         cheatingFunction = false
-        //TODO: Update Scorboard Guess
+        calculateHeader()
+        viewModel?.updateData(parent)
     }
 
     fun listOFPlayer(): Array<String> {
@@ -208,16 +208,20 @@ class GameModelListener(
         return arrayPlayerName
     }
 
+    var fundCheaterButton: Boolean = true
     fun foundCheater(cheater: Int) {
 
         if (cheater == cheaterPlayerid) {
             val newScore: Int = getCurrentScoreOfPlayer(cheater) - 10
-            scores[scores[cheater].playerId + ((guesses.size/players.size)-1)] = Score(newScore,cheater)
+            scores[scores[cheater + ((guesses.size/players.size)-1)].playerId] = Score(newScore,cheater)
         } else {
             val newScore: Int = getCurrentScoreOfPlayer(viewModel!!.gameModel.localPlayer()) - 10
             //val test = scores[viewModel.gameModel.localPlayer() + ((guesses.size/players.size)-1)].playerId
             scores[scores[viewModel.gameModel.localPlayer() + ((guesses.size/players.size)-1)].playerId] = Score(newScore, viewModel.gameModel.localPlayer())
         }
+        fundCheaterButton = false
+        calculateHeader()
+        viewModel?.updateData(parent)
     }
 
 
