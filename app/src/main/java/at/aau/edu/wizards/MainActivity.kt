@@ -33,9 +33,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
 
-    val avatarsList = Array(19) { i -> "icon${i + 1}" }
-
-    private lateinit var selectedImageName: String
     private lateinit var imageView: ImageView
     private lateinit var imageSpinner: Spinner
 
@@ -61,29 +58,20 @@ class MainActivity : AppCompatActivity() {
         imageView = findViewById(R.id.imageView)
         imageSpinner = findViewById(R.id.imageSpinner)
 
-        val imageNames = avatarsList
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, imageNames)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val adapter = ImageSpinnerAdapter(this, mainViewModel.avatarsList)
         imageSpinner.adapter = adapter
 
         imageView.setOnClickListener {
             imageSpinner.performClick()
         }
 
-        if (mainViewModel.getAvatar() == null) {
-            mainViewModel.saveAvatar("icon" + Random.nextInt(1, 20))
-        }
-
-        val initialSelectedImageName = mainViewModel.getAvatar()
-        val initialSelectionIndex = imageNames.indexOf(initialSelectedImageName)
-        imageSpinner.setSelection(initialSelectionIndex)
+        imageSpinner.setSelection(mainViewModel.avatarsList.indexOf(mainViewModel.getAvatar()))
 
         imageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selectedImageName = imageNames[position]
-                val resourceId = resources.getIdentifier(selectedImageName, "drawable", packageName)
+                val resourceId = mainViewModel.avatarsList[position]
                 imageView.setImageResource(resourceId)
-                mainViewModel.saveAvatar(selectedImageName)
+                mainViewModel.saveAvatar(resourceId)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
