@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 public const val SHARED_PREFERENCE_USERNAME_KEY = "USERNAME"
+public const val SHARED_PREFERENCE_AVATAR_KEY = "AVATAR"
 class MainViewModel (private val sharedPreferences: SharedPreferences) : ViewModel() {
 
     fun getUsername(): String? {
@@ -13,6 +14,14 @@ class MainViewModel (private val sharedPreferences: SharedPreferences) : ViewMod
 
     fun saveUsername(username: String) {
         sharedPreferences.edit().putString(SHARED_PREFERENCE_USERNAME_KEY, username).apply()
+    }
+
+    fun getAvatar(): String? {
+        return sharedPreferences.getString(SHARED_PREFERENCE_AVATAR_KEY, null)
+    }
+
+    fun saveAvatar(avatar: String) {
+        sharedPreferences.edit().putString(SHARED_PREFERENCE_AVATAR_KEY, avatar).apply()
     }
 
     class Factory(private val sharedPreferences: SharedPreferences) : ViewModelProvider.Factory {

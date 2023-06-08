@@ -20,6 +20,7 @@ import at.aau.edu.wizards.ui.lobby.LobbyFragment
 import at.aau.edu.wizards.ui.scoreboard.ScoreboardFragment
 import at.aau.edu.wizards.util.permission.PermissionHandler
 import com.google.android.material.snackbar.Snackbar
+import kotlin.random.Random
 
 private const val DISCOVER_FRAGMENT_TAG = "DISCOVER_FRAGMENT_TAG"
 private const val LOBBY_FRAGMENT_TAG = "LOBBY_FRAGMENT_TAG"
@@ -51,11 +52,12 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        setupAvatarSelection()
         setupUi()
         handlePermissions()
+    }
 
-
-
+    private fun setupAvatarSelection() {
         imageView = findViewById(R.id.imageView)
         imageSpinner = findViewById(R.id.imageSpinner)
 
@@ -68,11 +70,20 @@ class MainActivity : AppCompatActivity() {
             imageSpinner.performClick()
         }
 
+        if (mainViewModel.getAvatar() == null) {
+            mainViewModel.saveAvatar("icon" + Random.nextInt(1, 20))
+        }
+
+        val initialSelectedImageName = mainViewModel.getAvatar()
+        val initialSelectionIndex = imageNames.indexOf(initialSelectedImageName)
+        imageSpinner.setSelection(initialSelectionIndex)
+
         imageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedImageName = imageNames[position]
                 val resourceId = resources.getIdentifier(selectedImageName, "drawable", packageName)
                 imageView.setImageResource(resourceId)
+                mainViewModel.saveAvatar(selectedImageName)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
