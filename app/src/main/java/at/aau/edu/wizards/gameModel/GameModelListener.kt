@@ -196,7 +196,6 @@ class GameModelListener(
         calculateHeader()
         cheatingFunction = false
         //TODO: Update Scorboard Guess
-        viewModel?.scoreboard
     }
 
     fun listOFPlayer(): Array<String> {
