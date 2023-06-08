@@ -7,8 +7,9 @@
 
     <ImageView
         android:id="@+id/avatarImage"
-        android:layout_width="50pt"
+        android:layout_width="0pt"
         android:layout_height="50pt"
         android:layout_weight="1"
+        android:contentDescription="@string/avatarSelectionImageView"
         app:srcCompat="@drawable/icon1" />
 </LinearLayout>

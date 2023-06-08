@@ -3,7 +3,6 @@ package at.aau.edu.wizards
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kotlin.random.Random
 
 public const val SHARED_PREFERENCE_USERNAME_KEY = "USERNAME"
 public const val SHARED_PREFERENCE_AVATAR_KEY = "AVATAR_ID"
@@ -21,7 +20,7 @@ class MainViewModel (private val sharedPreferences: SharedPreferences) : ViewMod
     }
 
     fun saveUsername(username: String) {
-        sharedPreferences.edit().putString(SHARED_PREFERENCE_USERNAME_KEY, username).commit()
+        sharedPreferences.edit().putString(SHARED_PREFERENCE_USERNAME_KEY, username).apply()
     }
 
     fun getAvatar(): Int {
@@ -29,7 +28,7 @@ class MainViewModel (private val sharedPreferences: SharedPreferences) : ViewMod
     }
 
     fun saveAvatar(avatar: Int) {
-        sharedPreferences.edit().putInt(SHARED_PREFERENCE_AVATAR_KEY, avatar).commit()
+        sharedPreferences.edit().putInt(SHARED_PREFERENCE_AVATAR_KEY, avatar).apply()
         println("AVATAR TO SAVE = " + avatar)
     }
 
