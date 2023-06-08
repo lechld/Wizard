@@ -29,10 +29,9 @@ class MainViewModel (private val sharedPreferences: SharedPreferences) : ViewMod
 
     fun saveAvatar(avatar: Int) {
         sharedPreferences.edit().putInt(SHARED_PREFERENCE_AVATAR_KEY, avatar).apply()
-        println("AVATAR TO SAVE = " + avatar)
     }
 
-    private fun selectRandomAvatar(): Int {
+    fun selectRandomAvatar(): Int {
         val savedAvatar = sharedPreferences.getInt(SHARED_PREFERENCE_AVATAR_KEY, -1)
         val randomAvatar = if (savedAvatar != -1) {
             savedAvatar
