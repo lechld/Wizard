@@ -20,14 +20,14 @@ class GameModelDealerUnitTest {
         assertEquals(15, getAmountOfColor(list, GameModelCard.Color.Green))
         assertEquals(15, getAmountOfColor(list, GameModelCard.Color.Orange))
 
-        assertEquals(4, getAmountOfJester(list))
-        assertEquals(4, getAmountOfWizard(list))
-        assertEquals(52, getAmountOfNormal(list))
-        assertEquals(0, getAmountOfNoCard(list))
+        assertEquals(4, getAmountOfType(list, GameModelCard.Jester(GameModelCard.Color.Blue)))
+        assertEquals(4, getAmountOfType(list, GameModelCard.Wizard(GameModelCard.Color.Blue)))
+        assertEquals(52, getAmountOfType(list, GameModelCard.Normal(GameModelCard.Color.Blue, 1)))
+        assertEquals(0, getAmountOfType(list, GameModelCard.NoCard))
 
         list.add(dealer.dealCardInSet())
 
-        assertEquals(1, getAmountOfNoCard(list))
+        assertEquals(1, getAmountOfType(list, GameModelCard.NoCard))
 
         dealer.resetSet()
 
@@ -40,14 +40,14 @@ class GameModelDealerUnitTest {
         assertEquals(30, getAmountOfColor(list, GameModelCard.Color.Green))
         assertEquals(30, getAmountOfColor(list, GameModelCard.Color.Orange))
 
-        assertEquals(8, getAmountOfJester(list))
-        assertEquals(8, getAmountOfWizard(list))
-        assertEquals(104, getAmountOfNormal(list))
-        assertEquals(1, getAmountOfNoCard(list))
+        assertEquals(8, getAmountOfType(list, GameModelCard.Jester(GameModelCard.Color.Blue)))
+        assertEquals(8, getAmountOfType(list, GameModelCard.Wizard(GameModelCard.Color.Blue)))
+        assertEquals(104, getAmountOfType(list, GameModelCard.Normal(GameModelCard.Color.Blue, 1)))
+        assertEquals(1, getAmountOfType(list, GameModelCard.NoCard))
 
         list.add(dealer.dealCardInSet())
 
-        assertEquals(2, getAmountOfNoCard(list))
+        assertEquals(2, getAmountOfType(list, GameModelCard.NoCard))
 
         val dealer1 = GameModelDealer(420420)
         val dealer2 = GameModelDealer(420420)
@@ -87,61 +87,14 @@ class GameModelDealerUnitTest {
         return amount
     }
 
-    private fun getAmountOfNormal(list: ArrayList<GameModelCard>): Int {
+    private fun getAmountOfType(list: ArrayList<GameModelCard>, type: GameModelCard): Int {
         var amount = 0
         for (card in list) {
             when (card) {
-                is GameModelCard.Normal -> {
-                    amount++
-                }
-                else -> {
-                    continue
-                }
-            }
-        }
-        return amount
-    }
-
-    private fun getAmountOfJester(list: ArrayList<GameModelCard>): Int {
-        var amount = 0
-        for (card in list) {
-            when (card) {
-                is GameModelCard.Jester -> {
-                    amount++
-                }
-                else -> {
-                    continue
-                }
-            }
-        }
-        return amount
-    }
-
-    private fun getAmountOfWizard(list: ArrayList<GameModelCard>): Int {
-        var amount = 0
-        for (card in list) {
-            when (card) {
-                is GameModelCard.Wizard -> {
-                    amount++
-                }
-                else -> {
-                    continue
-                }
-            }
-        }
-        return amount
-    }
-
-    private fun getAmountOfNoCard(list: ArrayList<GameModelCard>): Int {
-        var amount = 0
-        for (card in list) {
-            when (card) {
-                is GameModelCard.NoCard -> {
-                    amount++
-                }
-                else -> {
-                    continue
-                }
+                is GameModelCard.Jester -> if (type is GameModelCard.Jester) amount++
+                GameModelCard.NoCard -> if (type is GameModelCard.NoCard) amount++
+                is GameModelCard.Normal -> if (type is GameModelCard.Normal) amount++
+                is GameModelCard.Wizard -> if (type is GameModelCard.Wizard) amount++
             }
         }
         return amount

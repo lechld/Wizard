@@ -36,7 +36,7 @@ class GameModelRules(
             cardDealer.resetSet()
             for (player in players) {
                 if (!player.isHuman) {
-                    player.guesses.add(cpu.getGuess(player))
+                    player.guesses.add(cpu.getGuess(player.id))
                 }
             }
             getGuess()
@@ -67,7 +67,7 @@ class GameModelRules(
         cardDealer.resetSet()
         for (player in players) {
             if (!player.isHuman) {
-                player.guesses.add(cpu.getGuess(player))
+                player.guesses.add(cpu.getGuess(player.id))
             }
         }
         getGuess()
@@ -198,7 +198,7 @@ class GameModelRules(
         if (currentPlayer == dealer) {
             delay(1000)
             nextSet()
-        } else if (!players[currentPlayer].isHuman && everyoneHasGuessed() && round < 11) {
+        } else if (!players[currentPlayer].isHuman) {
             getCpuToPlay()
         }
     }
@@ -209,7 +209,7 @@ class GameModelRules(
         board.clear()
         if (players[0].cards.isEmpty()) {
             nextRound()
-        } else if (!players[currentPlayer].isHuman && everyoneHasGuessed() && round < 11) {
+        } else if (!players[currentPlayer].isHuman) {
             getCpuToPlay()
         }
     }
@@ -264,6 +264,6 @@ class GameModelRules(
     private suspend fun getCpuToPlay() {
         delay(1000)
 
-        parent.receiveMessage(cpu.getMove(players[currentPlayer]).getString())
+        parent.receiveMessage(cpu.getMove(currentPlayer).getString())
     }
 }
