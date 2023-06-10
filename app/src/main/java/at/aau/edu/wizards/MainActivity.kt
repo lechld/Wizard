@@ -3,11 +3,15 @@ package at.aau.edu.wizards
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.content.Context
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.databinding.ActivityMainBinding
 import at.aau.edu.wizards.gameModel.GameModelListener
 import at.aau.edu.wizards.ui.discover.DiscoverFragment
@@ -16,11 +20,14 @@ import at.aau.edu.wizards.ui.lobby.LobbyFragment
 import at.aau.edu.wizards.ui.scoreboard.ScoreboardFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
+import com.google.android.material.snackbar.Snackbar
 
 private const val DISCOVER_FRAGMENT_TAG = "DISCOVER_FRAGMENT_TAG"
 private const val LOBBY_FRAGMENT_TAG = "LOBBY_FRAGMENT_TAG"
 private const val GAME_BOARD_FRAGMENT_TAG = "GAME_BOARD_FRAGMENT_TAG"
 private const val SCOREBOARD_FRAGMENT_TAG = "SCOREBOARD_FRAGMENT_TAG"
+
+private const val SHARED_PREFERENCES_KEY = "SHARED_PREFS_USERDATA"
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,11 +37,19 @@ class MainActivity : AppCompatActivity() {
         private set
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        // kotlin:S6291 ---> Make sure using an unencrypted database is safe here.
+        @SuppressWarnings("kotlin:S6291")
+        val sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
+
+        mainViewModel = ViewModelProvider(this, MainViewModel.Factory(sharedPreferences))[MainViewModel::class.java]
+
         setContentView(binding.root)
 
         setupUi()
@@ -77,12 +92,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUi() {
+        binding.inputUsername.setText(mainViewModel.getUsername())
+
+        binding.inputUsername.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                // Not used
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                mainViewModel.saveUsername(binding.inputUsername.text.toString())
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                // Not used
+            }
+        })
+
         binding.clientButton.setOnClickListener {
-            showDiscoverFragment()
+            if (!binding.inputUsername.text.toString().isNullOrEmpty()) {
+                showDiscoverFragment()
+            } else {
+                Snackbar.make(binding.root, "Please enter username first!", Snackbar.LENGTH_LONG).show()
+            }
         }
 
         binding.serverButton.setOnClickListener {
-            showLobby()
+            if (!binding.inputUsername.text.toString().isNullOrEmpty()) {
+                showLobby()
+            } else {
+                Snackbar.make(binding.root, "Please enter username first!", Snackbar.LENGTH_LONG).show()
+            }
         }
     }
 

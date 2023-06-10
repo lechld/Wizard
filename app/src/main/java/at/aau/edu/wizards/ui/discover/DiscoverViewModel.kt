@@ -6,7 +6,6 @@ import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.gameModel.START_COMMAND
 import at.aau.edu.wizards.util.SingleLiveEvent
 import com.google.android.gms.nearby.connection.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
@@ -52,7 +51,7 @@ class DiscoverViewModel(
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(DiscoverViewModel::class.java)) {
                 DiscoverViewModel(client) as T
-            } else throw IllegalStateException("Wrong Factory for instantiating ${modelClass::class.java.canonicalName}")
+            } else error("Wrong Factory for instantiating ${modelClass::class.java.canonicalName}")
         }
     }
 }

@@ -40,7 +40,7 @@ class LobbyItemFactory {
         result.add(LobbyItem.Header(" "))
         result.add(LobbyItem.Header("CPU Players"))
         for (i in 1..cpuPlayers) {
-            result.add(LobbyItem.CpuPlayer("CPU $i"))
+            result.add(LobbyItem.CpuPlayer("CPU Player $i"))
         }
         result.add(LobbyItem.AddCpu)
 

@@ -1,6 +1,9 @@
 package at.aau.edu.wizards.ui.gameboard
 
 
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.view.DragEvent
 import android.view.LayoutInflater
@@ -20,6 +23,7 @@ import at.aau.edu.wizards.gameModel.GameModelCard
 import at.aau.edu.wizards.ui.gameboard.claim.GuessAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
+import at.aau.edu.wizards.ui.gameboard.shake.ShakeDetector
 import at.aau.edu.wizards.util.OffsetItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -53,35 +57,34 @@ class GameBoardFragment : Fragment(), OnDragListener {
 
         activity.onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                MaterialAlertDialogBuilder(activity)
-                    .setMessage(getString(R.string.leave_warning))
+                MaterialAlertDialogBuilder(activity).setMessage(getString(R.string.leave_warning))
                     .setPositiveButton(getString(R.string.no), null)
                     .setNegativeButton(getString(R.string.yes)) { _, _ ->
                         isEnabled = false
                         activity.onBackPressedDispatcher.onBackPressed()
-                    }
-                    .create()
-                    .show()
+                    }.create().show()
             }
         })
+
+
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         val binding = FragmentGameboardBinding.inflate(inflater, container, false)
 
         this.binding = binding
 
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupUI()
+        registerShakeListener()
     }
 
     override fun onDestroyView() {
@@ -100,6 +103,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
         setupScoreboard()
 
     }
+
 
     private fun setupTrump(binding: FragmentGameboardBinding) {
         binding.trumpIndicatorCard.text.visibility = View.INVISIBLE
@@ -187,11 +191,49 @@ class GameBoardFragment : Fragment(), OnDragListener {
             if (dropX < binding.dragContainer.width && dropY < binding.dragContainer.height) {
                 val item: GameModelCard = event.localState as GameModelCard
                 viewModel.sendMessage(item.getString())
+            } else {
+                return false
             }
         }
 
         return true
     }
+
+    private fun registerShakeListener() {
+        val shakeDetector = ShakeDetector()
+        shakeDetector.setOnShakeListener {
+            val arrayGuessesPossibilities = viewModel.getBuildGuess()
+            var selectedOption = 0
+
+            if (!viewModel.gameModel.listener.guessing && viewModel.gameModel.listener.cheatingFunction) {
+                activity?.let {
+                    MaterialAlertDialogBuilder(it)
+                        .setTitle("Shake event detected. Guess updated")
+                        .setNeutralButton("Cancel", null)
+                        .setSingleChoiceItems(
+                            arrayGuessesPossibilities,
+                            selectedOption
+                        ) { _, which ->
+                            selectedOption = which
+                        }
+                        .setPositiveButton("Ok") { _, _ ->
+                            val selectedGuess = arrayGuessesPossibilities[selectedOption]
+                            val selectedGuessInt = selectedGuess.toString().toInt()
+                            viewModel.updateGuess(selectedGuessInt)
+                        }
+                        .show()
+                }
+            }
+        }
+
+        val sensorManager =
+            requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        sensorManager.registerListener(
+            shakeDetector, accelerometer, SensorManager.SENSOR_DELAY_NORMAL
+        )
+    }
+
 
     companion object {
         private const val AS_CLIENT_EXTRA = "AS_CLIENT_EXTRA"
@@ -200,12 +242,12 @@ class GameBoardFragment : Fragment(), OnDragListener {
             if (asClient && amountCpu > 0) {
                 // This is not handled ideally, but fine for now
                 throw IllegalArgumentException("Only Server is allowed to define cpu players")
+
             }
 
             return GameBoardFragment().apply {
                 arguments = bundleOf(
-                    AS_CLIENT_EXTRA to asClient,
-                    AMOUNT_CPU_EXTRA to amountCpu
+                    AS_CLIENT_EXTRA to asClient, AMOUNT_CPU_EXTRA to amountCpu
                 )
             }
         }
