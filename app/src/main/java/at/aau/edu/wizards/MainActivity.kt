@@ -1,13 +1,14 @@
 package at.aau.edu.wizards
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.content.Context
 import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -18,8 +19,6 @@ import at.aau.edu.wizards.ui.discover.DiscoverFragment
 import at.aau.edu.wizards.ui.gameboard.GameBoardFragment
 import at.aau.edu.wizards.ui.lobby.LobbyFragment
 import at.aau.edu.wizards.ui.scoreboard.ScoreboardFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-
 import com.google.android.material.snackbar.Snackbar
 
 private const val DISCOVER_FRAGMENT_TAG = "DISCOVER_FRAGMENT_TAG"
@@ -48,19 +47,17 @@ class MainActivity : AppCompatActivity() {
         @SuppressWarnings("kotlin:S6291")
         val sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
 
-        mainViewModel = ViewModelProvider(this, MainViewModel.Factory(sharedPreferences))[MainViewModel::class.java]
+        mainViewModel = ViewModelProvider(
+            this,
+            MainViewModel.Factory(sharedPreferences)
+        )[MainViewModel::class.java]
 
         setContentView(binding.root)
 
+        binding.settingsButton.visibility = View.INVISIBLE
+
         setupUi()
         setupSettings()
-        if (!checkPermission) {
-            recheckPermissions(
-                android.Manifest.permission.ACCESS_FINE_LOCATION,
-                "Location",
-                FINE_LOCATION
-            )
-        }
     }
 
     fun showGame(asClient: Boolean, amountCpu: Int = 0) {
@@ -109,18 +106,42 @@ class MainActivity : AppCompatActivity() {
         })
 
         binding.clientButton.setOnClickListener {
-            if (!binding.inputUsername.text.toString().isNullOrEmpty()) {
-                showDiscoverFragment()
+            if (checkPermission) {
+                if (!binding.inputUsername.text.toString().isNullOrEmpty()) {
+                    showDiscoverFragment()
+                } else {
+                    Snackbar.make(
+                        binding.root,
+                        "Please enter username first!",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
             } else {
-                Snackbar.make(binding.root, "Please enter username first!", Snackbar.LENGTH_LONG).show()
+                recheckPermissions(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    "Location",
+                    FINE_LOCATION
+                )
             }
         }
 
         binding.serverButton.setOnClickListener {
-            if (!binding.inputUsername.text.toString().isNullOrEmpty()) {
-                showLobby()
+            if (checkPermission) {
+                if (!binding.inputUsername.text.toString().isNullOrEmpty()) {
+                    showLobby()
+                } else {
+                    Snackbar.make(
+                        binding.root,
+                        "Please enter username first!",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
             } else {
-                Snackbar.make(binding.root, "Please enter username first!", Snackbar.LENGTH_LONG).show()
+                recheckPermissions(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    "Location",
+                    FINE_LOCATION
+                )
             }
         }
     }
@@ -139,7 +160,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showDiscoverFragment() {
-        if (checkPermission) {
             val fragment = supportFragmentManager.findFragmentByTag(DISCOVER_FRAGMENT_TAG)
                 ?: DiscoverFragment()
 
@@ -151,35 +171,20 @@ class MainActivity : AppCompatActivity() {
                 .add(R.id.fragment_container, fragment, DISCOVER_FRAGMENT_TAG)
                 .addToBackStack(DISCOVER_FRAGMENT_TAG)
                 .commit()
-        } else {
-            recheckPermissions(
-                android.Manifest.permission.ACCESS_FINE_LOCATION,
-                "Location",
-                FINE_LOCATION
-            )
-        }
     }
 
     private fun showLobby() {
-        if (checkPermission) {
-            val fragment = supportFragmentManager.findFragmentByTag(LOBBY_FRAGMENT_TAG)
-                ?: LobbyFragment()
+        val fragment = supportFragmentManager.findFragmentByTag(LOBBY_FRAGMENT_TAG)
+            ?: LobbyFragment()
 
-            if (fragment.isAdded) {
-                return
-            }
-
-            supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_container, fragment, LOBBY_FRAGMENT_TAG)
-                .addToBackStack(LOBBY_FRAGMENT_TAG)
-                .commit()
-        } else {
-            recheckPermissions(
-                android.Manifest.permission.ACCESS_FINE_LOCATION,
-                "Location",
-                FINE_LOCATION
-            )
+        if (fragment.isAdded) {
+            return
         }
+
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_container, fragment, LOBBY_FRAGMENT_TAG)
+            .addToBackStack(LOBBY_FRAGMENT_TAG)
+            .commit()
     }
 
     fun scoreboardBack(finished: Boolean) {
@@ -196,14 +201,10 @@ class MainActivity : AppCompatActivity() {
                 permission
             ) -> {
                 checkPermission = true
-                MaterialAlertDialogBuilder(this)
-                    .setMessage("$name permission granted")
-                    .setPositiveButton("Ok", null)
-                    .show()
             }
             else -> {
                 ActivityCompat.requestPermissions(
-                    this@MainActivity,
+                    this,
                     arrayOf(permission),
                     requestCode
                 )
@@ -218,17 +219,16 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         fun innerCheck(name: String) {
             checkPermission = if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-
-                MaterialAlertDialogBuilder(this)
-                    .setMessage("$name permission refused")
-                    .setPositiveButton("Ok", null)
-                    .show()
+                binding.settingsButton.visibility = View.VISIBLE
+                Snackbar.make(
+                    binding.root,
+                    "$name permission refused - change location settings!",
+                    Snackbar.LENGTH_LONG
+                ).show()
                 false
             } else {
-                MaterialAlertDialogBuilder(this)
-                    .setMessage("$name permission granted")
-                    .setPositiveButton("Ok", null)
-                    .show()
+                Snackbar.make(binding.root, "$name permission granted", Snackbar.LENGTH_LONG).show()
+                binding.settingsButton.visibility = View.INVISIBLE
                 true
             }
         }
