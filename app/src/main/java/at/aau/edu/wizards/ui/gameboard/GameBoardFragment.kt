@@ -195,7 +195,6 @@ class GameBoardFragment : Fragment(), OnDragListener {
                 return false
             }
         }
-
         return true
     }
 
@@ -205,27 +204,20 @@ class GameBoardFragment : Fragment(), OnDragListener {
             val arrayGuessesPossibilities = viewModel.getBuildGuess()
             var selectedOption = 0
 
-            if (!viewModel.gameModel.listener.guessing && viewModel.gameModel.listener.cheatingFunction) {
-                activity?.let {
-                    MaterialAlertDialogBuilder(it)
-                        .setTitle("Shake event detected. Guess updated")
-                        //.setNeutralButton("Cancel", null)
-                        .setSingleChoiceItems(
-                            arrayGuessesPossibilities,
-                            selectedOption
-                        ) { _, which ->
-                            selectedOption = which
-                        }
-                        .setPositiveButton("Ok") { _, _ ->
-                            val selectedGuess = arrayGuessesPossibilities[selectedOption]
-                            val selectedGuessInt = selectedGuess.toString().toInt()
-                            viewModel.updateGuess(selectedGuessInt)
-
-                        }
-                        .show()
-                }
+            activity?.let {
+                MaterialAlertDialogBuilder(it).setTitle("Shake event detected. Guess updated")
+                    .setSingleChoiceItems(
+                        arrayGuessesPossibilities, selectedOption
+                    ) { _, which ->
+                        selectedOption = which
+                    }.setPositiveButton("Ok") { _, _ ->
+                        val selectedGuess = arrayGuessesPossibilities[selectedOption]
+                        val selectedGuessInt = selectedGuess.toString().toInt()
+                        viewModel.updateGuess(selectedGuessInt)
+                    }.show()
             }
         }
+
 
         val sensorManager =
             requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager

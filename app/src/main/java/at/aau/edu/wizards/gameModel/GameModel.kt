@@ -180,6 +180,20 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
     fun updateGuessCount(newGuess_Int: Int) {
 
         val newGuess = GameModelListener.Guess(newGuess_Int, localPlayer())
-        listener.updatedGuess(newGuess)
+        rules.updatedGuess(newGuess)
     }
+
+
+  fun foundCheater(cheater: Int) {
+
+      if (players[cheater].hasCheated) {
+          rules.setCheatingPointsDeducction(cheater)
+          rules.setCheatingPointsAdd(localPlayer())
+
+      } else {
+        rules.setCheatingPointsDeducction(localPlayer())
+      }
+      listener.playerHasCheated = true
+
+  }
 }

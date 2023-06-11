@@ -7,6 +7,7 @@ import androidx.lifecycle.distinctUntilChanged
 import at.aau.edu.wizards.R
 import at.aau.edu.wizards.gameModel.GameModel
 import at.aau.edu.wizards.gameModel.GameModelCard
+import at.aau.edu.wizards.gameModel.GameModelListener
 
 abstract class GameBoardViewModel : ViewModel() {
 
@@ -58,20 +59,6 @@ abstract class GameBoardViewModel : ViewModel() {
         return guesses
     }
 
-    fun updateGuess(guessInt: Int) {
-
-        gameModel.updateGuessCount(guessInt)
-
-    }
-
-    fun getBuildGuess(): Array<CharSequence> {
-
-        val charSequenceArray: Array<CharSequence> =
-            buildGuessList(gameModel).map { it.toString() }.toTypedArray()
-
-        return charSequenceArray
-    }
-
     fun getIconFromId(icon: Int): Int {
         return when (icon) {
             1 -> R.drawable.icon1
@@ -94,6 +81,20 @@ abstract class GameBoardViewModel : ViewModel() {
             18 -> R.drawable.icon18
             else -> R.drawable.icon19
         }
+    }
+
+    fun updateGuess(guessInt: Int) {
+
+        gameModel.updateGuessCount(guessInt)
+
+    }
+
+    fun getBuildGuess(): Array<CharSequence> {
+
+        val charSequenceArray: Array<CharSequence> =
+            buildGuessList(gameModel).map { it.toString() }.toTypedArray()
+
+        return charSequenceArray
     }
 }
 

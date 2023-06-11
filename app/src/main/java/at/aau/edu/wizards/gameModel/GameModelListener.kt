@@ -25,7 +25,7 @@ class GameModelListener(
     var guessing = false
         private set
     val headerList = ArrayList<GameBoardHeader>()
-    var cheatingFunction = true
+
 
     data class Card(val card: GameModelCard, val playerId: Int)
     data class Guess(val guess: Int, val playerId: Int)
@@ -84,7 +84,6 @@ class GameModelListener(
         trump = rules.trump
         winningCard = rules.winningCard
         guessing = rules.wantsGuess
-        cheatingFunction = true
         calculateBoard()
         hands.clear()
         guesses.clear()
@@ -180,48 +179,8 @@ class GameModelListener(
             else -> R.drawable.icon19
         }
     }
-
-    private var cheaterPlayerid: Int = 7
-    fun updatedGuess(newGuess: Guess) {
-        cheaterPlayerid = newGuess.playerId
-        guesses[newGuess.playerId] = newGuess
-        cheaterPlayerid = newGuess.playerId
-
-        guesses.clear()
-        for (player in players) {
-            for (guess in player.guesses) {
-                guesses.add(Guess(guess, player.id))
-            }
-        }
-        cheatingFunction = false
-        calculateHeader()
-        viewModel?.updateData(parent)
+    fun foundCheaterCall(cheater: Int) {
+        viewModel?.gameModel?.foundCheater(cheater)
     }
-
-    fun listOFPlayer(): Array<String> {
-
-        var listPlayerName = mutableListOf<String>()
-        for (player in players) {
-            listPlayerName.add(getNameOfPlayer(player.id))
-        }
-        var arrayPlayerName: Array<String> = listPlayerName.map { it.toString() }.toTypedArray()
-        return arrayPlayerName
-    }
-
-    var fundCheaterButton: Boolean = true
-    fun foundCheater(cheater: Int) {
-
-        if (cheater == cheaterPlayerid) {
-            val newScore: Int = getCurrentScoreOfPlayer(cheater) - 10
-            scores[scores[cheater + ((guesses.size / players.size) - 1)].playerId] = Score(newScore, cheater)
-        } else {
-            val newScore: Int = getCurrentScoreOfPlayer(viewModel!!.gameModel.localPlayer()) - 10
-            scores[scores[viewModel.gameModel.localPlayer() + ((guesses.size / players.size) - 1)].playerId] = Score(newScore, viewModel.gameModel.localPlayer())
-        }
-        fundCheaterButton = false
-        calculateHeader()
-        viewModel?.updateData(parent)
-    }
-
-
+    var playerHasCheated: Boolean = false
 }

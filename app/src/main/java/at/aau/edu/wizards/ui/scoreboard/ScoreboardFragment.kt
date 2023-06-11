@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.MainActivity
@@ -57,6 +56,11 @@ class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
             adapter.submitList(score)
         }
 
+        binding.btnCheatingFunction.visibility = View.GONE
+        if (viewModel.listener.getRound() > 1 && listener.playerHasCheated) {
+            binding.btnCheatingFunction.visibility = View.VISIBLE
+        }
+
         binding.btnMainmenu.setOnClickListener {
             val mainActivity = activity as? MainActivity
             if (listener.getRound() <= 10) {
@@ -66,38 +70,22 @@ class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
             }
         }
 
-
         binding.btnCheatingFunction.setOnClickListener {
             var selectedOption = 0
-
-            when {
-                viewModel.listener.guessing -> {
-                    Toast.makeText(activity, "Everyone must have made their guess!", Toast.LENGTH_SHORT).show()
-                }
-                !viewModel.listener.fundCheaterButton -> {
-                    Toast.makeText(activity, "Found Cheater Button pressed before!", Toast.LENGTH_SHORT).show()
-                }
-                viewModel.listener.getRound() <= 1 -> {
-                    Toast.makeText(activity, "You can only find cheaters from round 2 onwards!", Toast.LENGTH_SHORT).show()
-                }
-                else -> {
-                    activity?.let {
-                        MaterialAlertDialogBuilder(it)
-                            .setTitle("Choose Cheater")
-                            .setNeutralButton("Cancel", null)
-                            .setSingleChoiceItems(listener.listOFPlayer(), selectedOption) { _, which ->
-                                selectedOption = which
-                            }
-                            .setPositiveButton("Ok") { _, _ ->
-                                listener.foundCheater(selectedOption)
-                            }
-                            .show()
+            activity?.let {
+                MaterialAlertDialogBuilder(it)
+                    .setTitle("Choose Cheater")
+                    .setNeutralButton("Cancel", null)
+                    .setSingleChoiceItems(viewModel.listOFPlayer(), selectedOption) { _, which ->
+                        selectedOption = which
                     }
-                }
+                    .setPositiveButton("Ok") { _, _ ->
+                        listener.foundCheaterCall(selectedOption)
+                    }
+                    .show()
             }
-
-
         }
     }
 }
+
 

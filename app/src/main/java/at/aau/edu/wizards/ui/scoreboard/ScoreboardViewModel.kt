@@ -26,6 +26,17 @@ class ScoreboardViewModel(
         _score.value = scoreList
     }
 
+    fun listOFPlayer(): Array<String> {
+
+        var listPlayerName = mutableListOf<String>()
+
+        for (player in 0 until listener.numberOfPlayers) {
+            listPlayerName.add(listener.getNameOfPlayer(player))
+        }
+        var arrayPlayerName: Array<String> = listPlayerName.map { it.toString() }.toTypedArray()
+        return arrayPlayerName
+    }
+
     class Factory(
         private val listener: GameModelListener
     ) : ViewModelProvider.Factory {

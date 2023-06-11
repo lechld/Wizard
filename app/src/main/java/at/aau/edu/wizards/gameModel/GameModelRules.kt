@@ -69,8 +69,10 @@ class GameModelRules(
             if (!player.isHuman) {
                 player.guesses.add(cpu.getGuess(player.id))
             }
+            player.hasCheated = false
         }
         getGuess()
+
         parent.listener.update()
     }
 
@@ -102,8 +104,7 @@ class GameModelRules(
     private suspend fun checkNormal(card: GameModelCard) {
         when (winningCard) {
             is GameModelCard.Normal -> {
-                if ((winningCard as GameModelCard.Normal).color == (card as GameModelCard.Normal).color
-                    || !players[currentPlayer].hasColor(
+                if ((winningCard as GameModelCard.Normal).color == (card as GameModelCard.Normal).color || !players[currentPlayer].hasColor(
                         (winningCard as GameModelCard.Normal).color
                     )
                 ) {
@@ -267,5 +268,20 @@ class GameModelRules(
     private suspend fun getCpuToPlay() {
         delay(1000)
         parent.receiveMessage(cpu.getMove(currentPlayer).getString())
+    }
+
+    var cheaterId: Int = 6
+    fun updatedGuess(newGuess: GameModelListener.Guess) {
+        players[newGuess.playerId].guesses[players[newGuess.playerId].guesses.lastIndex] = newGuess.guess
+        players[newGuess.playerId].hasCheated = true
+        cheaterId = players[newGuess.playerId].id
+    }
+
+    fun setCheatingPointsDeducction(chaeter: Int) {
+        players[chaeter].scores[players[chaeter].scores.lastIndex] = players[chaeter].scores[players[chaeter].scores.lastIndex] - 10
+    }
+
+    fun setCheatingPointsAdd(revealer: Int) {
+        players[revealer].scores[players[revealer].scores.lastIndex] = players[revealer].scores[players[revealer].scores.lastIndex] + 10
     }
 }
