@@ -8,6 +8,7 @@ sealed interface LobbyItem {
     data class Accepted(val connection: ServerConnection.Connected) : LobbyItem
 
     object AddCpu : LobbyItem
+    object RemoveCpu : LobbyItem
 
     data class CpuPlayer(val text: String) : LobbyItem
 }
