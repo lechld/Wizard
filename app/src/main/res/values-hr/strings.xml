@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Čarobnjaci</string>
+    <string name="start_game">Započni igru</string>
+    <string name="enter_username">Unesi korisničko ime</string>
+    <string name="autofill_hint_username">Korisničko ime</string>
+    <string name="behave_as_server">Kreiraj sobu</string>
+    <string name="behave_as_client">Pridruži se sobi</string>
+    <string name="add_cpu_opponent">Dodaj računalnog igrača</string>
+    <string name="remove_cpu_opponent">Ukloni računalnog igrača</string>
+    <string name="leave_warning">Da li doista želite napustiti igru?</string>
+    <string name="no">Ne</string>
+    <string name="yes">Da</string>
+    <string name="scoreboard">Rezultati</string>
+    <string name="name">Ime</string>
+    <string name="score">Rezultat:</string>
+    <string name="startnewgame">Zatvori</string>
+    <string name="max_player">Može biti najviše 6 igrača</string>
+    <string name="min_player">Nema dovoljno igrača za pokretanje igre (potrebno je minimalno 3). \n\nDodajte neke računalne igrače ili pričekajte da se netko poveže!</string>
+    <string name="okay">U redu</string>
+</resources>

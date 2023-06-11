@@ -11,7 +11,8 @@ private const val ACCEPTED_VIEW_TYPE = 0
 private const val HEADER_VIEW_TYPE = 1
 private const val REQUESTED_VIEW_TYPE = 2
 private const val ADD_CPU_VIEW_TYPE = 3
-private const val CPU_PLAYER_VIEW_TYPE = 4
+private const val REMOVE_CPU_VIEW_TYPE = 4
+private const val CPU_PLAYER_VIEW_TYPE = 5
 
 class LobbyAdapter(
     private val onClick: (LobbyItem) -> Unit,
@@ -24,6 +25,7 @@ class LobbyAdapter(
             is LobbyItem.Requested -> REQUESTED_VIEW_TYPE
             is LobbyItem.CpuPlayer -> CPU_PLAYER_VIEW_TYPE
             is LobbyItem.AddCpu -> ADD_CPU_VIEW_TYPE
+            is LobbyItem.RemoveCpu -> REMOVE_CPU_VIEW_TYPE
             else -> throw IllegalStateException("ViewType not supported!")
         }
     }
@@ -52,6 +54,11 @@ class LobbyAdapter(
 
                 LobbyItemViewHolder.AddCpu(binding, onClick)
             }
+            REMOVE_CPU_VIEW_TYPE -> {
+                val binding = ItemLobbyRemoveCpuBinding.inflate(inflater, parent, false)
+
+                LobbyItemViewHolder.RemoveCpu(binding, onClick)
+            }
             CPU_PLAYER_VIEW_TYPE -> {
                 val binding = ItemLobbyCpuPlayerBinding.inflate(inflater, parent, false)
 
@@ -77,6 +84,9 @@ class LobbyAdapter(
             is LobbyItemViewHolder.AddCpu -> {
                 holder.bind(item as LobbyItem.AddCpu)
             }
+            is LobbyItemViewHolder.RemoveCpu -> {
+                holder.bind(item as LobbyItem.RemoveCpu)
+            }
             is LobbyItemViewHolder.CpuPlayer -> {
                 holder.bind(item as LobbyItem.CpuPlayer)
             }
@@ -101,6 +111,9 @@ class LobbyAdapter(
                 }
                 is LobbyItem.AddCpu -> {
                     newItem is LobbyItem.AddCpu
+                }
+                is LobbyItem.RemoveCpu -> {
+                    newItem is LobbyItem.RemoveCpu
                 }
                 is LobbyItem.CpuPlayer -> {
                     newItem is LobbyItem.CpuPlayer && oldItem.text == newItem.text
