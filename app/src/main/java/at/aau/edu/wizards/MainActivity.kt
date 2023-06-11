@@ -45,8 +45,9 @@ class MainActivity : AppCompatActivity() {
         handlePermissions()
     }
 
-    fun showGame(asClient: Boolean, amountCpu: Int = 0) {
-        val fragment = supportFragmentManager.findFragmentByTag(GAME_BOARD_FRAGMENT_TAG)
+        fun showGame(asClient: Boolean, amountCpu: Int = 0) {
+
+            val fragment = supportFragmentManager.findFragmentByTag(GAME_BOARD_FRAGMENT_TAG)
             ?: GameBoardFragment.instance(asClient, amountCpu)
 
         if (fragment.isAdded) {
