@@ -1,6 +1,8 @@
 package at.aau.edu.wizards
 
 import android.content.Context
+import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,6 +17,7 @@ import at.aau.edu.wizards.ui.lobby.LobbyFragment
 import at.aau.edu.wizards.ui.scoreboard.ScoreboardFragment
 import at.aau.edu.wizards.util.permission.PermissionHandler
 import com.google.android.material.snackbar.Snackbar
+import java.util.Locale
 
 private const val DISCOVER_FRAGMENT_TAG = "DISCOVER_FRAGMENT_TAG"
 private const val LOBBY_FRAGMENT_TAG = "LOBBY_FRAGMENT_TAG"
@@ -31,6 +34,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setAppLocale()
+
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         // kotlin:S6291 ---> Make sure using an unencrypted database is safe here.
@@ -45,8 +50,39 @@ class MainActivity : AppCompatActivity() {
         handlePermissions()
     }
 
-    fun showGame(asClient: Boolean, amountCpu: Int = 0) {
-        val fragment = supportFragmentManager.findFragmentByTag(GAME_BOARD_FRAGMENT_TAG)
+    private fun setAppLocale() {
+        val defaultLocale = Locale.getDefault()
+
+        // Check if the default locale is German, Croatian, Bosnian, or Serbian
+        if (defaultLocale != Locale.GERMAN && defaultLocale != Locale("hr")
+            && defaultLocale != Locale("bs") && defaultLocale != Locale("sr")) {
+
+            val config = Configuration(resources.configuration)
+
+            // Set the default locale for the configuration
+            config.setLocale(defaultLocale)
+
+            // Create a new Context based on the updated configuration
+            val context = createConfigurationContext(config)
+
+            // Update the resources with the new configuration
+            resources.updateConfiguration(config, resources.displayMetrics)
+
+            // Fallback to English if the default locale is not supported
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                config.setLocale(Locale.ENGLISH)
+            } else {
+                config.locale = Locale.ENGLISH
+            }
+
+            // Update the resources again with the fallback configuration
+            resources.updateConfiguration(config, resources.displayMetrics)
+        }
+    }
+
+        fun showGame(asClient: Boolean, amountCpu: Int = 0) {
+
+            val fragment = supportFragmentManager.findFragmentByTag(GAME_BOARD_FRAGMENT_TAG)
             ?: GameBoardFragment.instance(asClient, amountCpu)
 
         if (fragment.isAdded) {
