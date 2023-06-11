@@ -18,4 +18,6 @@
     <string name="max_player">Može biti najviše 6 igrača</string>
     <string name="min_player">Nema dovoljno igrača za pokretanje igre (potrebno je minimalno 3). \n\nDodajte neke računalne igrače ili pričekajte da se netko poveže!</string>
     <string name="okay">U redu</string>
+    <string name="avatarSelectionSpinner">Koristi se za odabir avatara</string>
+    <string name="avatarSelectionImageView">Koristi se za prikaz avatara</string>
 </resources>
