@@ -11,18 +11,18 @@ class ScoreboardViewModel(
     val score: LiveData<ArrayList<Scoreboard>> = _score.distinctUntilChanged()
 
     init {
-        val scorelist = ArrayList<Scoreboard>()
+        val scoreList = ArrayList<Scoreboard>()
 
         for (player in 0 until listener.numberOfPlayers) {
-            scorelist.add(
+            scoreList.add(
                 Scoreboard(
-                    listener.getIconFromId(player),
+                    listener.getIconFromId(listener.getIconOfPlayer(player)),
                     listener.getNameOfPlayer(player),
                     listener.getCurrentScoreOfPlayer(player)
                 )
             )
         }
-        _score.value = scorelist
+        _score.value = scoreList
     }
 
     class Factory(

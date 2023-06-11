@@ -1,7 +1,13 @@
 package at.aau.edu.wizards.gameModel
 
 import at.aau.edu.wizards.R
-import at.aau.edu.wizards.ui.gameboard.GameBoardTheme
+
+const val VALUEBLUE = 0
+const val VALUEGREEN = 15
+const val VALUEORANGE = 30
+const val VALUERED = 45
+const val VALUEWIZZARD = 14
+const val VALUEJESTER = 0
 
 sealed class GameModelCard {
 
@@ -32,16 +38,16 @@ sealed class GameModelCard {
             is Jester -> {
                 return when (this.color) {
                     Color.Blue -> {
-                        0.toChar().toString()
+                        (VALUEBLUE + VALUEJESTER).toChar().toString()
                     }
                     Color.Green -> {
-                        15.toChar().toString()
+                        (VALUEGREEN + VALUEJESTER).toChar().toString()
                     }
                     Color.Orange -> {
-                        30.toChar().toString()
+                        (VALUEORANGE + VALUEJESTER).toChar().toString()
                     }
                     Color.Red -> {
-                        45.toChar().toString()
+                        (VALUERED + VALUEJESTER).toChar().toString()
                     }
                 }
             }
@@ -51,32 +57,32 @@ sealed class GameModelCard {
             is Normal -> {
                 return when (this.color) {
                     Color.Blue -> {
-                        (0 + this.value).toChar().toString()
+                        (VALUEBLUE + this.value).toChar().toString()
                     }
                     Color.Green -> {
-                        (15 + this.value).toChar().toString()
+                        (VALUEGREEN + this.value).toChar().toString()
                     }
                     Color.Orange -> {
-                        (30 + this.value).toChar().toString()
+                        (VALUEORANGE + this.value).toChar().toString()
                     }
                     Color.Red -> {
-                        (45 + this.value).toChar().toString()
+                        (VALUERED + this.value).toChar().toString()
                     }
                 }
             }
             is Wizard -> {
                 return when (this.color) {
                     Color.Blue -> {
-                        14.toChar().toString()
+                        (VALUEBLUE + VALUEWIZZARD).toChar().toString()
                     }
                     Color.Green -> {
-                        29.toChar().toString()
+                        (VALUEGREEN + VALUEWIZZARD).toChar().toString()
                     }
                     Color.Orange -> {
-                        44.toChar().toString()
+                        (VALUEORANGE + VALUEWIZZARD).toChar().toString()
                     }
                     Color.Red -> {
-                        59.toChar().toString()
+                        (VALUERED + VALUEWIZZARD).toChar().toString()
                     }
                 }
             }
@@ -180,28 +186,6 @@ sealed class GameModelCard {
                     else -> R.drawable.r13
                 }
             }
-        }
-    }
-
-    fun getGameBoardTheme(): GameBoardTheme {
-        return when (this) {
-            is Normal -> {
-                when (this.color) {
-                    Color.Blue -> GameBoardTheme.Blue
-                    Color.Green -> GameBoardTheme.Green
-                    Color.Orange -> GameBoardTheme.Orange
-                    Color.Red -> GameBoardTheme.Red
-                }
-            }
-            is Wizard -> {
-                when (this.color) {
-                    Color.Blue -> GameBoardTheme.Blue
-                    Color.Green -> GameBoardTheme.Green
-                    Color.Orange -> GameBoardTheme.Orange
-                    Color.Red -> GameBoardTheme.Red
-                }
-            }
-            else -> GameBoardTheme.No
         }
     }
 

@@ -1,9 +1,12 @@
 package at.aau.edu.wizards.gameModel
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.mock
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class GameModelListenerUnitTest {
     private val viewModel = null
 
@@ -124,6 +127,62 @@ class GameModelListenerUnitTest {
         assertEquals(20, listener.getAllScoresOfPlayer(4)[1])
         assertEquals(20, listener.getAllScoresOfPlayer(5)[0])
         assertEquals(0, listener.getAllScoresOfPlayer(5)[1])
+    }
 
+    @Test
+    fun testGuessing() = runTest {
+        val model = GameModel(viewModel)
+        var listener = model.listener
+
+        assertFalse(listener.guessing)
+
+        assertTrue(model.receiveMessage(buildString {
+            append(0.toChar())
+            append(1.toChar())
+            append(2.toChar())
+            append(420420.toString())
+        }))
+        listener = model.listener
+        assertTrue(listener.guessing)
+        assertTrue(model.receiveMessage(60.toChar().toString()))
+        assertFalse(listener.guessing)
+        assertTrue(model.receiveMessage(listener.getHandOfPlayer(0)[0].getString()))
+        assertTrue(listener.guessing)
+        assertTrue(model.receiveMessage(62.toChar().toString()))
+        assertFalse(listener.guessing)
+    }
+
+    @Test
+    fun testGetNameOfPlayer() = runTest {
+        val model = GameModel(viewModel)
+        assertTrue(model.receiveMessage(buildString {
+            append(0.toChar())
+            append(1.toChar())
+            append(5.toChar())
+            append(420420.toString())
+        }))
+        val listener = model.listener
+        for (player in 0..5) {
+            assertNotEquals("MissingPlayer", listener.getNameOfPlayer(player))
+        }
+        assertEquals("MissingPlayer", listener.getNameOfPlayer(-1))
+        assertEquals("MissingPlayer", listener.getNameOfPlayer(6))
+    }
+
+    @Test
+    fun testBoardAsNewArray() = runTest {
+        val model = GameModel(viewModel)
+        assertTrue(model.receiveMessage(buildString {
+            append(0.toChar())
+            append(1.toChar())
+            append(5.toChar())
+            append(420420.toString())
+        }))
+        val listener = model.listener
+        val board1 = listener.boardAsNewArray()
+        val board2 = listener.boardAsNewArray()
+        assertEquals(board1, board2)
+        board1.removeAt(0)
+        assertNotEquals(board1, board2)
     }
 }

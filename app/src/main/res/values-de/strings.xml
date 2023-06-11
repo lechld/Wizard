@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Zauberer</string>
+    <string name="start_game">Spiel starten</string>
+    <string name="enter_username">Benutzername eingeben</string>
+    <string name="autofill_hint_username">Benutzername</string>
+    <string name="behave_as_server">Lobby erstellen</string>
+    <string name="behave_as_client">Lobby beitreten</string>
+    <string name="add_cpu_opponent">Computergegner hinzufügen</string>
+    <string name="remove_cpu_opponent">Computergegner entfernen</string>
+    <string name="leave_warning">Möchtest du dieses Spiel wirklich verlassen?</string>
+    <string name="no">Nein</string>
+    <string name="yes">Ja</string>
+    <string name="scoreboard">Score</string>
+    <string name="name">Name</string>
+    <string name="score">Score:</string>
+    <string name="startnewgame">Schließen</string>
+    <string name="max_player">Es können maximal 6 Spieler teilnehmen</string>
+    <string name="min_player">Es gibt nicht genügend Spieler, um das Spiel zu starten (mindestens 3 erforderlich).\n\nFüge einige CPU-Spieler hinzu oder warte, bis sich jemand verbindet!</string>
+    <string name="okay">Okay</string>
+    <string name="avatarSelectionSpinner">Wird benutzt um Avatar zu wählen</string>
+    <string name="avatarSelectionImageView">Wird benutzt um Avatar anzuzeigen</string>
+</resources>

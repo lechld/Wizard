@@ -54,6 +54,18 @@ sealed class LobbyItemViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder
         }
     }
 
+    class RemoveCpu(
+        private val binding: ItemLobbyRemoveCpuBinding,
+        private val onClick: (LobbyItem) -> Unit,
+    ) : LobbyItemViewHolder(binding) {
+
+        fun bind(item: LobbyItem.RemoveCpu) {
+            binding.root.setOnClickListener {
+                onClick(item)
+            }
+        }
+    }
+
     class CpuPlayer(
         private val binding: ItemLobbyCpuPlayerBinding
     ) : LobbyItemViewHolder(binding) {
