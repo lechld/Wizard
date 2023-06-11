@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">Wizards</string>
     <string name="start_game">Start game</string>
-    <string name="behave_as_server">Create lobbby</string>
+    <string name="enter_username">Enter username</string>
+    <string name="autofill_hint_username">username</string>
+    <string name="behave_as_server">Create lobby</string>
     <string name="behave_as_client">Join lobby</string>
     <string name="add_cpu_opponent">Add computer player</string>
+    <string name="remove_cpu_opponent">Remove computer player</string>
     <string name="leave_warning">Do you really wan\'t to leave this game?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
@@ -15,6 +18,7 @@
     <string name="score">Score:</string>
     <string name="startnewgame">Close</string>
     <string name="max_player">There can only be a maximum of 6 players</string>
+    <string name="min_player">There are not enough players to start the game (minimum 3 required). \n\nAdd some CPU players or wait for someone to connect!</string>
     <string name="okay">Okay</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

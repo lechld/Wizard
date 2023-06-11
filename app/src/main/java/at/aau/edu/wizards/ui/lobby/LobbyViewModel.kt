@@ -56,6 +56,20 @@ class LobbyViewModel(
         } else {
             checkTooManyPlayer = true
         }
+
+        if (numPlayer <= 6) {
+            when (clickedItem) {
+                is LobbyItem.RemoveCpu -> {
+                    checkTooManyPlayer = false
+                    removeCpuPlayer()
+                    numPlayer -= 1
+                }
+                else -> {
+                    // do nothing
+                    println("do nothing")
+                }
+            }
+        }
     }
 
     private fun accept(lobbyItem: LobbyItem.Requested) {
@@ -68,6 +82,10 @@ class LobbyViewModel(
 
     private fun addCpuPlayer() {
         cpuPlayers.tryEmit(cpuPlayers.value + 1)
+    }
+
+    private fun removeCpuPlayer() {
+        cpuPlayers.tryEmit(cpuPlayers.value - 1)
     }
 
     fun startGame(): Int {

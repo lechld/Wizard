@@ -1,15 +1,18 @@
 package at.aau.edu.wizards.gameModel
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
 
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class GameModelUnitTest {
     private val viewModel = null
+
     @Test
-    fun test() = runTest{
+    fun test() = runTest {
         val model = GameModel(viewModel)
         assertFalse(model.receiveMessage(buildString {
             append(61.toChar())
@@ -113,7 +116,7 @@ class GameModelUnitTest {
     }
 
     @Test
-    fun sendUpdate() = runTest{
+    fun sendUpdate() = runTest {
         val ran = Random(420420)
         val model = GameModel(viewModel)
         model.receiveMessage(buildString {
@@ -146,5 +149,93 @@ class GameModelUnitTest {
                 }
             }
         }
+    }
+
+    @Test
+    fun simulateGame() = runTest {
+        val ran = Random(420420)
+        val model0 = GameModel(viewModel)
+        val model1 = GameModel(viewModel)
+        val model2 = GameModel(viewModel)
+        model0.receiveMessage(buildString {
+            append(0.toChar())
+            append(3.toChar())
+            append(3.toChar())
+            append(420420.toString())
+        })
+        model1.receiveMessage(buildString {
+            append(1.toChar())
+            append(3.toChar())
+            append(3.toChar())
+            append(420420.toString())
+        })
+        model2.receiveMessage(buildString {
+            append(2.toChar())
+            append(3.toChar())
+            append(3.toChar())
+            append(420420.toString())
+        })
+        assertFalse(model0.sendGuessOfLocalPlayer(-1))
+        assertFalse(model0.sendGuessOfLocalPlayer(11))
+        for (round in 1..11) {//try to send without guessing
+            for (card in model0.listener.getHandOfPlayer(0)) {
+                assertFalse(model0.sendMessage(card.getString()))
+                assertFalse(model0.receiveMessage(card.getString()))
+            }
+            var guess = ran.nextInt(0, round)
+            assertTrue(model0.sendGuessOfLocalPlayer(guess))
+            model0.receiveMessage(buildString {
+                append((60 + guess).toChar())
+            })
+            model1.receiveMessage(buildString {
+                append((60 + guess).toChar())
+            })
+            model2.receiveMessage(buildString {
+                append((60 + guess).toChar())
+            })
+            for (card in model0.listener.getHandOfPlayer(1)) {
+                assertFalse(model0.sendMessage(card.getString()))
+                //assertFalse(model0.receiveMessage(card.getString()))
+            }
+            guess = ran.nextInt(0, round)
+            model0.receiveMessage(buildString {
+                append((71 + guess).toChar())
+            })
+            model1.receiveMessage(buildString {
+                append((71 + guess).toChar())
+            })
+            model2.receiveMessage(buildString {
+                append((71 + guess).toChar())
+            })
+            for (card in model0.listener.getHandOfPlayer(2)) {
+                assertFalse(model0.sendMessage(card.getString()))
+                assertFalse(model0.receiveMessage(card.getString()))
+            }
+            guess = ran.nextInt(0, round)
+            model0.receiveMessage(buildString {
+                append((82 + guess).toChar())
+            })
+            model1.receiveMessage(buildString {
+                append((82 + guess).toChar())
+            })
+            model2.receiveMessage(buildString {
+                append((82 + guess).toChar())
+            })
+            for (game in 1..round) {
+                for (player in round..round + 2) {
+                    for (card in model0.listener.getHandOfPlayer((player - 1) % 3)) {
+                        if (model0.sendMessage(card.getString()) || model1.sendMessage(card.getString()) || model2.sendMessage(
+                                card.getString()
+                            )
+                        ) {
+                            model0.receiveMessage(card.getString())
+                            model1.receiveMessage(card.getString())
+                            model2.receiveMessage(card.getString())
+                        }
+                    }
+                }
+            }
+        }
+        assertEquals(11, model0.listener.getRound())
     }
 }

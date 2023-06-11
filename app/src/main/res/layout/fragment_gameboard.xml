@@ -7,13 +7,37 @@
     android:background="?colorPrimaryContainer">
 
     <FrameLayout
+        android:id="@+id/drag_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/drag_container"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/seperationBoardHand"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:adjustViewBounds="true"
+        android:background="?colorOnPrimary"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/gameboard_recycler_view" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/seperationBoardHeader"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:adjustViewBounds="true"
+        android:background="?colorOnPrimary"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@id/header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header" />
 
     <Button
         android:id="@+id/btn_popup"
@@ -30,16 +54,16 @@
         android:id="@+id/btn_scoreboard"
         android:layout_width="110dp"
         android:layout_height="50dp"
+        android:layout_margin="8dp"
         android:fontFamily="@font/bitter"
         android:text="@string/scoreboard"
-        android:layout_margin="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <include
-        layout="@layout/item_gameboard_header"
         android:id="@+id/header"
+        layout="@layout/item_gameboard_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -51,12 +75,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/board_recycler"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header" />
 
@@ -68,10 +91,10 @@
         android:orientation="horizontal"
         android:paddingHorizontal="@dimen/default_margin_half"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header"
         tools:itemCount="3"
         tools:listitem="@layout/item_guess" />
 

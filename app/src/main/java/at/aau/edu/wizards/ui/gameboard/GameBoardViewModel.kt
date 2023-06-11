@@ -61,6 +61,20 @@ abstract class GameBoardViewModel : ViewModel() {
         return guesses
     }
 
+    fun updateGuess(guessInt: Int) {
+
+        gameModel.updateGuessCount(guessInt)
+
+    }
+
+    fun getBuildGuess(): Array<CharSequence> {
+
+        val charSequenceArray: Array<CharSequence> =
+            buildGuessList(gameModel).map { it.toString() }.toTypedArray()
+
+        return charSequenceArray
+    }
+
     fun getIconFromId(icon: Int): Int {
         return when (icon) {
             1 -> R.drawable.icon1
