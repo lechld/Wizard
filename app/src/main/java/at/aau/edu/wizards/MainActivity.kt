@@ -6,8 +6,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ImageView
-import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.api.impl.REQUIRED_PERMISSIONS
@@ -31,9 +29,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
 
-    private lateinit var imageView: ImageView
-    private lateinit var imageSpinner: Spinner
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,22 +48,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupAvatarSelection() {
-        imageView = findViewById(R.id.imageView)
-        imageSpinner = findViewById(R.id.imageSpinner)
-
         val adapter = ImageSpinnerAdapter(this, mainViewModel.avatarsList)
-        imageSpinner.adapter = adapter
+        binding.imageSpinner.adapter = adapter
 
-        imageView.setOnClickListener {
-            imageSpinner.performClick()
+        binding.imageView.setOnClickListener {
+            binding.imageSpinner.performClick()
         }
 
-        imageSpinner.setSelection(mainViewModel.avatarsList.indexOf(mainViewModel.getAvatar()))
+        binding.imageSpinner.setSelection(mainViewModel.avatarsList.indexOf(mainViewModel.getAvatar()))
 
-        imageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.imageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val resourceId = mainViewModel.avatarsList[position]
-                imageView.setImageResource(resourceId)
+                binding.imageView.setImageResource(resourceId)
                 mainViewModel.saveAvatar(resourceId)
             }
 
