@@ -44,8 +44,7 @@ class LobbyItemFactory {
         }
         result.add(LobbyItem.AddCpu)
 
-        if (cpuPlayers > 0)
-        {
+        if (cpuPlayers > 0) {
             result.add(LobbyItem.RemoveCpu)
         }
 

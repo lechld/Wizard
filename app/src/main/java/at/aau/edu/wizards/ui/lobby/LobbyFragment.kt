@@ -79,13 +79,13 @@ class LobbyFragment : Fragment() {
 
         binding.startGameButton.setOnClickListener {
 
-            if (viewModel.numPlayer < 3) {
+            if (viewModel.checkMinPlayer) {
                 activity?.let {
                     MaterialAlertDialogBuilder(it).setMessage(getString(R.string.min_player))
                         .setPositiveButton(getString(R.string.okay), null)
                 }?.create()?.show()
-            }
-            else {
+            } else {
+
                 val amountCpu = viewModel.startGame()
                 val mainActivity = activity as? MainActivity ?: return@setOnClickListener
 

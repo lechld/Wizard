@@ -36,6 +36,9 @@ class LobbyViewModel(
     var checkTooManyPlayer = false
         private set
 
+    var checkMinPlayer = true
+        private set
+
     fun clicked(clickedItem: LobbyItem) {
 
         if (numPlayer < 6) {
@@ -64,11 +67,21 @@ class LobbyViewModel(
                     removeCpuPlayer()
                     numPlayer -= 1
                 }
+                is LobbyItem.Requested -> {
+                    accept(clickedItem)
+                    numPlayer -= 1
+                }
                 else -> {
                     // do nothing
                     println("do nothing")
                 }
             }
+        }
+
+        if (numPlayer <= 2) {
+            checkMinPlayer = true
+        } else if (numPlayer >= 2) {
+            checkMinPlayer = false
         }
     }
 
