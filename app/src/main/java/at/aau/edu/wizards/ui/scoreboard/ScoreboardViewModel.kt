@@ -27,7 +27,6 @@ class ScoreboardViewModel(
     }
 
     fun listOFPlayer(): Array<String> {
-
         var listPlayerName = mutableListOf<String>()
 
         for (player in 0 until listener.numberOfPlayers) {

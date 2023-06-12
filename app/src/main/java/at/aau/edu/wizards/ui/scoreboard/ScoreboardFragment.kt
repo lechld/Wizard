@@ -57,7 +57,7 @@ class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
         }
 
         binding.btnCheatingFunction.visibility = View.GONE
-        if (viewModel.listener.getRound() > 1 && listener.playerHasCheated) {
+        if (viewModel.listener.getRound() > 1 && listener.hasChaeted()) {
             binding.btnCheatingFunction.visibility = View.VISIBLE
         }
 
@@ -73,16 +73,13 @@ class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
         binding.btnCheatingFunction.setOnClickListener {
             var selectedOption = 0
             activity?.let {
-                MaterialAlertDialogBuilder(it)
-                    .setTitle("Choose Cheater")
+                MaterialAlertDialogBuilder(it).setTitle("Choose Cheater")
                     .setNeutralButton("Cancel", null)
                     .setSingleChoiceItems(viewModel.listOFPlayer(), selectedOption) { _, which ->
                         selectedOption = which
-                    }
-                    .setPositiveButton("Ok") { _, _ ->
+                    }.setPositiveButton("Ok") { _, _ ->
                         listener.foundCheaterCall(selectedOption)
-                    }
-                    .show()
+                    }.show()
             }
         }
     }

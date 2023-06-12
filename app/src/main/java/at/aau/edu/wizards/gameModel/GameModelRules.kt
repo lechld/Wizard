@@ -37,6 +37,7 @@ class GameModelRules(
             for (player in players) {
                 if (!player.isHuman) {
                     player.guesses.add(cpu.getGuess(player.id))
+                    player.hasCheated = false
                 }
             }
             getGuess()
@@ -270,18 +271,30 @@ class GameModelRules(
         parent.receiveMessage(cpu.getMove(currentPlayer).getString())
     }
 
-    var cheaterId: Int = 6
-    fun updatedGuess(newGuess: GameModelListener.Guess) {
-        players[newGuess.playerId].guesses[players[newGuess.playerId].guesses.lastIndex] = newGuess.guess
-        players[newGuess.playerId].hasCheated = true
-        cheaterId = players[newGuess.playerId].id
+    fun updatedGuess(playerID: Int, newGuess: Int) {
+        players[playerID].guesses[players[playerID].guesses.lastIndex] = newGuess
+        players[playerID].hasCheated = true
+        parent.listener.update()
     }
 
-    fun setCheatingPointsDeducction(chaeter: Int) {
-        players[chaeter].scores[players[chaeter].scores.lastIndex] = players[chaeter].scores[players[chaeter].scores.lastIndex] - 10
+    fun checkCheater(cheater: Int) {
+        if (players[cheater].hasCheated) {
+            setCheatingPointsDeduction(cheater)
+            setCheatingPointsAdd(parent.localPlayer())
+        } else {
+            setCheatingPointsDeduction(parent.localPlayer())
+        }
+        parent.listener.update()
     }
 
-    fun setCheatingPointsAdd(revealer: Int) {
-        players[revealer].scores[players[revealer].scores.lastIndex] = players[revealer].scores[players[revealer].scores.lastIndex] + 10
+    private fun setCheatingPointsDeduction(cheater: Int) {
+        players[cheater].scores[players[cheater].scores.lastIndex] =
+            players[cheater].scores[players[cheater].scores.lastIndex] - 10
+
+    }
+
+    private fun setCheatingPointsAdd(reveal: Int) {
+        players[reveal].scores[players[reveal].scores.lastIndex] =
+            players[reveal].scores[players[reveal].scores.lastIndex] + 10
     }
 }

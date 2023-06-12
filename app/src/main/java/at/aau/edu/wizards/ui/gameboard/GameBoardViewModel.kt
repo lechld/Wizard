@@ -7,7 +7,6 @@ import androidx.lifecycle.distinctUntilChanged
 import at.aau.edu.wizards.R
 import at.aau.edu.wizards.gameModel.GameModel
 import at.aau.edu.wizards.gameModel.GameModelCard
-import at.aau.edu.wizards.gameModel.GameModelListener
 
 abstract class GameBoardViewModel : ViewModel() {
 

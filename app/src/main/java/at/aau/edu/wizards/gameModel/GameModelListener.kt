@@ -179,8 +179,18 @@ class GameModelListener(
             else -> R.drawable.icon19
         }
     }
+
     fun foundCheaterCall(cheater: Int) {
         viewModel?.gameModel?.foundCheater(cheater)
     }
-    var playerHasCheated: Boolean = false
+
+    fun hasChaeted(): Boolean {
+        for (player in players) {
+            if (player.hasCheated) {
+                return true
+            }
+        }
+        return false
+    }
+
 }

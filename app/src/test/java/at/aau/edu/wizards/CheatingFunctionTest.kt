@@ -5,10 +5,6 @@ import at.aau.edu.wizards.gameModel.GameModelListener
 import at.aau.edu.wizards.gameModel.GameModelPlayer
 import at.aau.edu.wizards.gameModel.GameModelRules
 import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Test
 import org.mockito.Mock
 import org.mockito.kotlin.mock
 

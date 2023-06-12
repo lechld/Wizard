@@ -12,7 +12,10 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         private set
 
     fun sendMessage(move: String): Boolean {
-        return if (legalMessageGuessSend(move) || legalMessageCardSend(move) || move == END_COMMAND) {
+        return if (legalMessageGuessSend(move) || legalMessageCardSend(move) || move == END_COMMAND || legalCheatingGuess(
+                move
+            ) || legalFountCheater(move)
+        ) {
             viewModel?.sendMessage(move)
             true
         } else {
@@ -23,6 +26,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
     private fun legalMessageGuessSend(move: String): Boolean {
         return (legalMessageGuess(move) && (move[0].code - 60) / 11 == rules.id)
     }
+
 
     private fun legalMessageCardSend(move: String): Boolean {
         return legalMessageCard(move) && legalPlayFromLocalPlayer(move) && rules.everyoneHasGuessed()
@@ -64,8 +68,29 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                             listener.update()
                             true
                         } else {
-                            false
+                            when (legalCheatingGuess(move)) {
+                                true -> {
+                                    val playerIndex = (move[0].code - 127) / 11
+                                    val newGuessValue = (move[0].code - 127) % 11
+                                    rules.updatedGuess(playerIndex, newGuessValue)
+                                    true
+                                }
+                                else -> {
+                                    false
+                                }
+                            }
+                            when (legalFountCheater(move)) {
+                                true -> {
+                                    val playerIndex = (move[0].code - 194) / 11
+                                    rules.checkCheater(playerIndex)
+                                    true
+                                }
+                                else -> {
+                                    false
+                                }
+                            }
                         }
+
                     }
                 }
             }
@@ -177,23 +202,27 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         return sendMessage(buildString { append((60 + rules.id * 11 + guess).toChar().toString()) })
     }
 
-    fun updateGuessCount(newGuess_Int: Int) {
-
-        val newGuess = GameModelListener.Guess(newGuess_Int, localPlayer())
-        rules.updatedGuess(newGuess)
+    fun updateGuessCount(newGuess: Int) {
+        rules.updatedGuess(localPlayer(), newGuess)
+        legalCheatingGuess(newGuess.toChar().toString())
     }
 
+    private fun legalCheatingGuess(move: String): Boolean {
+        if (move.length == 1 && move[0].code in 127..(127 + players.size * 11)) {
+            return true
+        }
+        return false
+    }
 
-  fun foundCheater(cheater: Int) {
+    private fun legalFountCheater(move: String): Boolean {
+        if (move.length == 1 && move[0].code in 194..(194 + players.size * 11)) {
+            return true
+        }
+        return false
+    }
 
-      if (players[cheater].hasCheated) {
-          rules.setCheatingPointsDeducction(cheater)
-          rules.setCheatingPointsAdd(localPlayer())
-
-      } else {
-        rules.setCheatingPointsDeducction(localPlayer())
-      }
-      listener.playerHasCheated = true
-
-  }
+    fun foundCheater(cheater: Int) {
+        rules.checkCheater(cheater)
+        legalFountCheater(cheater.toChar().toString())
+    }
 }

@@ -203,18 +203,19 @@ class GameBoardFragment : Fragment(), OnDragListener {
         shakeDetector.setOnShakeListener {
             val arrayGuessesPossibilities = viewModel.getBuildGuess()
             var selectedOption = 0
-
-            activity?.let {
-                MaterialAlertDialogBuilder(it).setTitle("Shake event detected. Guess updated")
-                    .setSingleChoiceItems(
-                        arrayGuessesPossibilities, selectedOption
-                    ) { _, which ->
-                        selectedOption = which
-                    }.setPositiveButton("Ok") { _, _ ->
-                        val selectedGuess = arrayGuessesPossibilities[selectedOption]
-                        val selectedGuessInt = selectedGuess.toString().toInt()
-                        viewModel.updateGuess(selectedGuessInt)
-                    }.show()
+            if (viewModel.gameModel.listener.getRound() > 1 && !viewModel.gameModel.listener.guessing && !viewModel.gameModel.listener.hasChaeted()) {
+                activity?.let {
+                    MaterialAlertDialogBuilder(it).setTitle("Shake event detected. Guess updated")
+                        .setSingleChoiceItems(
+                            arrayGuessesPossibilities, selectedOption
+                        ) { _, which ->
+                            selectedOption = which
+                        }.setPositiveButton("Ok") { _, _ ->
+                            val selectedGuess = arrayGuessesPossibilities[selectedOption]
+                            val selectedGuessInt = selectedGuess.toString().toInt()
+                            viewModel.updateGuess(selectedGuessInt)
+                        }.show()
+                }
             }
         }
 
