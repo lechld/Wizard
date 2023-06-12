@@ -312,7 +312,43 @@ class GameModelRulesUnitTest {
         listOfPlayers.add(player5)
         val rules = GameModelRules(listOfPlayers, 0, dealer, model, 420420)
 
+        player0.guesses.add(1)
+        player1.guesses.add(0)
+        player2.guesses.add(0)
+        player3.guesses.add(1)
+        player4.guesses.add(1)
+        player5.guesses.add(1)
+
+        rules.init()
+
         rules.everyoneHasGuessed()
         assertTrue(rules.everyoneHasGuessed())
+        assertEquals(1, player0.guesses[player0.id])
+        rules.updatedGuess(player0.id,0)
+        assertEquals(0, player0.guesses[player0.id])
+
+        player0.scores.add(10)
+        player1.scores.add(10)
+        player2.scores.add(-10)
+        player3.scores.add(20)
+        player4.scores.add(0)
+        player5.scores.add(0)
+
+        assertEquals(10, player1.scores[player1.scores.lastIndex])
+        player1.hasCheated = true
+        rules.checkCheater(player1.id)
+        rules.init()
+        assertEquals(0, player1.scores[player1.scores.lastIndex])
+
+        assertEquals(-10, player2.scores[player2.scores.lastIndex])
+        player2.hasCheated = false
+        rules.checkCheater(player2.id)
+        rules.init()
+        assertEquals(-10, player2.scores[player2.scores.lastIndex])
+        assertEquals(10, player0.scores[player0.scores.lastIndex])
+
+
+
+
     }
 }
