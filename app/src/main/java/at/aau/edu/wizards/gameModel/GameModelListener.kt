@@ -17,7 +17,7 @@ class GameModelListener(
     private val hands = ArrayList<Card>()
     var trump: GameModelCard = GameModelCard.NoCard
         private set
-    val guesses = ArrayList<Guess>()
+    private val guesses = ArrayList<Guess>()
     private val scores = ArrayList<Score>()
     private val board = ArrayList<GameModelCard>()
     var winningCard: GameModelCard = GameModelCard.NoCard
@@ -184,7 +184,7 @@ class GameModelListener(
         viewModel?.gameModel?.foundCheater(cheater)
     }
 
-    fun hasChaeted(): Boolean {
+    fun hasCheated(): Boolean {
         for (player in players) {
             if (player.hasCheated) {
                 return true

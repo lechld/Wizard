@@ -1,12 +1,9 @@
 package at.aau.edu.wizards.gameModel
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import org.mockito.kotlin.mock
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GameModelListenerUnitTest {
     private val viewModel = null
 
@@ -184,5 +181,22 @@ class GameModelListenerUnitTest {
         assertEquals(board1, board2)
         board1.removeAt(0)
         assertNotEquals(board1, board2)
+    }
+
+    @Test
+    fun testHasCheated() = runTest {
+        val model = GameModel(viewModel)
+        val listener = model.listener
+
+        assert(listener.getHandOfPlayer(0).isEmpty())
+
+        assert(model.receiveMessage(buildString {
+            append(0.toChar())
+            append(6.toChar())
+            append(0.toChar())
+            append(420420.toString())
+        }))
+
+        assertFalse(listener.hasCheated())
     }
 }

@@ -57,7 +57,7 @@ class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
         }
 
         binding.btnCheatingFunction.visibility = View.GONE
-        if (viewModel.listener.getRound() > 1 && listener.hasChaeted()) {
+        if (viewModel.listener.getRound() > 1 && listener.hasCheated()) {
             binding.btnCheatingFunction.visibility = View.VISIBLE
         }
 

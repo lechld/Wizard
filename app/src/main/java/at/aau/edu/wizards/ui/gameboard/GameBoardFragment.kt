@@ -203,7 +203,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
         shakeDetector.setOnShakeListener {
             val arrayGuessesPossibilities = viewModel.getBuildGuess()
             var selectedOption = 0
-            if (viewModel.gameModel.listener.getRound() > 1 && !viewModel.gameModel.listener.guessing && !viewModel.gameModel.listener.hasChaeted()) {
+            if (viewModel.gameModel.listener.getHandOfPlayer(viewModel.gameModel.localPlayer()).size > 1 && viewModel.gameModel.listener.getRound() > 1 && !viewModel.gameModel.listener.guessing && !viewModel.gameModel.listener.hasCheated()) {
                 activity?.let {
                     MaterialAlertDialogBuilder(it).setTitle("Shake event detected. Guess updated")
                         .setSingleChoiceItems(

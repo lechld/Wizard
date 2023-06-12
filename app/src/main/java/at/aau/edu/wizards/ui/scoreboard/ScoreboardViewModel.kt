@@ -27,13 +27,12 @@ class ScoreboardViewModel(
     }
 
     fun listOFPlayer(): Array<String> {
-        var listPlayerName = mutableListOf<String>()
+        val listPlayerName = mutableListOf<String>()
 
         for (player in 0 until listener.numberOfPlayers) {
             listPlayerName.add(listener.getNameOfPlayer(player))
         }
-        var arrayPlayerName: Array<String> = listPlayerName.map { it.toString() }.toTypedArray()
-        return arrayPlayerName
+        return listPlayerName.map { it }.toTypedArray()
     }
 
     class Factory(
