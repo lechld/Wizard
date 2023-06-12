@@ -108,7 +108,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
         setupHeader(binding)
         setupTrump(binding)
         setupScoreboard()
-
+        setupPopUp()
     }
 
 
@@ -131,6 +131,30 @@ class GameBoardFragment : Fragment(), OnDragListener {
             if (finish) {
                 val mainActivity = activity as? MainActivity
                 mainActivity?.showScoreboard(viewModel.gameModel.listener)
+            }
+        }
+    }
+
+    private fun setupPopUp() {
+        viewModel.winningcard.observe(viewLifecycleOwner) {
+            if (it.visible) {
+                binding?.winningCard?.root?.visibility = View.VISIBLE
+                binding?.winningCard?.winningCard?.setImageResource(it.lastCardWon.image())
+                val playerName = viewModel.gameModel.listener.getNameOfPlayer(it.lastPlayerWon)
+                binding?.winningCard?.tvPlayerWon?.text = buildString {
+                    append(playerName)
+                    append(" \n won!")
+                }
+                binding?.trumpIndicatorCard?.root?.visibility = View.INVISIBLE
+                binding?.boardRecycler?.visibility = View.INVISIBLE
+                binding?.gameboardRecyclerView?.visibility = View.INVISIBLE
+                binding?.seperationBoardHand?.visibility = View.INVISIBLE
+            } else {
+                binding?.winningCard?.root?.visibility = View.INVISIBLE
+                binding?.trumpIndicatorCard?.root?.visibility = View.VISIBLE
+                binding?.boardRecycler?.visibility = View.VISIBLE
+                binding?.gameboardRecyclerView?.visibility = View.VISIBLE
+                binding?.seperationBoardHand?.visibility = View.VISIBLE
             }
         }
     }
@@ -199,12 +223,15 @@ class GameBoardFragment : Fragment(), OnDragListener {
                 val item: GameModelCard = event.localState as GameModelCard
                 viewModel.sendMessage(item.getString())
 
-                println("VIBRATE GAMEBOARDFRAGMENT")
-
                 // Trigger haptic feedback
-                if (vibrator.hasVibrator() == true) {
+                if (vibrator.hasVibrator()) {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                        vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE))
+                        vibrator.vibrate(
+                            VibrationEffect.createOneShot(
+                                50,
+                                VibrationEffect.DEFAULT_AMPLITUDE
+                            )
+                        )
                     } else {
                         // Deprecated in API 26
                         @Suppress("DEPRECATION")
