@@ -1,12 +1,12 @@
 package at.aau.edu.wizards.ui.gameboard
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.distinctUntilChanged
+import androidx.lifecycle.*
 import at.aau.edu.wizards.R
 import at.aau.edu.wizards.gameModel.GameModel
 import at.aau.edu.wizards.gameModel.GameModelCard
+import at.aau.edu.wizards.gameModel.GameModelListener
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 abstract class GameBoardViewModel : ViewModel() {
 
@@ -32,6 +32,9 @@ abstract class GameBoardViewModel : ViewModel() {
     protected val _popup = MutableLiveData<Boolean>()
     val popup: LiveData<Boolean> = _popup.distinctUntilChanged()
 
+    private val _winningcard = MutableLiveData<GameModelListener.WinningCardPopUp>()
+    val winningcard : LiveData<GameModelListener.WinningCardPopUp> = _winningcard.distinctUntilChanged()
+
     abstract fun sendMessage(move: String)
 
     abstract val gameModel: GameModel
@@ -49,6 +52,20 @@ abstract class GameBoardViewModel : ViewModel() {
 
         _cards.postValue(model.listener.getHandOfPlayer(model.localPlayer()))
         _trump.postValue(model.listener.trump)
+
+        _winningcard.postValue(model.listener.winningCardPopUp)
+        if (winningcard.value != null) {
+            if (winningcard.value!!.visible) {
+                viewModelScope.launch {
+                    popUpVisibilityDelay()
+                }
+            }
+        }
+    }
+
+    private suspend fun popUpVisibilityDelay() {
+        delay(3000)
+        _winningcard.value = GameModelListener.WinningCardPopUp(winningcard.value!!.lastCardWon, winningcard.value!!.lastPlayerWon, false)
     }
 
     private fun buildGuessList(model: GameModel): List<Int> {

@@ -25,13 +25,14 @@ class GameModelListener(
     var guessing = false
         private set
     val headerList = ArrayList<GameBoardHeader>()
-    var winningCardPopUp = WinningCardPopUp(GameModelCard.NoCard, 0,0)
+    var lastSet = 0
+    var winningCardPopUp = WinningCardPopUp(GameModelCard.NoCard, 0,false)
     var cheatingFunction = true
 
     data class Card(val card: GameModelCard, val playerId: Int)
     data class Guess(val guess: Int, val playerId: Int)
     data class Score(val score: Int, val playerId: Int)
-    data class WinningCardPopUp(val lastCardWon: GameModelCard, val lastPlayerWon: Int, val currentSet: Int)
+    data class WinningCardPopUp(val lastCardWon: GameModelCard, val lastPlayerWon: Int, val visible: Boolean)
 
     fun getHandOfPlayer(id: Int): ArrayList<GameModelCard> { //potential to internally store hands and only update when player makes a turn, would reduce cpu overhead slightly
         val hand = ArrayList<GameModelCard>()
@@ -103,6 +104,7 @@ class GameModelListener(
             }
         }
         calculateHeader()
+        calculateWinningCardPopUp()
         viewModel?.updateData(parent)
     }
 
@@ -131,7 +133,10 @@ class GameModelListener(
     }
 
     private fun calculateWinningCardPopUp() {
-        winningCardPopUp = WinningCardPopUp(rules.lastCardWon, rules.lastPlayerWon, rules.numberOfSet)
+        if(rules.numberOfSet > lastSet) {
+            winningCardPopUp = WinningCardPopUp(rules.lastCardWon, rules.lastPlayerWon,true)
+            lastSet = rules.numberOfSet
+        }
     }
 
     private fun calculateBoard() {

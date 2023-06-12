@@ -102,7 +102,6 @@ class GameBoardFragment : Fragment(), OnDragListener {
         setupTrump(binding)
         setupScoreboard()
         setupPopUp()
-
     }
 
 
@@ -130,18 +129,15 @@ class GameBoardFragment : Fragment(), OnDragListener {
     }
 
     private fun setupPopUp() {
-
-        binding?.btnPopup?.setOnClickListener {
-            val mainActivity = activity as? MainActivity
-            mainActivity?.showPopUp(viewModel.gameModel.listener)
-        }
-
-        viewModel.popup.observe(viewLifecycleOwner) { finish ->
-            if (finish) {
-                val mainActivity = activity as? MainActivity
-                mainActivity?.showPopUp(viewModel.gameModel.listener)
+        viewModel.winningcard.observe(viewLifecycleOwner) {
+            if (it.visible) {
+                binding?.winningCard?.winningCard?.visibility = View.VISIBLE
+                binding?.winningCard?.winningCard?.setImageResource(it.lastCardWon.image())
+                binding?.winningCard?.tvPlayerWon?.text = viewModel.gameModel.listener.getNameOfPlayer(it.lastPlayerWon)
+            } else {
+                binding?.winningCard?.winningCard?.visibility = View.INVISIBLE
             }
-        }
+         }
     }
 
     private fun setupHand(binding: FragmentGameboardBinding) {
