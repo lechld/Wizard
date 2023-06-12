@@ -7,6 +7,7 @@ import androidx.lifecycle.distinctUntilChanged
 import at.aau.edu.wizards.R
 import at.aau.edu.wizards.gameModel.GameModel
 import at.aau.edu.wizards.gameModel.GameModelCard
+import at.aau.edu.wizards.gameModel.GameModelListener
 
 abstract class GameBoardViewModel : ViewModel() {
 
@@ -29,6 +30,10 @@ abstract class GameBoardViewModel : ViewModel() {
     protected val _scoreboard = MutableLiveData<Boolean>()
     val scoreboard: LiveData<Boolean> = _scoreboard.distinctUntilChanged()
 
+    private val _winningcard = MutableLiveData<GameModelListener.WinningCardPopUp>()
+    val winningcard: LiveData<GameModelListener.WinningCardPopUp> =
+        _winningcard
+
     abstract fun sendMessage(move: String)
 
     abstract val gameModel: GameModel
@@ -46,6 +51,8 @@ abstract class GameBoardViewModel : ViewModel() {
 
         _cards.postValue(model.listener.getHandOfPlayer(model.localPlayer()))
         _trump.postValue(model.listener.trump)
+
+        _winningcard.value = model.listener.winningCardPopUp
     }
 
     private fun buildGuessList(model: GameModel): List<Int> {

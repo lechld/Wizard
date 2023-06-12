@@ -23,6 +23,9 @@ class GameModelRules(
     private var winningPlayer = 0
     var winningCard: GameModelCard = GameModelCard.NoCard
     var wantsGuess = false
+    var lastPlayerWon = 0
+    var lastCardWon: GameModelCard = GameModelCard.NoCard
+    var numberOfSet = 0
 
     fun init() {
         if (round == 0) {
@@ -48,7 +51,7 @@ class GameModelRules(
         wantsGuess = true
     }
 
-    private fun nextRound() {
+    private suspend fun nextRound() {
         for (player in players) {
             player.score(getAmountWon(player.id))
         }
@@ -199,7 +202,6 @@ class GameModelRules(
         }
         parent.listener.update()
         if (currentPlayer == dealer) {
-            delay(1000)
             nextSet()
         } else if (!players[currentPlayer].isHuman) {
             getCpuToPlay()
@@ -207,6 +209,10 @@ class GameModelRules(
     }
 
     private suspend fun nextSet() {
+        numberOfSet++
+        lastCardWon = winningCard
+        lastPlayerWon = winningPlayer
+        parent.listener.update()
         wins.add(winningPlayer)
         winningCard = GameModelCard.NoCard
         board.clear()

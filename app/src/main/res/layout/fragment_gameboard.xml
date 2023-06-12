@@ -40,6 +40,17 @@
         app:layout_constraintTop_toBottomOf="@id/header" />
 
     <Button
+        android:id="@+id/btn_popup"
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+        android:layout_margin="8dp"
+        android:fontFamily="@font/bitter"
+        android:text="@string/popup"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
         android:id="@+id/btn_scoreboard"
         android:layout_width="110dp"
         android:layout_height="50dp"
@@ -111,5 +122,17 @@
         app:layout_constraintDimensionRatio="7:10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/gameboard_recycler_view" />
+
+    <include
+        android:id="@+id/winning_card"
+        layout="@layout/item_popup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
