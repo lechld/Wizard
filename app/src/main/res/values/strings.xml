@@ -19,4 +19,6 @@
     <string name="okay">Okay</string>
     <string name="guess">Guess:</string>
     <string name="foundCheater">Found Cheater</string>
+    <string name="avatarSelectionSpinner">Used to select an avatar</string>
+    <string name="avatarSelectionImageView">Used to show avatar</string>
 </resources>

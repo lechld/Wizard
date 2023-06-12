@@ -5,12 +5,15 @@ import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnDragListener
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -39,6 +42,10 @@ class GameBoardFragment : Fragment(), OnDragListener {
     }
 
     private var binding: FragmentGameboardBinding? = null
+
+    private val vibrator: Vibrator by lazy {
+        binding?.root?.let { ContextCompat.getSystemService(it.context, Vibrator::class.java) }!!
+    }
 
     private val viewModel by lazy {
         val factory = GameBoardViewModelFactory(
@@ -191,6 +198,19 @@ class GameBoardFragment : Fragment(), OnDragListener {
             if (dropX < binding.dragContainer.width && dropY < binding.dragContainer.height) {
                 val item: GameModelCard = event.localState as GameModelCard
                 viewModel.sendMessage(item.getString())
+
+                println("VIBRATE GAMEBOARDFRAGMENT")
+
+                // Trigger haptic feedback
+                if (vibrator.hasVibrator() == true) {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE))
+                    } else {
+                        // Deprecated in API 26
+                        @Suppress("DEPRECATION")
+                        vibrator.vibrate(50)
+                    }
+                }
             } else {
                 return false
             }

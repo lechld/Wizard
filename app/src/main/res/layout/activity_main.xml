@@ -69,9 +69,9 @@
         android:id="@+id/input_username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="-20dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="35dp"
         android:autofillHints="@string/autofill_hint_username"
         android:hint="@string/enter_username"
         android:inputType="text"
@@ -79,9 +79,33 @@
         android:minHeight="48dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@id/server_button"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/wizards_header" />
+
+    <Spinner
+        android:id="@+id/imageSpinner"
+        android:layout_width="0pt"
+        android:layout_height="0pt"
+        android:contentDescription="@string/avatarSelectionSpinner"
+        android:labelFor="@id/imageView"
+        android:spinnerMode="dialog"
+        android:importantForAccessibility="no"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="50pt"
+        android:layout_height="50pt"
+        android:contentDescription="@string/avatarSelectionImageView"
+        android:layout_below="@id/imageSpinner"
+        android:layout_marginEnd="50dp"
+        android:src="@drawable/icon1"
+        app:layout_constraintBottom_toBottomOf="@+id/input_username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/input_username" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
