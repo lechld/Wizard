@@ -12,9 +12,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         private set
 
     fun sendMessage(move: String): Boolean {
-        return if (legalMessageGuessSend(move) || legalMessageCardSend(move) || move == END_COMMAND || legalCheatingGuess(
-                move
-            ) || legalFountCheater(move)
+        return if (legalMessageGuessSend(move) || legalMessageCardSend(move) || move == END_COMMAND || legalCheatingGuess(move) || legalFountCheater(move)
         ) {
             viewModel?.sendMessage(move)
             true
