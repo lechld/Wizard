@@ -43,11 +43,11 @@
         android:id="@+id/btn_popup"
         android:layout_width="110dp"
         android:layout_height="50dp"
+        android:layout_margin="8dp"
         android:fontFamily="@font/bitter"
         android:text="@string/popup"
-        android:layout_margin="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <Button
@@ -126,14 +126,13 @@
     <include
         android:id="@+id/winning_card"
         layout="@layout/item_popup"
-        android:layout_width="240dp"
-        android:layout_height="340dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
-        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/header" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
