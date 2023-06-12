@@ -138,7 +138,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
     private fun setupPopUp() {
         viewModel.winningcard.observe(viewLifecycleOwner) {
             if (it.visible) {
-                binding?.winningCard?.winningCard?.visibility = View.VISIBLE
+                binding?.winningCard?.root?.visibility = View.VISIBLE
                 binding?.winningCard?.winningCard?.setImageResource(it.lastCardWon.image())
                 val playerName = viewModel.gameModel.listener.getNameOfPlayer(it.lastPlayerWon)
                 binding?.winningCard?.tvPlayerWon?.text = buildString {
