@@ -40,6 +40,7 @@ class GameModelRules(
             for (player in players) {
                 if (!player.isHuman) {
                     player.guesses.add(cpu.getGuess(player.id))
+                    player.hasCheated = false
                 }
             }
             getGuess()
@@ -72,8 +73,10 @@ class GameModelRules(
             if (!player.isHuman) {
                 player.guesses.add(cpu.getGuess(player.id))
             }
+            player.hasCheated = false
         }
         getGuess()
+
         parent.listener.update()
     }
 
@@ -105,8 +108,7 @@ class GameModelRules(
     private suspend fun checkNormal(card: GameModelCard) {
         when (winningCard) {
             is GameModelCard.Normal -> {
-                if ((winningCard as GameModelCard.Normal).color == (card as GameModelCard.Normal).color
-                    || !players[currentPlayer].hasColor(
+                if ((winningCard as GameModelCard.Normal).color == (card as GameModelCard.Normal).color || !players[currentPlayer].hasColor(
                         (winningCard as GameModelCard.Normal).color
                     )
                 ) {
@@ -273,5 +275,30 @@ class GameModelRules(
     private suspend fun getCpuToPlay() {
         delay(1000)
         parent.receiveMessage(cpu.getMove(currentPlayer).getString())
+    }
+
+    suspend fun updatedGuess(playerID: Int, newGuess: Int) {
+        players[playerID].guesses[players[playerID].guesses.lastIndex] = newGuess
+        players[playerID].hasCheated = true
+    }
+
+    suspend fun checkCheater(cheater: Int) {
+        if (players[cheater].hasCheated) {
+            setCheatingPointsDeduction(cheater)
+            setCheatingPointsAdd(parent.localPlayer())
+        } else {
+            setCheatingPointsDeduction(parent.localPlayer())
+        }
+    }
+
+    private fun setCheatingPointsDeduction(cheater: Int) {
+        players[cheater].scores[players[cheater].scores.lastIndex] =
+            players[cheater].scores[players[cheater].scores.lastIndex] - 10
+
+    }
+
+    private fun setCheatingPointsAdd(reveal: Int) {
+        players[reveal].scores[players[reveal].scores.lastIndex] =
+            players[reveal].scores[players[reveal].scores.lastIndex] + 10
     }
 }

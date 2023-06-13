@@ -1,8 +1,7 @@
 package at.aau.edu.wizards.gameModel
 
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -291,5 +290,65 @@ class GameModelRulesUnitTest {
         assertEquals(30, player4.scores[player4.scores.lastIndex])
         assertEquals(20, player2.scores[player2.scores.lastIndex])
         assertEquals(-10, player3.scores[player3.scores.lastIndex])
+    }
+
+    @Test
+    suspend fun testEveryoneHasGuessed(){
+        val model = GameModel(viewModel)
+
+        val dealer = GameModelDealer(420420)
+        val player0 = GameModelPlayer(0, dealer, true, 1, "test")
+        val player1 = GameModelPlayer(1, dealer, true, 1, "test")
+        val player2 = GameModelPlayer(2, dealer, true, 1, "test")
+        val player3 = GameModelPlayer(3, dealer, true, 1, "test")
+        val player4 = GameModelPlayer(4, dealer, true, 1, "test")
+        val player5 = GameModelPlayer(5, dealer, false, 1, "test")
+        val listOfPlayers = ArrayList<GameModelPlayer>()
+        listOfPlayers.add(player0)
+        listOfPlayers.add(player1)
+        listOfPlayers.add(player2)
+        listOfPlayers.add(player3)
+        listOfPlayers.add(player4)
+        listOfPlayers.add(player5)
+        val rules = GameModelRules(listOfPlayers, 0, dealer, model, 420420)
+
+        player0.guesses.add(1)
+        player1.guesses.add(0)
+        player2.guesses.add(0)
+        player3.guesses.add(1)
+        player4.guesses.add(1)
+        player5.guesses.add(1)
+
+        rules.init()
+
+        rules.everyoneHasGuessed()
+        assertTrue(rules.everyoneHasGuessed())
+        assertEquals(1, player0.guesses[player0.id])
+        rules.updatedGuess(player0.id,0)
+        assertEquals(0, player0.guesses[player0.id])
+
+        player0.scores.add(10)
+        player1.scores.add(10)
+        player2.scores.add(-10)
+        player3.scores.add(20)
+        player4.scores.add(0)
+        player5.scores.add(0)
+
+        assertEquals(10, player1.scores[player1.scores.lastIndex])
+        player1.hasCheated = true
+        rules.checkCheater(player1.id)
+        rules.init()
+        assertEquals(0, player1.scores[player1.scores.lastIndex])
+
+        assertEquals(-10, player2.scores[player2.scores.lastIndex])
+        player2.hasCheated = false
+        rules.checkCheater(player2.id)
+        rules.init()
+        assertEquals(-10, player2.scores[player2.scores.lastIndex])
+        assertEquals(10, player0.scores[player0.scores.lastIndex])
+
+
+
+
     }
 }

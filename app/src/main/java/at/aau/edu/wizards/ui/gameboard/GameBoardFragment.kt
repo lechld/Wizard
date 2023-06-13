@@ -242,7 +242,6 @@ class GameBoardFragment : Fragment(), OnDragListener {
                 return false
             }
         }
-
         return true
     }
 
@@ -251,27 +250,22 @@ class GameBoardFragment : Fragment(), OnDragListener {
         shakeDetector.setOnShakeListener {
             val arrayGuessesPossibilities = viewModel.getBuildGuess()
             var selectedOption = 0
-
-            if (!viewModel.gameModel.listener.guessing && viewModel.gameModel.listener.cheatingFunction) {
+            if (viewModel.gameModel.listener.getHandOfPlayer(viewModel.gameModel.localPlayer()).size > 1 && viewModel.gameModel.listener.getRound() > 1 && !viewModel.gameModel.listener.guessing && !viewModel.gameModel.listener.hasCheated()) {
                 activity?.let {
-                    MaterialAlertDialogBuilder(it)
-                        .setTitle("Shake event detected. Guess updated")
-                        .setNeutralButton("Cancel", null)
+                    MaterialAlertDialogBuilder(it).setTitle("Shake event detected. Guess updated")
                         .setSingleChoiceItems(
-                            arrayGuessesPossibilities,
-                            selectedOption
+                            arrayGuessesPossibilities, selectedOption
                         ) { _, which ->
                             selectedOption = which
-                        }
-                        .setPositiveButton("Ok") { _, _ ->
+                        }.setPositiveButton("Ok") { _, _ ->
                             val selectedGuess = arrayGuessesPossibilities[selectedOption]
                             val selectedGuessInt = selectedGuess.toString().toInt()
                             viewModel.updateGuess(selectedGuessInt)
-                        }
-                        .show()
+                        }.show()
                 }
             }
         }
+
 
         val sensorManager =
             requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager

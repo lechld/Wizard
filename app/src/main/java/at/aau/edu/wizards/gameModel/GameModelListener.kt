@@ -18,7 +18,7 @@ class GameModelListener(
     private val hands = ArrayList<Card>()
     var trump: GameModelCard = GameModelCard.NoCard
         private set
-    val guesses = ArrayList<Guess>()
+    private val guesses = ArrayList<Guess>()
     private val scores = ArrayList<Score>()
     private val board = ArrayList<GameModelCard>()
     var winningCard: GameModelCard = GameModelCard.NoCard
@@ -26,6 +26,7 @@ class GameModelListener(
     var guessing = false
         private set
     val headerList = ArrayList<GameBoardHeader>()
+
     var lastSet = 0
     var winningCardPopUp = WinningCardPopUp(GameModelCard.NoCard, 0, false)
     var cheatingFunction = true
@@ -92,7 +93,6 @@ class GameModelListener(
         trump = rules.trump
         winningCard = rules.winningCard
         guessing = rules.wantsGuess
-        cheatingFunction = true
         calculateBoard()
         hands.clear()
         guesses.clear()
@@ -210,8 +210,17 @@ class GameModelListener(
         }
     }
 
-    fun updatedGuess(newGuess: Guess) {
-        guesses[activePlayer] = newGuess
-        cheatingFunction = false
+    suspend fun cheaterCall(cheater: Int) {
+        viewModel?.gameModel?.foundCheater(cheater)
     }
+
+    fun hasCheated(): Boolean {
+        for (player in players) {
+            if (player.hasCheated) {
+                return true
+            }
+        }
+        return false
+    }
+
 }

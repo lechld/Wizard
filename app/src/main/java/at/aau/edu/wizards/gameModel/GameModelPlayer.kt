@@ -13,6 +13,7 @@ class GameModelPlayer(
     val cards = ArrayList<GameModelCard>()
     val scores = ArrayList<Int>()
     val guesses = ArrayList<Int>()
+    var hasCheated = false
 
     fun dealCards(amount: Int) {
         for (card in 1..amount) {

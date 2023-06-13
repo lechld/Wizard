@@ -11,16 +11,15 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="scoreboard">Score</string>
-    <string name="popup">PopUp</string>
-    <string name="closepopup">Close</string>
-    <string name="nextround">Next Round</string>
     <string name="name">Name</string>
     <string name="score">Score:</string>
     <string name="startnewgame">Close</string>
     <string name="max_player">There can only be a maximum of 6 players</string>
     <string name="min_player">There are not enough players to start the game (minimum 3 required). \n\nAdd some CPU players or wait for someone to connect!</string>
     <string name="okay">Okay</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="guess" translatable="false">Guess:</string>
+    <string name="foundCheater" translatable="false">Found Cheater</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="avatarSelectionSpinner">Used to select an avatar</string>
     <string name="avatarSelectionImageView">Used to show avatar</string>
 </resources>

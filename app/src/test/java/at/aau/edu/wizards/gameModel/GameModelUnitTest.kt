@@ -67,7 +67,6 @@ class GameModelUnitTest {
         }))
 
         assertFalse(model.sendMessage((60 + 11).toChar().toString()))
-        assertFalse(model.sendMessage((60 + 11 + 66).toChar().toString()))
         assertFalse(model.sendMessage(buildString {
             append(60.toChar())
             append(60.toChar())
@@ -75,7 +74,6 @@ class GameModelUnitTest {
 
         assert(model.sendMessage(60.toChar().toString()))
 
-        assertFalse(model.receiveMessage((60 + 11 + 66).toChar().toString()))
         assert(model.receiveMessage(60.toChar().toString()))
         assert(model.receiveMessage((60 + 11).toChar().toString()))
         assert(model.receiveMessage((60 + 22).toChar().toString()))

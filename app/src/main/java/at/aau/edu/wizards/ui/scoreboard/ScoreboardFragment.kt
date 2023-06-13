@@ -10,10 +10,10 @@ import at.aau.edu.wizards.MainActivity
 import at.aau.edu.wizards.databinding.FragmentScoreboardBinding
 import at.aau.edu.wizards.gameModel.GameModelListener
 import at.aau.edu.wizards.ui.scoreboard.recycler.ScoreboardAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class ScoreboardFragment(val listener: GameModelListener) : DialogFragment() {
-
 
     private var binding: FragmentScoreboardBinding? = null
 
@@ -25,9 +25,7 @@ class ScoreboardFragment(val listener: GameModelListener) : DialogFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         val binding = FragmentScoreboardBinding.inflate(inflater, container, false)
 
@@ -58,6 +56,11 @@ class ScoreboardFragment(val listener: GameModelListener) : DialogFragment() {
             adapter.submitList(score)
         }
 
+        binding.btnCheatingFunction.visibility = View.GONE
+        if (viewModel.listener.getRound() > 1 && listener.hasCheated()) {
+            binding.btnCheatingFunction.visibility = View.VISIBLE
+        }
+
         binding.btnMainmenu.setOnClickListener {
             val mainActivity = activity as? MainActivity
             if (listener.getRound() <= 10) {
@@ -66,6 +69,20 @@ class ScoreboardFragment(val listener: GameModelListener) : DialogFragment() {
                 mainActivity?.scoreboardBack(true)
             }
         }
+
+        binding.btnCheatingFunction.setOnClickListener {
+            var selectedOption = 0
+            activity?.let {
+                MaterialAlertDialogBuilder(it).setTitle("Choose Cheater")
+                    .setNeutralButton("Cancel", null)
+                    .setSingleChoiceItems(viewModel.listOFPlayer(), selectedOption) { _, which ->
+                        selectedOption = which
+                    }.setPositiveButton("Ok") { _, _ ->
+                        viewModel.foundCheaterCall(selectedOption)
+                    }.show()
+            }
+        }
     }
 }
+
 
