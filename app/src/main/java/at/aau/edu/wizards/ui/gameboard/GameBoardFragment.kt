@@ -5,12 +5,15 @@ import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnDragListener
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -39,6 +42,10 @@ class GameBoardFragment : Fragment(), OnDragListener {
     }
 
     private var binding: FragmentGameboardBinding? = null
+
+    private val vibrator: Vibrator by lazy {
+        binding?.root?.let { ContextCompat.getSystemService(it.context, Vibrator::class.java) }!!
+    }
 
     private val viewModel by lazy {
         val factory = GameBoardViewModelFactory(
@@ -101,7 +108,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
         setupHeader(binding)
         setupTrump(binding)
         setupScoreboard()
-
+        setupPopUp()
     }
 
 
@@ -124,6 +131,30 @@ class GameBoardFragment : Fragment(), OnDragListener {
             if (finish) {
                 val mainActivity = activity as? MainActivity
                 mainActivity?.showScoreboard(viewModel.gameModel.listener)
+            }
+        }
+    }
+
+    private fun setupPopUp() {
+        viewModel.winningcard.observe(viewLifecycleOwner) {
+            if (it.visible) {
+                binding?.winningCard?.root?.visibility = View.VISIBLE
+                binding?.winningCard?.winningCard?.setImageResource(it.lastCardWon.image())
+                val playerName = viewModel.gameModel.listener.getNameOfPlayer(it.lastPlayerWon)
+                binding?.winningCard?.tvPlayerWon?.text = buildString {
+                    append(playerName)
+                    append(" \n won!")
+                }
+                binding?.trumpIndicatorCard?.root?.visibility = View.INVISIBLE
+                binding?.boardRecycler?.visibility = View.INVISIBLE
+                binding?.gameboardRecyclerView?.visibility = View.INVISIBLE
+                binding?.seperationBoardHand?.visibility = View.INVISIBLE
+            } else {
+                binding?.winningCard?.root?.visibility = View.INVISIBLE
+                binding?.trumpIndicatorCard?.root?.visibility = View.VISIBLE
+                binding?.boardRecycler?.visibility = View.VISIBLE
+                binding?.gameboardRecyclerView?.visibility = View.VISIBLE
+                binding?.seperationBoardHand?.visibility = View.VISIBLE
             }
         }
     }
@@ -191,6 +222,22 @@ class GameBoardFragment : Fragment(), OnDragListener {
             if (dropX < binding.dragContainer.width && dropY < binding.dragContainer.height) {
                 val item: GameModelCard = event.localState as GameModelCard
                 viewModel.sendMessage(item.getString())
+
+                // Trigger haptic feedback
+                if (vibrator.hasVibrator()) {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        vibrator.vibrate(
+                            VibrationEffect.createOneShot(
+                                50,
+                                VibrationEffect.DEFAULT_AMPLITUDE
+                            )
+                        )
+                    } else {
+                        // Deprecated in API 26
+                        @Suppress("DEPRECATION")
+                        vibrator.vibrate(50)
+                    }
+                }
             } else {
                 return false
             }
@@ -203,7 +250,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
         shakeDetector.setOnShakeListener {
             val arrayGuessesPossibilities = viewModel.getBuildGuess()
             var selectedOption = 0
-            if (viewModel.gameModel.listener.getRound() > 1 && !viewModel.gameModel.listener.guessing && !viewModel.gameModel.listener.hasChaeted()) {
+            if (viewModel.gameModel.listener.getHandOfPlayer(viewModel.gameModel.localPlayer()).size > 1 && viewModel.gameModel.listener.getRound() > 1 && !viewModel.gameModel.listener.guessing && !viewModel.gameModel.listener.hasCheated()) {
                 activity?.let {
                     MaterialAlertDialogBuilder(it).setTitle("Shake event detected. Guess updated")
                         .setSingleChoiceItems(

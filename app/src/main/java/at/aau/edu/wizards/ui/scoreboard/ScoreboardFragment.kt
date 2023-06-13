@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.MainActivity
 import at.aau.edu.wizards.databinding.FragmentScoreboardBinding
@@ -13,7 +13,7 @@ import at.aau.edu.wizards.ui.scoreboard.recycler.ScoreboardAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
-class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
+class ScoreboardFragment(val listener: GameModelListener) : DialogFragment() {
 
     private var binding: FragmentScoreboardBinding? = null
 
@@ -57,7 +57,7 @@ class ScoreboardFragment(val listener: GameModelListener) : Fragment() {
         }
 
         binding.btnCheatingFunction.visibility = View.GONE
-        if (viewModel.listener.getRound() > 1 && listener.hasChaeted()) {
+        if (viewModel.listener.getRound() > 1 && listener.hasCheated()) {
             binding.btnCheatingFunction.visibility = View.VISIBLE
         }
 

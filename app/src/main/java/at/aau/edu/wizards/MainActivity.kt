@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.api.impl.REQUIRED_PERMISSIONS
@@ -20,7 +22,6 @@ private const val DISCOVER_FRAGMENT_TAG = "DISCOVER_FRAGMENT_TAG"
 private const val LOBBY_FRAGMENT_TAG = "LOBBY_FRAGMENT_TAG"
 private const val GAME_BOARD_FRAGMENT_TAG = "GAME_BOARD_FRAGMENT_TAG"
 private const val SCOREBOARD_FRAGMENT_TAG = "SCOREBOARD_FRAGMENT_TAG"
-
 private const val SHARED_PREFERENCES_KEY = "SHARED_PREFS_USERDATA"
 
 class MainActivity : AppCompatActivity() {
@@ -41,8 +42,32 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        setupAvatarSelection()
         setupUi()
         handlePermissions()
+    }
+
+    private fun setupAvatarSelection() {
+        val adapter = ImageSpinnerAdapter(this, mainViewModel.avatarsList)
+        binding.imageSpinner.adapter = adapter
+
+        binding.imageView.setOnClickListener {
+            binding.imageSpinner.performClick()
+        }
+
+        binding.imageSpinner.setSelection(mainViewModel.avatarsList.indexOf(mainViewModel.getAvatar()))
+
+        binding.imageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val resourceId = mainViewModel.avatarsList[position]
+                binding.imageView.setImageResource(resourceId)
+                mainViewModel.saveAvatar(resourceId)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Do nothing
+            }
+        }
     }
 
     fun showGame(asClient: Boolean, amountCpu: Int = 0) {

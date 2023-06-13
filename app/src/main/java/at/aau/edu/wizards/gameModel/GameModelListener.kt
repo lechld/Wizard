@@ -3,6 +3,7 @@ package at.aau.edu.wizards.gameModel
 import at.aau.edu.wizards.R
 import at.aau.edu.wizards.ui.gameboard.GameBoardHeader
 import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
+import kotlinx.coroutines.delay
 
 class GameModelListener(
     private val rules: GameModelRules,
@@ -17,7 +18,7 @@ class GameModelListener(
     private val hands = ArrayList<Card>()
     var trump: GameModelCard = GameModelCard.NoCard
         private set
-    val guesses = ArrayList<Guess>()
+    private val guesses = ArrayList<Guess>()
     private val scores = ArrayList<Score>()
     private val board = ArrayList<GameModelCard>()
     var winningCard: GameModelCard = GameModelCard.NoCard
@@ -26,10 +27,18 @@ class GameModelListener(
         private set
     val headerList = ArrayList<GameBoardHeader>()
 
+    var lastSet = 0
+    var winningCardPopUp = WinningCardPopUp(GameModelCard.NoCard, 0, false)
+    var cheatingFunction = true
 
     data class Card(val card: GameModelCard, val playerId: Int)
     data class Guess(val guess: Int, val playerId: Int)
     data class Score(val score: Int, val playerId: Int)
+    data class WinningCardPopUp(
+        val lastCardWon: GameModelCard,
+        val lastPlayerWon: Int,
+        val visible: Boolean
+    )
 
     fun getHandOfPlayer(id: Int): ArrayList<GameModelCard> { //potential to internally store hands and only update when player makes a turn, would reduce cpu overhead slightly
         val hand = ArrayList<GameModelCard>()
@@ -78,7 +87,7 @@ class GameModelListener(
         return rules.getAmountWon(id)
     }
 
-    fun update() {
+    suspend fun update() {
         activePlayer = rules.currentPlayer
         numberOfPlayers = players.size
         trump = rules.trump
@@ -100,6 +109,7 @@ class GameModelListener(
             }
         }
         calculateHeader()
+        calculateWinningCardPopUp()
         viewModel?.updateData(parent)
     }
 
@@ -125,6 +135,26 @@ class GameModelListener(
                 )
             }
         }
+    }
+
+    private suspend fun calculateWinningCardPopUp() {
+        if (rules.numberOfSet > lastSet) {
+            winningCardPopUp = WinningCardPopUp(rules.lastCardWon, rules.lastPlayerWon, true)
+            lastSet = rules.numberOfSet
+            popUpVisibilityDelay()
+        }
+    }
+
+    private suspend fun popUpVisibilityDelay() {
+        activePlayer = winningCardPopUp.lastPlayerWon
+        viewModel?.updateData(parent)
+        delay(3000)
+        winningCardPopUp = WinningCardPopUp(
+            winningCardPopUp.lastCardWon,
+            winningCardPopUp.lastPlayerWon,
+            false
+        )
+        activePlayer = rules.currentPlayer
     }
 
     private fun calculateBoard() {
@@ -184,7 +214,7 @@ class GameModelListener(
         viewModel?.gameModel?.foundCheater(cheater)
     }
 
-    fun hasChaeted(): Boolean {
+    fun hasCheated(): Boolean {
         for (player in players) {
             if (player.hasCheated) {
                 return true
