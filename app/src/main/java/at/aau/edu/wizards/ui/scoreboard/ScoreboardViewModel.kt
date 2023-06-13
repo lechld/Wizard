@@ -2,6 +2,7 @@ package at.aau.edu.wizards.ui.scoreboard
 
 import androidx.lifecycle.*
 import at.aau.edu.wizards.gameModel.GameModelListener
+import kotlinx.coroutines.launch
 
 class ScoreboardViewModel(
     val listener: GameModelListener
@@ -33,6 +34,12 @@ class ScoreboardViewModel(
             listPlayerName.add(listener.getNameOfPlayer(player))
         }
         return listPlayerName.map { it }.toTypedArray()
+    }
+
+    fun foundCheaterCall(cheater: Int) {
+        viewModelScope.launch {
+            listener.cheaterCall(cheater)
+        }
     }
 
     class Factory(

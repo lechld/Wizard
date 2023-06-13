@@ -1,13 +1,11 @@
 package at.aau.edu.wizards.ui.gameboard
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.distinctUntilChanged
+import androidx.lifecycle.*
 import at.aau.edu.wizards.R
 import at.aau.edu.wizards.gameModel.GameModel
 import at.aau.edu.wizards.gameModel.GameModelCard
 import at.aau.edu.wizards.gameModel.GameModelListener
+import kotlinx.coroutines.launch
 
 abstract class GameBoardViewModel : ViewModel() {
 
@@ -90,9 +88,9 @@ abstract class GameBoardViewModel : ViewModel() {
     }
 
     fun updateGuess(guessInt: Int) {
-
-        gameModel.updateGuessCount(guessInt)
-
+        viewModelScope.launch{
+            gameModel.updateGuessCount(guessInt)
+        }
     }
 
     fun getBuildGuess(): Array<CharSequence> {

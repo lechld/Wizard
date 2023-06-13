@@ -210,7 +210,7 @@ class GameModelListener(
         }
     }
 
-    fun foundCheaterCall(cheater: Int) {
+    suspend fun cheaterCall(cheater: Int) {
         viewModel?.gameModel?.foundCheater(cheater)
     }
 

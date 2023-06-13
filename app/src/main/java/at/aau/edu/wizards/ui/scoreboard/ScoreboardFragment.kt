@@ -78,7 +78,7 @@ class ScoreboardFragment(val listener: GameModelListener) : DialogFragment() {
                     .setSingleChoiceItems(viewModel.listOFPlayer(), selectedOption) { _, which ->
                         selectedOption = which
                     }.setPositiveButton("Ok") { _, _ ->
-                        listener.foundCheaterCall(selectedOption)
+                        viewModel.foundCheaterCall(selectedOption)
                     }.show()
             }
         }

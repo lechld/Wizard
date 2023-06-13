@@ -277,13 +277,13 @@ class GameModelRules(
         parent.receiveMessage(cpu.getMove(currentPlayer).getString())
     }
 
-    fun updatedGuess(playerID: Int, newGuess: Int) {
+    suspend fun updatedGuess(playerID: Int, newGuess: Int) {
         players[playerID].guesses[players[playerID].guesses.lastIndex] = newGuess
         players[playerID].hasCheated = true
         parent.listener.update()
     }
 
-    fun checkCheater(cheater: Int) {
+    suspend fun checkCheater(cheater: Int) {
         if (players[cheater].hasCheated) {
             setCheatingPointsDeduction(cheater)
             setCheatingPointsAdd(parent.localPlayer())

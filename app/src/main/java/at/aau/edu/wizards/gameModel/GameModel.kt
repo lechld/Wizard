@@ -200,7 +200,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         return sendMessage(buildString { append((60 + rules.id * 11 + guess).toChar().toString()) })
     }
 
-    fun updateGuessCount(newGuess: Int) {
+    suspend fun updateGuessCount(newGuess: Int) {
         rules.updatedGuess(localPlayer(), newGuess)
         legalCheatingGuess(newGuess.toChar().toString())
     }
@@ -219,7 +219,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         return false
     }
 
-    fun foundCheater(cheater: Int) {
+    suspend fun foundCheater(cheater: Int) {
         rules.checkCheater(cheater)
         legalFountCheater(cheater.toChar().toString())
     }
