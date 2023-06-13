@@ -71,7 +71,11 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                                     val playerIndex = (move[0].code - 127) / 11
                                     val newGuessValue = (move[0].code - 127) % 11
                                     rules.updatedGuess(playerIndex, newGuessValue)
+                                    listener.update()
                                     true
+
+
+
                                 }
                                 else -> {
                                     false
@@ -81,6 +85,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                                 true -> {
                                     val playerIndex = (move[0].code - 194) / 11
                                     rules.checkCheater(playerIndex)
+                                    listener.update()
                                     true
                                 }
                                 else -> {
