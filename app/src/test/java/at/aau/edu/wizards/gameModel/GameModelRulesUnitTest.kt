@@ -293,7 +293,7 @@ class GameModelRulesUnitTest {
     }
 
     @Test
-    fun testEveryoneHasGuessed(){
+    suspend fun testEveryoneHasGuessed(){
         val model = GameModel(viewModel)
 
         val dealer = GameModelDealer(420420)
