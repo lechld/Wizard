@@ -280,7 +280,6 @@ class GameModelRules(
     suspend fun updatedGuess(playerID: Int, newGuess: Int) {
         players[playerID].guesses[players[playerID].guesses.lastIndex] = newGuess
         players[playerID].hasCheated = true
-        parent.listener.update()
     }
 
     suspend fun checkCheater(cheater: Int) {
@@ -290,7 +289,6 @@ class GameModelRules(
         } else {
             setCheatingPointsDeduction(parent.localPlayer())
         }
-        parent.listener.update()
     }
 
     private fun setCheatingPointsDeduction(cheater: Int) {
