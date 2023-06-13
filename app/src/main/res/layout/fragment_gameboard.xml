@@ -40,17 +40,6 @@
         app:layout_constraintTop_toBottomOf="@id/header" />
 
     <Button
-        android:id="@+id/btn_popup"
-        android:layout_width="110dp"
-        android:layout_height="50dp"
-        android:layout_margin="8dp"
-        android:fontFamily="@font/bitter"
-        android:text="@string/popup"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <Button
         android:id="@+id/btn_scoreboard"
         android:layout_width="110dp"
         android:layout_height="50dp"
@@ -59,7 +48,6 @@
         android:text="@string/scoreboard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <include
         android:id="@+id/header"
