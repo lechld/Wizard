@@ -23,7 +23,7 @@ class GuessViewHolder(
             println("VIBRATE GUESSVIEWHOLDER")
 
             // Trigger haptic feedback
-            if (vibrator.hasVibrator() == true) {
+            if (vibrator.hasVibrator()) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                     vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE))
                 } else {

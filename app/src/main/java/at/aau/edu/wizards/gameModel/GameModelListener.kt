@@ -27,9 +27,8 @@ class GameModelListener(
         private set
     val headerList = ArrayList<GameBoardHeader>()
 
-    var lastSet = 0
+    private var lastSet = 0
     var winningCardPopUp = WinningCardPopUp(GameModelCard.NoCard, 0, false)
-    var cheatingFunction = true
 
     data class Card(val card: GameModelCard, val playerId: Int)
     data class Guess(val guess: Int, val playerId: Int)
@@ -210,7 +209,7 @@ class GameModelListener(
         }
     }
 
-    suspend fun cheaterCall(cheater: Int) {
+    fun cheaterCall(cheater: Int) {
         viewModel?.gameModel?.foundCheater(cheater)
     }
 

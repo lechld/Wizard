@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         binding.clientButton.setOnClickListener {
-            if (!binding.inputUsername.text.toString().isNullOrEmpty()) {
+            if (!binding.inputUsername.text.toString().isEmpty()) {
                 showDiscoverFragment()
             } else {
                 Snackbar.make(binding.root, "Please enter username first!", Snackbar.LENGTH_LONG).show()
@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.serverButton.setOnClickListener {
-            if (!binding.inputUsername.text.toString().isNullOrEmpty()) {
+            if (!binding.inputUsername.text.toString().isEmpty()) {
                 showLobby()
             } else {
                 Snackbar.make(binding.root, "Please enter username first!", Snackbar.LENGTH_LONG).show()
