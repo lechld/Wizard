@@ -55,13 +55,12 @@ class ServerGameBoardViewModel(
             _scoreboard.value = true
         } else {
             viewModelScope.launch {
-                if (gameModel.receiveMessage(move)) {
-                    server.getConnectionsSync()
-                        .filterIsInstance(ServerConnection.Connected::class.java)
-                        .forEach {
-                            server.send(it, move)
-                        }
-                }
+                server.getConnectionsSync()
+                    .filterIsInstance(ServerConnection.Connected::class.java)
+                    .forEach {
+                        server.send(it, move)
+                    }
+                gameModel.receiveMessage(move)
                 updateData(gameModel)
             }
         }
