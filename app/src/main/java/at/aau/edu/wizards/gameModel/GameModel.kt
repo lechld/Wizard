@@ -134,7 +134,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
 
     private fun init(move: String) {
         val random =
-            Random(420420) //temp for better presentation - should be removed with correct feature
+            Random(420445) //temp for better presentation - should be removed with correct feature
         dealer = GameModelDealer(move.substring(3, move.length).toInt())
         rules = GameModelRules(
             players, move[0].code, dealer, this, move.substring(3, move.length).toInt()
