@@ -1,6 +1,12 @@
 package at.aau.edu.wizards.ui.lobby
 
+import at.aau.edu.wizards.MainViewModel
+import at.aau.edu.wizards.USERDATA_AVATAR
+import at.aau.edu.wizards.USERDATA_USERNAME
+import at.aau.edu.wizards.USERDATA_UUID
 import at.aau.edu.wizards.api.model.ServerConnection
+import at.aau.edu.wizards.ui.lobby.LobbyViewModel.Companion.MAX_PLAYERS
+import at.aau.edu.wizards.ui.lobby.LobbyViewModel.Companion.randomCpuPlayerAvatars
 
 class LobbyItemFactory {
 
@@ -8,6 +14,7 @@ class LobbyItemFactory {
         connections: List<ServerConnection>,
         cpuPlayers: Int,
     ): List<LobbyItem> {
+
         val clientRequest = connections.filterIsInstance(
             ServerConnection.ClientRequest::class.java
         )
@@ -25,12 +32,18 @@ class LobbyItemFactory {
             )
         }
 
-        if (connected.isNotEmpty()) {
-            result.add(LobbyItem.Header("Joined players"))
+        result.add(LobbyItem.Header("Joined players"))
+        result.add(LobbyItem.Accepted(ServerConnection.Connected(
+            USERDATA_UUID, USERDATA_USERNAME + ":" +
+                USERDATA_AVATAR
+        )))
 
-            result.addAll(
-                connected.map { LobbyItem.Accepted(it) }
-            )
+        result.addAll(
+            connected.map { LobbyItem.Accepted(it) }
+        )
+
+        if (connected.isNotEmpty()) {
+
         }
 
         if (clientRequest.isEmpty() && connected.isEmpty()) {
@@ -39,8 +52,9 @@ class LobbyItemFactory {
 
         result.add(LobbyItem.Header(" "))
         result.add(LobbyItem.Header("CPU Players"))
+
         for (i in 1..cpuPlayers) {
-            result.add(LobbyItem.CpuPlayer("CPU Player $i"))
+            result.add(LobbyItem.CpuPlayer("CPU Player $i:${randomCpuPlayerAvatars[i-1]}"))
         }
         result.add(LobbyItem.AddCpu)
 

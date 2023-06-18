@@ -8,12 +8,14 @@ public const val SHARED_PREFERENCE_USERNAME_KEY = "USERNAME"
 public const val SHARED_PREFERENCE_AVATAR_KEY = "AVATAR_ID"
 class MainViewModel (private val sharedPreferences: SharedPreferences) : ViewModel() {
 
-    val avatarsList = intArrayOf(
-        R.drawable.icon1, R.drawable.icon2, R.drawable.icon3, R.drawable.icon4, R.drawable.icon5,
-        R.drawable.icon6, R.drawable.icon7, R.drawable.icon8, R.drawable.icon9, R.drawable.icon10,
-        R.drawable.icon11, R.drawable.icon12, R.drawable.icon13, R.drawable.icon14, R.drawable.icon15,
-        R.drawable.icon16, R.drawable.icon17, R.drawable.icon18, R.drawable.icon19,
-    )
+    companion object {
+        val avatarsList = intArrayOf(
+            R.drawable.icon1, R.drawable.icon2, R.drawable.icon3, R.drawable.icon4, R.drawable.icon5,
+            R.drawable.icon6, R.drawable.icon7, R.drawable.icon8, R.drawable.icon9, R.drawable.icon10,
+            R.drawable.icon11, R.drawable.icon12, R.drawable.icon13, R.drawable.icon14, R.drawable.icon15,
+            R.drawable.icon16, R.drawable.icon17, R.drawable.icon18, R.drawable.icon19,
+        )
+    }
 
     fun getUsername(): String? {
         return sharedPreferences.getString(SHARED_PREFERENCE_USERNAME_KEY, null)

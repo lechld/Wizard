@@ -17,12 +17,21 @@ import at.aau.edu.wizards.ui.lobby.LobbyFragment
 import at.aau.edu.wizards.ui.scoreboard.ScoreboardFragment
 import at.aau.edu.wizards.util.permission.PermissionHandler
 import com.google.android.material.snackbar.Snackbar
+import java.util.*
 
 private const val DISCOVER_FRAGMENT_TAG = "DISCOVER_FRAGMENT_TAG"
 private const val LOBBY_FRAGMENT_TAG = "LOBBY_FRAGMENT_TAG"
 private const val GAME_BOARD_FRAGMENT_TAG = "GAME_BOARD_FRAGMENT_TAG"
 private const val SCOREBOARD_FRAGMENT_TAG = "SCOREBOARD_FRAGMENT_TAG"
 private const val SHARED_PREFERENCES_KEY = "SHARED_PREFS_USERDATA"
+
+public const val KEY_USERNAME = "PLAYER_USERNAME"
+public const val KEY_AVATAR = "PLAYER_AVATAR"
+
+public var USERDATA_UUID: String = ""
+public var USERDATA_USERNAME: String = ""
+public var USERDATA_AVATAR: Int = R.drawable.icon1
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,6 +49,10 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel = ViewModelProvider(this, MainViewModel.Factory(sharedPreferences))[MainViewModel::class.java]
 
+        USERDATA_UUID = UUID.randomUUID().toString()
+        USERDATA_USERNAME = mainViewModel.getUsername().toString()
+        USERDATA_AVATAR = mainViewModel.getAvatar()
+
         setContentView(binding.root)
 
         setupAvatarSelection()
@@ -48,20 +61,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupAvatarSelection() {
-        val adapter = ImageSpinnerAdapter(this, mainViewModel.avatarsList)
+        val adapter = ImageSpinnerAdapter(this, MainViewModel.avatarsList)
         binding.imageSpinner.adapter = adapter
 
         binding.imageView.setOnClickListener {
             binding.imageSpinner.performClick()
         }
 
-        binding.imageSpinner.setSelection(mainViewModel.avatarsList.indexOf(mainViewModel.getAvatar()))
+        binding.imageSpinner.setSelection(MainViewModel.avatarsList.indexOf(mainViewModel.getAvatar()))
 
         binding.imageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val resourceId = mainViewModel.avatarsList[position]
+                val resourceId = MainViewModel.avatarsList[position]
                 binding.imageView.setImageResource(resourceId)
                 mainViewModel.saveAvatar(resourceId)
+                USERDATA_AVATAR = mainViewModel.getAvatar()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -108,6 +122,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 mainViewModel.saveUsername(binding.inputUsername.text.toString())
+                USERDATA_USERNAME = mainViewModel.getUsername().toString()
             }
 
             override fun afterTextChanged(p0: Editable?) {
@@ -153,6 +168,12 @@ class MainActivity : AppCompatActivity() {
         if (fragment.isAdded) {
             return
         }
+
+        val bundle = Bundle()
+        bundle.putString(KEY_USERNAME, mainViewModel.getUsername())
+        bundle.putInt(KEY_AVATAR, R.drawable.icon13)
+
+        fragment.arguments = bundle
 
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container, fragment, LOBBY_FRAGMENT_TAG)

@@ -1,6 +1,7 @@
 package at.aau.edu.wizards.api.impl
 
 import at.aau.edu.wizards.BuildConfig
+import at.aau.edu.wizards.USERDATA_UUID
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.MessageReceiver
 import at.aau.edu.wizards.api.MessageSender
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class ClientImpl(
     private val connectionsClient: ConnectionsClient,
-    private val userIdentifier: String = GENERATED_NAME,
+    private val userIdentifier: String = USERDATA_UUID,
     private val applicationIdentifier: String = BuildConfig.APPLICATION_ID,
     private val messageDelegate: MessageDelegate = MessageDelegate(connectionsClient),
 ) : Client,

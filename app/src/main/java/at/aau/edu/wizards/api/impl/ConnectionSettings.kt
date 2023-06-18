@@ -1,6 +1,8 @@
 package at.aau.edu.wizards.api.impl
 
 import android.os.Build
+import at.aau.edu.wizards.USERDATA_AVATAR
+import at.aau.edu.wizards.USERDATA_USERNAME
 import com.google.android.gms.nearby.connection.AdvertisingOptions
 import com.google.android.gms.nearby.connection.DiscoveryOptions
 import com.google.android.gms.nearby.connection.Strategy
@@ -16,9 +18,6 @@ val advertisingOptions = AdvertisingOptions.Builder()
 val discoveryOptions = DiscoveryOptions.Builder()
     .setStrategy(strategy)
     .build()
-
-// TODO: Need to provide some functionality to pick a name somewhere
-val GENERATED_NAME: String = SimpleDateFormat("HH:mm:ss", Locale.GERMAN).format(Date())
 
 val REQUIRED_PERMISSIONS: List<String> = mutableListOf(
     android.Manifest.permission.ACCESS_FINE_LOCATION,

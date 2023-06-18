@@ -21,7 +21,7 @@ internal class ServerImplTest {
 
     private val server = ServerImpl(
         connectionsClient = connectionsClient,
-        userIdentifier = userIdentifier,
+        myEndpointName = userIdentifier,
         applicationIdentifier = applicationIdentifier,
         messageDelegate = messageDelegate,
     )

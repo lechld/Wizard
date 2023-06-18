@@ -8,6 +8,9 @@ import at.aau.edu.wizards.ui.discover.DiscoverItem
 
 sealed class DiscoverItemViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
+    // TODO: do the same here as it's done in LobbyItemViewHolder.kt
+    // TODO: adjust also: item_discover_approved.xml, item_discover_header.xml, item_discover_requested.xml as it's done for item_lobby_accepted.xml and similar xml files
+
     class Approved(
         private val binding: ItemDiscoverApprovedBinding,
     ) : DiscoverItemViewHolder(binding) {
@@ -16,6 +19,7 @@ sealed class DiscoverItemViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
         fun bind(item: DiscoverItem.Approved) {
             binding.approvedText.text =
                 item.connection.endpointId + " - " + item.connection.endpointName
+            binding.approvedText
         }
     }
 

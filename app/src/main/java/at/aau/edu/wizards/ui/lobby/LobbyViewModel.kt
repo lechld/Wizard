@@ -13,6 +13,18 @@ class LobbyViewModel(
     private val server: Server, private val lobbyItemFactory: LobbyItemFactory = LobbyItemFactory()
 ) : ViewModel() {
 
+    companion object {
+        val MAX_PLAYERS = 6
+
+        val randomCpuPlayerAvatars = IntArray(MAX_PLAYERS)
+
+        init {
+            for (i in 0..MAX_PLAYERS - 1) {
+                randomCpuPlayerAvatars[i] = MainViewModel.avatarsList.random()
+            }
+        }
+    }
+
     private val cpuPlayers = MutableStateFlow(0)
 
     private val connections = server.connections
@@ -38,7 +50,7 @@ class LobbyViewModel(
 
     fun clicked(clickedItem: LobbyItem) {
 
-        if (numPlayer < 6) {
+        if (numPlayer < MAX_PLAYERS) {
             when (clickedItem) {
                 is LobbyItem.AddCpu -> {
                     addCpuPlayer()
@@ -57,7 +69,7 @@ class LobbyViewModel(
             checkTooManyPlayer = true
         }
 
-        if (numPlayer <= 6) {
+        if (numPlayer <= MAX_PLAYERS) {
             when (clickedItem) {
                 is LobbyItem.RemoveCpu -> {
                     checkTooManyPlayer = false

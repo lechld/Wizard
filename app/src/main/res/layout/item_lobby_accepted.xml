@@ -26,6 +26,16 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Accepted id" />
 
+        <ImageView
+            android:id="@+id/accepted_avatar"
+            android:layout_width="20pt"
+            android:layout_height="20pt"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/accepted_text"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon2" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

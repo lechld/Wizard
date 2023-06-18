@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import at.aau.edu.wizards.MainActivity
 import at.aau.edu.wizards.R
+import at.aau.edu.wizards.USERDATA_AVATAR
+import at.aau.edu.wizards.USERDATA_USERNAME
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
@@ -200,8 +202,8 @@ class GameBoardFragment : Fragment(), OnDragListener {
             val currentPlayer = it.second
             val header = headers.getOrNull(currentPlayer) ?: return@observe
 
-            binding.header.headerIcon.setImageResource(viewModel.getIconFromId(header.icon))
-            binding.header.headerUsername.text = header.name
+            binding.header.headerIcon.setImageResource(USERDATA_AVATAR)
+            binding.header.headerUsername.text = USERDATA_USERNAME
             binding.header.headerScore.text = header.score.toString()
             binding.header.headerGuessAndWins.text = buildString {
                 append(header.wins)

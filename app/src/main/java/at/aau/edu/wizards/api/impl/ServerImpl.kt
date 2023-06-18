@@ -1,6 +1,9 @@
 package at.aau.edu.wizards.api.impl
 
 import at.aau.edu.wizards.BuildConfig
+import at.aau.edu.wizards.USERDATA_AVATAR
+import at.aau.edu.wizards.USERDATA_USERNAME
+import at.aau.edu.wizards.USERDATA_UUID
 import at.aau.edu.wizards.api.MessageReceiver
 import at.aau.edu.wizards.api.MessageSender
 import at.aau.edu.wizards.api.Server
@@ -15,7 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 internal class ServerImpl(
     private val connectionsClient: ConnectionsClient,
-    private val userIdentifier: String = GENERATED_NAME,
+    private val myEndpointName: String = USERDATA_USERNAME + ":" + USERDATA_AVATAR,
     private val applicationIdentifier: String = BuildConfig.APPLICATION_ID,
     private val messageDelegate: MessageDelegate = MessageDelegate(connectionsClient),
 ) : Server,
@@ -35,7 +38,7 @@ internal class ServerImpl(
         val connections = mutableListOf<ServerConnection>()
 
         connectionsClient.startAdvertising(
-            userIdentifier,
+            myEndpointName,
             applicationIdentifier,
             object : ConnectionLifecycleCallback() {
                 override fun onConnectionInitiated(endpointId: String, info: ConnectionInfo) {
