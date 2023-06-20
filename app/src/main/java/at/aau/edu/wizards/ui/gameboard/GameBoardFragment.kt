@@ -57,7 +57,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
             amountCpu = amountCpu,
             server = Server.getInstance(requireContext()),
             client = Client.getInstance(requireContext()),
-            username = username ?: "Error0"
+            username = username ?: "Error"
         )
         ViewModelProvider(this, factory)[GameBoardViewModel::class.java]
     }
@@ -190,7 +190,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
         val boardAdapter = GameBoardBoardAdapter()
 
         binding.boardRecycler.adapter = boardAdapter
-        binding.boardRecycler.addItemDecoration(OffsetItemDecoration(310))
+        binding.boardRecycler.addItemDecoration(OffsetItemDecoration(290))
 
         viewModel.board.observe(viewLifecycleOwner) { cards ->
             boardAdapter.submitList(cards)

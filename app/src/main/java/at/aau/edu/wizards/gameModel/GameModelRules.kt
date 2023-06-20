@@ -202,6 +202,7 @@ class GameModelRules(
         }
         parent.listener.update()
         if (currentPlayer == dealer) {
+            delay(2000)
             nextSet()
         } else if (!players[currentPlayer].isHuman) {
             getCpuToPlay()
