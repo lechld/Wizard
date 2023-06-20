@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     android:background="?colorPrimaryContainer">
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:scaleType="centerCrop"
+        android:alpha="0.4"
+        android:src="@drawable/bb"/>
+
     <FrameLayout
         android:id="@+id/drag_container"
         android:layout_width="0dp"
@@ -14,30 +25,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/seperationBoardHand"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:adjustViewBounds="true"
-        android:background="?colorOnPrimary"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@id/gameboard_recycler_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/gameboard_recycler_view" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/seperationBoardHeader"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:adjustViewBounds="true"
-        android:background="?colorOnPrimary"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="@id/header"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header" />
 
     <Button
         android:id="@+id/btn_scoreboard"

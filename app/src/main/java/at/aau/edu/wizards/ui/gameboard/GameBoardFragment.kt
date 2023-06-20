@@ -148,13 +148,11 @@ class GameBoardFragment : Fragment(), OnDragListener {
                 binding?.trumpIndicatorCard?.root?.visibility = View.INVISIBLE
                 binding?.boardRecycler?.visibility = View.INVISIBLE
                 binding?.gameboardRecyclerView?.visibility = View.INVISIBLE
-                binding?.seperationBoardHand?.visibility = View.INVISIBLE
             } else {
                 binding?.winningCard?.root?.visibility = View.INVISIBLE
                 binding?.trumpIndicatorCard?.root?.visibility = View.VISIBLE
                 binding?.boardRecycler?.visibility = View.VISIBLE
                 binding?.gameboardRecyclerView?.visibility = View.VISIBLE
-                binding?.seperationBoardHand?.visibility = View.VISIBLE
             }
         }
     }
