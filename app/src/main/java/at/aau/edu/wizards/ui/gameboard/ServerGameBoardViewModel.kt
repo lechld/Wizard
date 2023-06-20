@@ -5,12 +5,14 @@ import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.api.model.ServerConnection
 import at.aau.edu.wizards.gameModel.END_COMMAND
 import at.aau.edu.wizards.gameModel.GameModel
+import at.aau.edu.wizards.gameModel.SHARE_NAMES_AND_AVATAR
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class ServerGameBoardViewModel(
     private val server: Server,
     amountCpu: Int,
+    private val userinfo: String
 ) : GameBoardViewModel() {
     override val gameModel = GameModel(this)
 
@@ -20,10 +22,10 @@ class ServerGameBoardViewModel(
 
         viewModelScope.launch {
             server.messages.collect { message ->
+                connections.forEach {
+                    server.send(it, message.value)
+                }
                 if (gameModel.receiveMessage(message.value)) {
-                    connections.forEach {
-                        server.send(it, message.value)
-                    }
                     updateData(gameModel)
                 }
             }
@@ -47,21 +49,31 @@ class ServerGameBoardViewModel(
                 })
             }
             updateData(gameModel)
+            sendMessage(SHARE_NAMES_AND_AVATAR)
         }
     }
 
     override fun sendMessage(move: String) {
-        if (move == END_COMMAND) {
-            _scoreboard.value = true
-        } else {
-            viewModelScope.launch {
-                server.getConnectionsSync()
-                    .filterIsInstance(ServerConnection.Connected::class.java)
-                    .forEach {
-                        server.send(it, move)
+        when (move) {
+            END_COMMAND -> {
+                _scoreboard.value = true
+            }
+            else -> {
+                viewModelScope.launch {
+                    server.getConnectionsSync()
+                        .filterIsInstance(ServerConnection.Connected::class.java)
+                        .forEach {
+                            server.send(it, move)
+                        }
+                    if (move == SHARE_NAMES_AND_AVATAR) {
+                        sendMessage(
+                            240.toChar().toString() + userinfo + gameModel.localPlayer().toChar()
+                                .toString()
+                        )
+                    } else if (gameModel.receiveMessage(move)) {
+                        updateData(gameModel)
                     }
-                gameModel.receiveMessage(move)
-                updateData(gameModel)
+                }
             }
         }
     }

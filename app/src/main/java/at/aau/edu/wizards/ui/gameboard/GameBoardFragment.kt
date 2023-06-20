@@ -41,6 +41,10 @@ class GameBoardFragment : Fragment(), OnDragListener {
         requireArguments().getInt(AMOUNT_CPU_EXTRA)
     }
 
+    private val username by lazy {
+        requireArguments().getString(USERNAME_EXTRA)
+    }
+
     private var binding: FragmentGameboardBinding? = null
 
     private val vibrator: Vibrator by lazy {
@@ -52,7 +56,8 @@ class GameBoardFragment : Fragment(), OnDragListener {
             asClient = asClient,
             amountCpu = amountCpu,
             server = Server.getInstance(requireContext()),
-            client = Client.getInstance(requireContext())
+            client = Client.getInstance(requireContext()),
+            username = username ?: "Error0"
         )
         ViewModelProvider(this, factory)[GameBoardViewModel::class.java]
     }
@@ -277,7 +282,8 @@ class GameBoardFragment : Fragment(), OnDragListener {
     companion object {
         private const val AS_CLIENT_EXTRA = "AS_CLIENT_EXTRA"
         private const val AMOUNT_CPU_EXTRA = "AMOUNT_CPU_EXTRA"
-        fun instance(asClient: Boolean, amountCpu: Int = 0): GameBoardFragment {
+        private const val USERNAME_EXTRA = "USERNAME_EXTRA"
+        fun instance(asClient: Boolean, amountCpu: Int = 0, username: String): GameBoardFragment {
             if (asClient && amountCpu > 0) {
                 // This is not handled ideally, but fine for now
                 throw IllegalArgumentException("Only Server is allowed to define cpu players")
@@ -286,7 +292,9 @@ class GameBoardFragment : Fragment(), OnDragListener {
 
             return GameBoardFragment().apply {
                 arguments = bundleOf(
-                    AS_CLIENT_EXTRA to asClient, AMOUNT_CPU_EXTRA to amountCpu
+                    AS_CLIENT_EXTRA to asClient,
+                    AMOUNT_CPU_EXTRA to amountCpu,
+                    USERNAME_EXTRA to username
                 )
             }
         }

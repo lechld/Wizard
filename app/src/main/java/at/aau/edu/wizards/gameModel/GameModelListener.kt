@@ -116,6 +116,8 @@ class GameModelListener(
         if (headerList.isNotEmpty()) {
             for (player in 0 until numberOfPlayers) {
                 headerList[player] = headerList[player].copy(
+                    name = rules.players[player].name,
+                    icon = rules.players[player].icon,
                     guess = getCurrentGuessOfPlayer(player),
                     wins = getCurrentWins(player),
                     score = getCurrentScoreOfPlayer(player)

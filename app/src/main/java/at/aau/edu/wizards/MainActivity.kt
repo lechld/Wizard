@@ -38,7 +38,10 @@ class MainActivity : AppCompatActivity() {
         @SuppressWarnings("kotlin:S6291")
         val sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
 
-        mainViewModel = ViewModelProvider(this, MainViewModel.Factory(sharedPreferences))[MainViewModel::class.java]
+        mainViewModel = ViewModelProvider(
+            this,
+            MainViewModel.Factory(sharedPreferences)
+        )[MainViewModel::class.java]
 
         setContentView(binding.root)
 
@@ -58,7 +61,12 @@ class MainActivity : AppCompatActivity() {
         binding.imageSpinner.setSelection(mainViewModel.avatarsList.indexOf(mainViewModel.getAvatar()))
 
         binding.imageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 val resourceId = mainViewModel.avatarsList[position]
                 binding.imageView.setImageResource(resourceId)
                 mainViewModel.saveAvatar(resourceId)
@@ -72,7 +80,13 @@ class MainActivity : AppCompatActivity() {
 
     fun showGame(asClient: Boolean, amountCpu: Int = 0) {
         val fragment = supportFragmentManager.findFragmentByTag(GAME_BOARD_FRAGMENT_TAG)
-            ?: GameBoardFragment.instance(asClient, amountCpu)
+            ?: GameBoardFragment.instance(
+                asClient,
+                amountCpu,
+                (mainViewModel.getUsername()
+                    ?: "Error") + "JALMENKOPADENKO" + mainViewModel.getAvatarAsInt().toChar()
+                    .toString()
+            )
 
         if (fragment.isAdded) {
             return
@@ -116,18 +130,20 @@ class MainActivity : AppCompatActivity() {
         })
 
         binding.clientButton.setOnClickListener {
-            if (!binding.inputUsername.text.toString().isEmpty()) {
+            if (binding.inputUsername.text.toString().isNotEmpty()) {
                 showDiscoverFragment()
             } else {
-                Snackbar.make(binding.root, "Please enter username first!", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.root, "Please enter username first!", Snackbar.LENGTH_LONG)
+                    .show()
             }
         }
 
         binding.serverButton.setOnClickListener {
-            if (!binding.inputUsername.text.toString().isEmpty()) {
+            if (binding.inputUsername.text.toString().isNotEmpty()) {
                 showLobby()
             } else {
-                Snackbar.make(binding.root, "Please enter username first!", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.root, "Please enter username first!", Snackbar.LENGTH_LONG)
+                    .show()
             }
         }
     }

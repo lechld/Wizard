@@ -43,6 +43,16 @@ class MainViewModel(private val sharedPreferences: SharedPreferences) : ViewMode
         return sharedPreferences.getInt(SHARED_PREFERENCE_AVATAR_KEY, selectRandomAvatar())
     }
 
+    fun getAvatarAsInt(): Int {
+        val avatar = getAvatar()
+        for (i in avatarsList.indices) {
+            if (avatarsList[i] == avatar) {
+                return i + 1
+            }
+        }
+        return -1
+    }
+
     fun saveAvatar(avatar: Int) {
         sharedPreferences.edit().putInt(SHARED_PREFERENCE_AVATAR_KEY, avatar).apply()
     }

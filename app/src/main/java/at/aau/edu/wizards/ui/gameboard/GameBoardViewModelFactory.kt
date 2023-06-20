@@ -10,15 +10,16 @@ class GameBoardViewModelFactory(
     private val amountCpu: Int,
     private val server: Server,
     private val client: Client,
+    private val username: String
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(GameBoardViewModel::class.java)) {
             val viewModel = if (asClient) {
-                ClientGameBoardViewModel(client)
+                ClientGameBoardViewModel(client, username)
             } else {
-                ServerGameBoardViewModel(server, amountCpu)
+                ServerGameBoardViewModel(server, amountCpu, username)
             }
             viewModel as T
         } else throw IllegalStateException("Wrong Factory for instantiating ${modelClass::class.java.canonicalName}")

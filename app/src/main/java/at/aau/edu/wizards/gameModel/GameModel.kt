@@ -85,7 +85,20 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                                             true
                                         }
                                         else -> {
-                                            false
+                                            when (legalUserInfo(move)) {
+                                                true -> {
+                                                    val userinfo = move.split("JALMENKOPADENKO")
+                                                    players[userinfo[1][1].code].name =
+                                                        userinfo[0].substring(1)
+                                                    players[userinfo[1][1].code].icon =
+                                                        userinfo[1][0].code
+                                                    listener.update()
+                                                    true
+                                                }
+                                                else -> {
+                                                    false
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -96,6 +109,10 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                 }
             }
         }
+    }
+
+    private fun legalUserInfo(move: String): Boolean {
+        return move.isNotEmpty() && move[0].code == 240
     }
 
     private fun legalMessageInit(move: String): Boolean {
