@@ -12,7 +12,7 @@ import at.aau.edu.wizards.gameModel.GameModelListener
 import at.aau.edu.wizards.ui.scoreboard.recycler.ScoreboardAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-
+// TODO: We should never pass something in constructor! This will crash now on Activity recreation
 class ScoreboardFragment(val listener: GameModelListener) : DialogFragment() {
 
     private var binding: FragmentScoreboardBinding? = null

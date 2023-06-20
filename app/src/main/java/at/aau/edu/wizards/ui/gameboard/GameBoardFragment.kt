@@ -47,8 +47,8 @@ class GameBoardFragment : Fragment(), OnDragListener {
 
     private var binding: FragmentGameboardBinding? = null
 
-    private val vibrator: Vibrator by lazy {
-        binding?.root?.let { ContextCompat.getSystemService(it.context, Vibrator::class.java) }!!
+    private val vibrator: Vibrator? by lazy {
+        context?.let { ContextCompat.getSystemService(it, Vibrator::class.java) }
     }
 
     private val viewModel by lazy {
@@ -217,8 +217,9 @@ class GameBoardFragment : Fragment(), OnDragListener {
     }
 
     override fun onDrag(view: View, event: DragEvent): Boolean {
-        val binding = this.binding
-        if (event.action == DragEvent.ACTION_DROP && binding != null) {
+        val binding = this.binding ?: return true
+        val vibrator = this.vibrator
+        if (event.action == DragEvent.ACTION_DROP) {
             val dropX = event.x
             val dropY = event.y
 
@@ -227,7 +228,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
                 viewModel.sendMessage(item.getString())
 
                 // Trigger haptic feedback
-                if (vibrator.hasVibrator()) {
+                if (vibrator != null && vibrator.hasVibrator()) {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
@@ -270,10 +271,10 @@ class GameBoardFragment : Fragment(), OnDragListener {
         }
 
 
-        val sensorManager =
-            requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        sensorManager.registerListener(
+        val sensorManager = context?.getSystemService(Context.SENSOR_SERVICE) as? SensorManager
+        val accelerometer = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
+        sensorManager?.registerListener(
             shakeDetector, accelerometer, SensorManager.SENSOR_DELAY_NORMAL
         )
     }
