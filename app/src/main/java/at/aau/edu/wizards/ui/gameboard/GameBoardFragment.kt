@@ -212,6 +212,10 @@ class GameBoardFragment : Fragment(), OnDragListener {
                 append(" / ")
                 append(header.guess)
             }
+
+            binding.gameboardRecyclerView.alpha = if (viewModel.isYourTurn()) {
+                1.0f
+            } else 0.5f
         }
 
         binding.dragContainer.setOnDragListener(this)
@@ -228,6 +232,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
                 if (!viewModel.isYourTurn()) {
                     Snackbar.make(binding.gameboardRecyclerView, "It's not your turn", Snackbar.LENGTH_SHORT)
                         .show()
+                    return true
                 }
 
                 val item: GameModelCard = event.localState as GameModelCard
