@@ -29,6 +29,7 @@ import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.shake.ShakeDetector
 import at.aau.edu.wizards.util.OffsetItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 
 
 class GameBoardFragment : Fragment(), OnDragListener {
@@ -224,6 +225,11 @@ class GameBoardFragment : Fragment(), OnDragListener {
             val dropY = event.y
 
             if (dropX < binding.dragContainer.width && dropY < binding.dragContainer.height) {
+                if (!viewModel.isYourTurn()) {
+                    Snackbar.make(binding.gameboardRecyclerView, "It's not your turn", Snackbar.LENGTH_SHORT)
+                        .show()
+                }
+
                 val item: GameModelCard = event.localState as GameModelCard
                 viewModel.sendMessage(item.getString())
 

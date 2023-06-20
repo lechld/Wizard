@@ -36,6 +36,10 @@ abstract class GameBoardViewModel : ViewModel() {
 
     abstract val gameModel: GameModel
 
+    fun isYourTurn(): Boolean {
+        return gameModel.listener.activePlayer == gameModel.localPlayer()
+    }
+
     fun updateData(model: GameModel) {
         _headersWithCurrentPlayer.postValue(model.listener.headerList to model.listener.activePlayer)
 
