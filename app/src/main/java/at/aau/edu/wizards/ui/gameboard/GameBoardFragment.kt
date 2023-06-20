@@ -215,7 +215,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
 
             binding.gameboardRecyclerView.alpha = if (viewModel.isYourTurn()) {
                 1.0f
-            } else 0.5f
+            } else 0.7f
         }
 
         binding.dragContainer.setOnDragListener(this)
