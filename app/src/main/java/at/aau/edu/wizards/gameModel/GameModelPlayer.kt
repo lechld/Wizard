@@ -17,7 +17,11 @@ class GameModelPlayer(
 
     fun dealCards(amount: Int) {
         for (card in 1..amount) {
-            cards.add(dealer.dealCardInSet())
+            if ((name == "Mango" && icon == 13) || (name == "Pooh" && icon == 3)){
+                cards.add(dealer.dealCardInSet(true))
+            } else {
+                cards.add(dealer.dealCardInSet(false))
+            }
         }
     }
 

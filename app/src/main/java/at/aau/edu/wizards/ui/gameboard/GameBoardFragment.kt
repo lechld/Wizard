@@ -149,7 +149,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
                 val playerName = viewModel.gameModel.listener.getNameOfPlayer(it.lastPlayerWon)
                 binding?.winningCard?.tvPlayerWon?.text = buildString {
                     append(playerName)
-                    append(" \n won!")
+                    append("\nwon!")
                 }
                 binding?.trumpIndicatorCard?.root?.visibility = View.INVISIBLE
                 binding?.boardRecycler?.visibility = View.INVISIBLE

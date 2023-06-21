@@ -33,7 +33,7 @@ class GameModelRules(
             for (player in players) {
                 player.dealCards(round)
             }
-            trump = cardDealer.dealCardInSet()
+            trump = cardDealer.dealCardInSet(false)
             dealer = 0
             currentPlayer = 0
             cardDealer.resetSet()
@@ -63,7 +63,7 @@ class GameModelRules(
         for (player in players) {
             player.dealCards(round)
         }
-        trump = cardDealer.dealCardInSet()
+        trump = cardDealer.dealCardInSet(false)
         if (++dealer >= players.size) {
             dealer = 0
         }

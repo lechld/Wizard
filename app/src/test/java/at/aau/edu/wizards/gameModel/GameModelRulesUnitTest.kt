@@ -187,11 +187,11 @@ class GameModelRulesUnitTest {
         player4.guesses.add(0)
         player5.guesses.add(1)
 
-        dealer.dealCardInSet()
-        dealer.dealCardInSet()
-        dealer.dealCardInSet()
-        dealer.dealCardInSet()
-        dealer.dealCardInSet()
+        dealer.dealCardInSet(false)
+        dealer.dealCardInSet(false)
+        dealer.dealCardInSet(false)
+        dealer.dealCardInSet(false)
+        dealer.dealCardInSet(false)
 
         rules.init()
 

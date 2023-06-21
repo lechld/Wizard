@@ -6,7 +6,7 @@ class GameModelDealer(seed: Int) {
     private val random = Random(seed)
     private val set = ArrayList<Int>()
 
-    fun dealCardInSet(): GameModelCard {
+    fun dealCardInSet(winniePuh: Boolean): GameModelCard {
         if (set.size > 59) { //Check if all cards already dealt
             return GameModelCard.NoCard
         }
@@ -18,6 +18,53 @@ class GameModelDealer(seed: Int) {
             hash--
             if (hash < 0) {
                 hash = 59
+            }
+        }
+        if (winniePuh) {
+            if (random.nextBoolean() && random.nextBoolean()) {
+                if (hash < 15) {
+                    for (card in 14 downTo 0) {
+                        if (set.contains(card)) {
+                            continue
+                        }
+                        hash = card
+                        break
+                    }
+                } else if (hash < 30) {
+                    for (card in 29 downTo 15) {
+                        if (set.contains(card)) {
+                            continue
+                        }
+                        hash = card
+                        break
+                    }
+                } else if (hash < 45) {
+                    for (card in 44 downTo 30) {
+                        if (set.contains(card)) {
+                            continue
+                        }
+                        hash = card
+                        break
+                    }
+                } else {
+                    for (card in 59 downTo 45) {
+                        if (set.contains(card)) {
+                            continue
+                        }
+                        hash = card
+                        break
+                    }
+                }
+            } else if (random.nextBoolean()) {
+                if (!set.contains(0)) {
+                    hash = 0
+                } else if (!set.contains(15)) {
+                    hash = 15
+                } else if (!set.contains(30)) {
+                    hash = 30
+                } else if (!set.contains(45)) {
+                    hash = 45
+                }
             }
         }
         set.add(hash) //set card as already dealt

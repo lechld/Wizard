@@ -1,19 +1,18 @@
 package at.aau.edu.wizards.gameModel
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.random.Random
+import kotlin.time.Duration.Companion.milliseconds
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GameModelCpuUnitTest {
     private val viewModel = null
 
     @Test
-    fun metric() = runTest(EmptyCoroutineContext, 60_000L) {
+    fun metric() = runTest(EmptyCoroutineContext, timeout = 60_000L.milliseconds) {
         //I think it makes more sense to test for a metric here, since the specific cpu implementation might change in future versions. We should just make sure it stays at a considerable level, namely staying better than previous versions.
         val limit = 100
         var scores = 0

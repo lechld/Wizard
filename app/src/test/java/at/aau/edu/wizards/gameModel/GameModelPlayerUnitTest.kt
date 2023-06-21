@@ -20,7 +20,7 @@ class GameModelPlayerUnitTest {
         for (i in 0..10) {
             player.dealCards(i)
             for (k in 1..i) {
-                assert(player.cards.contains(dealer2.dealCardInSet()))
+                assert(player.cards.contains(dealer2.dealCardInSet(false)))
             }
             player.cards.clear()
             dealer1.resetSet()
@@ -29,7 +29,7 @@ class GameModelPlayerUnitTest {
 
         for (i in 1..60) {
             player.dealCards(1)
-            when (val card = dealer2.dealCardInSet()) {
+            when (val card = dealer2.dealCardInSet(false)) {
                 is GameModelCard.Normal -> {
                     when (card.color) {
                         GameModelCard.Color.Blue -> {

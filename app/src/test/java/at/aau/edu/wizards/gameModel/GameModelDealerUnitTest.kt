@@ -12,7 +12,7 @@ class GameModelDealerUnitTest {
         val list = ArrayList<GameModelCard>()
 
         for (i in 1..60) {
-            list.add(dealer.dealCardInSet())
+            list.add(dealer.dealCardInSet(false))
         }
 
         assertEquals(15, getAmountOfColor(list, GameModelCard.Color.Blue))
@@ -25,14 +25,14 @@ class GameModelDealerUnitTest {
         assertEquals(52, getAmountOfType(list, GameModelCard.Normal(GameModelCard.Color.Blue, 1)))
         assertEquals(0, getAmountOfType(list, GameModelCard.NoCard))
 
-        list.add(dealer.dealCardInSet())
+        list.add(dealer.dealCardInSet(false))
 
         assertEquals(1, getAmountOfType(list, GameModelCard.NoCard))
 
         dealer.resetSet()
 
         for (i in 1..60) {
-            list.add(dealer.dealCardInSet())
+            list.add(dealer.dealCardInSet(false))
         }
 
         assertEquals(30, getAmountOfColor(list, GameModelCard.Color.Blue))
@@ -45,7 +45,7 @@ class GameModelDealerUnitTest {
         assertEquals(104, getAmountOfType(list, GameModelCard.Normal(GameModelCard.Color.Blue, 1)))
         assertEquals(1, getAmountOfType(list, GameModelCard.NoCard))
 
-        list.add(dealer.dealCardInSet())
+        list.add(dealer.dealCardInSet(false))
 
         assertEquals(2, getAmountOfType(list, GameModelCard.NoCard))
 
@@ -53,7 +53,7 @@ class GameModelDealerUnitTest {
         val dealer2 = GameModelDealer(420420)
 
         for (i in 0..100) {
-            assert(dealer1.dealCardInSet() == dealer2.dealCardInSet())
+            assert(dealer1.dealCardInSet(false) == dealer2.dealCardInSet(false))
             dealer1.resetSet()
             dealer2.resetSet()
         }
