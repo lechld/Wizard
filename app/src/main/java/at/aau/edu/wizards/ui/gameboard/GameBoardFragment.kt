@@ -29,6 +29,7 @@ import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.shake.ShakeDetector
 import at.aau.edu.wizards.util.OffsetItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 
 
 class GameBoardFragment : Fragment(), OnDragListener {
@@ -41,10 +42,14 @@ class GameBoardFragment : Fragment(), OnDragListener {
         requireArguments().getInt(AMOUNT_CPU_EXTRA)
     }
 
+    private val username by lazy {
+        requireArguments().getString(USERNAME_EXTRA)
+    }
+
     private var binding: FragmentGameboardBinding? = null
 
-    private val vibrator: Vibrator by lazy {
-        binding?.root?.let { ContextCompat.getSystemService(it.context, Vibrator::class.java) }!!
+    private val vibrator: Vibrator? by lazy {
+        context?.let { ContextCompat.getSystemService(it, Vibrator::class.java) }
     }
 
     private val viewModel by lazy {
@@ -52,7 +57,8 @@ class GameBoardFragment : Fragment(), OnDragListener {
             asClient = asClient,
             amountCpu = amountCpu,
             server = Server.getInstance(requireContext()),
-            client = Client.getInstance(requireContext())
+            client = Client.getInstance(requireContext()),
+            username = username ?: "Error"
         )
         ViewModelProvider(this, factory)[GameBoardViewModel::class.java]
     }
@@ -143,18 +149,16 @@ class GameBoardFragment : Fragment(), OnDragListener {
                 val playerName = viewModel.gameModel.listener.getNameOfPlayer(it.lastPlayerWon)
                 binding?.winningCard?.tvPlayerWon?.text = buildString {
                     append(playerName)
-                    append(" \n won!")
+                    append("\nwon!")
                 }
                 binding?.trumpIndicatorCard?.root?.visibility = View.INVISIBLE
                 binding?.boardRecycler?.visibility = View.INVISIBLE
                 binding?.gameboardRecyclerView?.visibility = View.INVISIBLE
-                binding?.seperationBoardHand?.visibility = View.INVISIBLE
             } else {
                 binding?.winningCard?.root?.visibility = View.INVISIBLE
                 binding?.trumpIndicatorCard?.root?.visibility = View.VISIBLE
                 binding?.boardRecycler?.visibility = View.VISIBLE
                 binding?.gameboardRecyclerView?.visibility = View.VISIBLE
-                binding?.seperationBoardHand?.visibility = View.VISIBLE
             }
         }
     }
@@ -187,7 +191,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
         val boardAdapter = GameBoardBoardAdapter()
 
         binding.boardRecycler.adapter = boardAdapter
-        binding.boardRecycler.addItemDecoration(OffsetItemDecoration(310))
+        binding.boardRecycler.addItemDecoration(OffsetItemDecoration(290))
 
         viewModel.board.observe(viewLifecycleOwner) { cards ->
             boardAdapter.submitList(cards)
@@ -208,23 +212,34 @@ class GameBoardFragment : Fragment(), OnDragListener {
                 append(" / ")
                 append(header.guess)
             }
+
+            binding.gameboardRecyclerView.alpha = if (viewModel.isYourTurn()) {
+                1.0f
+            } else 0.7f
         }
 
         binding.dragContainer.setOnDragListener(this)
     }
 
     override fun onDrag(view: View, event: DragEvent): Boolean {
-        val binding = this.binding
-        if (event.action == DragEvent.ACTION_DROP && binding != null) {
+        val binding = this.binding ?: return true
+        val vibrator = this.vibrator
+        if (event.action == DragEvent.ACTION_DROP) {
             val dropX = event.x
             val dropY = event.y
 
             if (dropX < binding.dragContainer.width && dropY < binding.dragContainer.height) {
+                if (!viewModel.isYourTurn()) {
+                    Snackbar.make(binding.gameboardRecyclerView, "It's not your turn", Snackbar.LENGTH_SHORT)
+                        .show()
+                    return true
+                }
+
                 val item: GameModelCard = event.localState as GameModelCard
                 viewModel.sendMessage(item.getString())
 
                 // Trigger haptic feedback
-                if (vibrator.hasVibrator()) {
+                if (vibrator != null && vibrator.hasVibrator()) {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
@@ -267,10 +282,10 @@ class GameBoardFragment : Fragment(), OnDragListener {
         }
 
 
-        val sensorManager =
-            requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        sensorManager.registerListener(
+        val sensorManager = context?.getSystemService(Context.SENSOR_SERVICE) as? SensorManager
+        val accelerometer = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
+        sensorManager?.registerListener(
             shakeDetector, accelerometer, SensorManager.SENSOR_DELAY_NORMAL
         )
     }
@@ -279,7 +294,8 @@ class GameBoardFragment : Fragment(), OnDragListener {
     companion object {
         private const val AS_CLIENT_EXTRA = "AS_CLIENT_EXTRA"
         private const val AMOUNT_CPU_EXTRA = "AMOUNT_CPU_EXTRA"
-        fun instance(asClient: Boolean, amountCpu: Int = 0): GameBoardFragment {
+        private const val USERNAME_EXTRA = "USERNAME_EXTRA"
+        fun instance(asClient: Boolean, amountCpu: Int = 0, username: String): GameBoardFragment {
             if (asClient && amountCpu > 0) {
                 // This is not handled ideally, but fine for now
                 throw IllegalArgumentException("Only Server is allowed to define cpu players")
@@ -288,7 +304,9 @@ class GameBoardFragment : Fragment(), OnDragListener {
 
             return GameBoardFragment().apply {
                 arguments = bundleOf(
-                    AS_CLIENT_EXTRA to asClient, AMOUNT_CPU_EXTRA to amountCpu
+                    AS_CLIENT_EXTRA to asClient,
+                    AMOUNT_CPU_EXTRA to amountCpu,
+                    USERNAME_EXTRA to username
                 )
             }
         }

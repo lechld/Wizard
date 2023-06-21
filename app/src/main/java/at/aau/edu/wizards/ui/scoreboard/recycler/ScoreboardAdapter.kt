@@ -1,5 +1,6 @@
 package at.aau.edu.wizards.ui.scoreboard.recycler
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,14 +10,16 @@ import at.aau.edu.wizards.ui.scoreboard.Scoreboard
 
 class ScoreboardAdapter : ListAdapter<Scoreboard, ScoreboardItemViewHolder>(DiffUtlCallback()) {
 
+    lateinit var context : Context
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScoreboardItemViewHolder {
-        val from = LayoutInflater.from(parent.context)
+        context = parent.context
+        val from = LayoutInflater.from(context)
         val binding = ItemScoreboardBinding.inflate(from, parent, false)
         return ScoreboardItemViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ScoreboardItemViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), context)
     }
 
     private class DiffUtlCallback : DiffUtil.ItemCallback<Scoreboard>() {

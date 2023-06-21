@@ -17,9 +17,10 @@
     <string name="max_player">There can only be a maximum of 6 players</string>
     <string name="min_player">There are not enough players to start the game (minimum 3 required). \n\nAdd some CPU players or wait for someone to connect!</string>
     <string name="okay">Okay</string>
-    <string name="guess" translatable="false">Guess:</string>
-    <string name="foundCheater" translatable="false">Found Cheater</string>
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="guess">Guess:</string>
+    <string name="foundCheater">Found Cheater</string>
     <string name="avatarSelectionSpinner">Used to select an avatar</string>
     <string name="avatarSelectionImageView">Used to show avatar</string>
+    <string name="scoreboard_score">Score: %1$d</string>
+    <string name="scoreboard_guess">Guess: %1$d</string>
 </resources>

@@ -33,7 +33,7 @@ class GameModelRules(
             for (player in players) {
                 player.dealCards(round)
             }
-            trump = cardDealer.dealCardInSet()
+            trump = cardDealer.dealCardInSet(false)
             dealer = 0
             currentPlayer = 0
             cardDealer.resetSet()
@@ -63,7 +63,7 @@ class GameModelRules(
         for (player in players) {
             player.dealCards(round)
         }
-        trump = cardDealer.dealCardInSet()
+        trump = cardDealer.dealCardInSet(false)
         if (++dealer >= players.size) {
             dealer = 0
         }
@@ -202,6 +202,7 @@ class GameModelRules(
         }
         parent.listener.update()
         if (currentPlayer == dealer) {
+            delay(2000)
             nextSet()
         } else if (!players[currentPlayer].isHuman) {
             getCpuToPlay()
@@ -277,12 +278,7 @@ class GameModelRules(
         parent.receiveMessage(cpu.getMove(currentPlayer).getString())
     }
 
-    suspend fun updatedGuess(playerID: Int, newGuess: Int) {
-        players[playerID].guesses[players[playerID].guesses.lastIndex] = newGuess
-        players[playerID].hasCheated = true
-    }
-
-    suspend fun checkCheater(cheater: Int) {
+    fun checkCheater(cheater: Int) {
         if (players[cheater].hasCheated) {
             setCheatingPointsDeduction(cheater)
             setCheatingPointsAdd(parent.localPlayer())
@@ -300,5 +296,13 @@ class GameModelRules(
     private fun setCheatingPointsAdd(reveal: Int) {
         players[reveal].scores[players[reveal].scores.lastIndex] =
             players[reveal].scores[players[reveal].scores.lastIndex] + 10
+    }
+
+    companion object {
+        fun updatedGuess(gameModelRules: GameModelRules, playerID: Int, newGuess: Int) {
+            gameModelRules.players[playerID].guesses[gameModelRules.players[playerID].guesses.lastIndex] =
+                newGuess
+            gameModelRules.players[playerID].hasCheated = true
+        }
     }
 }

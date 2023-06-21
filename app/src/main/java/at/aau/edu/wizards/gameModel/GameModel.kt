@@ -12,7 +12,9 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         private set
 
     fun sendMessage(move: String): Boolean {
-        return if (legalMessageGuessSend(move) || legalMessageCardSend(move) || move == END_COMMAND || legalCheatingGuess(move) || legalFountCheater(move)
+        return if (legalMessageGuessSend(move) || legalMessageCardSend(move) || move == END_COMMAND || legalCheatingGuess(
+                move
+            ) || legalFountCheater(move)
         ) {
             viewModel?.sendMessage(move)
             true
@@ -70,34 +72,47 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                                 true -> {
                                     val playerIndex = (move[0].code - 127) / 11
                                     val newGuessValue = (move[0].code - 127) % 11
-                                    rules.updatedGuess(playerIndex, newGuessValue)
-                                    listener.update()
-                                    true
-
-
-
-                                }
-                                else -> {
-                                    false
-                                }
-                            }
-                            when (legalFountCheater(move)) {
-                                true -> {
-                                    val playerIndex = (move[0].code - 194) / 11
-                                    rules.checkCheater(playerIndex)
+                                    GameModelRules.updatedGuess(rules, playerIndex, newGuessValue)
                                     listener.update()
                                     true
                                 }
                                 else -> {
-                                    false
+                                    when (legalFountCheater(move)) {
+                                        true -> {
+                                            val playerIndex = (move[0].code - 194) / 11
+                                            rules.checkCheater(playerIndex)
+                                            listener.update()
+                                            true
+                                        }
+                                        else -> {
+                                            when (legalUserInfo(move)) {
+                                                true -> {
+                                                    val userinfo = move.split("JALMENKOPADENKO")
+                                                    players[userinfo[1][1].code].name =
+                                                        userinfo[0].substring(1)
+                                                    players[userinfo[1][1].code].icon =
+                                                        userinfo[1][0].code
+                                                    listener.update()
+                                                    true
+                                                }
+                                                else -> {
+                                                    false
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
+
                         }
-
                     }
                 }
             }
         }
+    }
+
+    private fun legalUserInfo(move: String): Boolean {
+        return move.isNotEmpty() && move[0].code == 240
     }
 
     private fun legalMessageInit(move: String): Boolean {
@@ -135,6 +150,8 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
     }
 
     private fun init(move: String) {
+        val random =
+            Random(420445) //temp for better presentation - should be removed with correct feature
         dealer = GameModelDealer(move.substring(3, move.length).toInt())
         rules = GameModelRules(
             players, move[0].code, dealer, this, move.substring(3, move.length).toInt()
@@ -169,8 +186,8 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                     players.size,
                     dealer,
                     true,
-                    Random.nextInt(1, 20),
-                    list[Random.nextInt(list.size)]
+                    random.nextInt(1, 20),
+                    list[random.nextInt(list.size)]
                 )
             )
         }
@@ -180,8 +197,8 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                     players.size,
                     dealer,
                     false,
-                    Random.nextInt(1, 20),
-                    list[Random.nextInt(list.size)]
+                    random.nextInt(1, 20),
+                    list[random.nextInt(list.size)]
                 )
             )
         }
@@ -205,8 +222,8 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         return sendMessage(buildString { append((60 + rules.id * 11 + guess).toChar().toString()) })
     }
 
-    suspend fun updateGuessCount(newGuess: Int) {
-        rules.updatedGuess(localPlayer(), newGuess)
+    fun updateGuessCount(newGuess: Int) {
+        GameModelRules.updatedGuess(rules, localPlayer(), newGuess)
         legalCheatingGuess(newGuess.toChar().toString())
     }
 
@@ -224,7 +241,7 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         return false
     }
 
-    suspend fun foundCheater(cheater: Int) {
+    fun foundCheater(cheater: Int) {
         rules.checkCheater(cheater)
         legalFountCheater(cheater.toChar().toString())
     }

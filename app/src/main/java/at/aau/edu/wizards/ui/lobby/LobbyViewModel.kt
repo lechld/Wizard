@@ -76,10 +76,6 @@ class LobbyViewModel(
         server.acceptClientRequest(lobbyItem.connection)
     }
 
-    private fun decline(lobbyItem: LobbyItem.Requested) {
-        server.declineClientRequest(lobbyItem.connection)
-    }
-
     private fun addCpuPlayer() {
         cpuPlayers.tryEmit(cpuPlayers.value + 1)
     }

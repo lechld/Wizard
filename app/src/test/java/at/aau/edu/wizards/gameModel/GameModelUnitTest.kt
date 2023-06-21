@@ -1,13 +1,10 @@
 package at.aau.edu.wizards.gameModel
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
 
-
-@OptIn(ExperimentalCoroutinesApi::class)
 class GameModelUnitTest {
     private val viewModel = null
 

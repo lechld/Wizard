@@ -18,6 +18,10 @@
     <string name="max_player">Es können maximal 6 Spieler teilnehmen</string>
     <string name="min_player">Es gibt nicht genügend Spieler, um das Spiel zu starten (mindestens 3 erforderlich).\n\nFüge einige CPU-Spieler hinzu oder warte, bis sich jemand verbindet!</string>
     <string name="okay">Okay</string>
+    <string name="guess">Tipp:</string>
+    <string name="foundCheater">Schummler aufgedeckt!</string>
     <string name="avatarSelectionSpinner">Wird benutzt um Avatar zu wählen</string>
     <string name="avatarSelectionImageView">Wird benutzt um Avatar anzuzeigen</string>
+    <string name="scoreboard_score">Punkte: %1$d</string>
+    <string name="scoreboard_guess">Tipp: %1$d</string>
 </resources>

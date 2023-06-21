@@ -187,11 +187,11 @@ class GameModelRulesUnitTest {
         player4.guesses.add(0)
         player5.guesses.add(1)
 
-        dealer.dealCardInSet()
-        dealer.dealCardInSet()
-        dealer.dealCardInSet()
-        dealer.dealCardInSet()
-        dealer.dealCardInSet()
+        dealer.dealCardInSet(false)
+        dealer.dealCardInSet(false)
+        dealer.dealCardInSet(false)
+        dealer.dealCardInSet(false)
+        dealer.dealCardInSet(false)
 
         rules.init()
 
@@ -293,7 +293,7 @@ class GameModelRulesUnitTest {
     }
 
     @Test
-    suspend fun testEveryoneHasGuessed(){
+    fun testEveryoneHasGuessed(){
         val model = GameModel(viewModel)
 
         val dealer = GameModelDealer(420420)
@@ -324,7 +324,7 @@ class GameModelRulesUnitTest {
         rules.everyoneHasGuessed()
         assertTrue(rules.everyoneHasGuessed())
         assertEquals(1, player0.guesses[player0.id])
-        rules.updatedGuess(player0.id,0)
+        GameModelRules.updatedGuess(rules, player0.id,0)
         assertEquals(0, player0.guesses[player0.id])
 
         player0.scores.add(10)
