@@ -3,9 +3,11 @@ package at.aau.edu.wizards.ui.discover
 import androidx.lifecycle.*
 import at.aau.edu.wizards.*
 import at.aau.edu.wizards.api.Client
+import at.aau.edu.wizards.gameModel.MSG_COMMAND
 import at.aau.edu.wizards.gameModel.START_COMMAND
 import at.aau.edu.wizards.util.SingleLiveEvent
 import com.google.android.gms.nearby.connection.*
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
@@ -28,6 +30,10 @@ class DiscoverViewModel(
                 if (data.value == START_COMMAND) {
                     _startGame.postValue(Unit)
                 }
+//                else if (data.value.startsWith(MSG_COMMAND)) {
+//                    val message = data.value.substring(MSG_COMMAND.length + 1)
+//                    // TODO: Show the message as Snackbar!
+//                }
             }
         }
     }

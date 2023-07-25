@@ -1,10 +1,13 @@
 package at.aau.edu.wizards.ui.lobby
 
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.*
 import at.aau.edu.wizards.*
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.api.model.ServerConnection
+import at.aau.edu.wizards.gameModel.MSG_COMMAND
 import at.aau.edu.wizards.gameModel.START_COMMAND
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -80,7 +83,7 @@ class LobbyViewModel(
         server.declineClientRequest(lobbyItem.connection)
     }
 
-    private fun addCpuPlayer() {
+    public fun addCpuPlayer() {
         cpuPlayers.tryEmit(cpuPlayers.value + 1)
     }
 
@@ -88,13 +91,27 @@ class LobbyViewModel(
         cpuPlayers.tryEmit(cpuPlayers.value - 1)
     }
 
-    fun startGame(): Int {
+    fun startGame(root: ConstraintLayout): Int {
+
+        while (numPlayer < 4) {
+            addCpuPlayer()
+            numPlayer += 1
+        }
+
         val connections =
             server.getConnectionsSync().filterIsInstance(ServerConnection.Connected::class.java)
 
         connections.forEach { connection ->
             server.send(connection, START_COMMAND)
         }
+
+        val bots_info = "Added " + cpuPlayers.value + " bots to the game to reach the minimum number of players (4)."
+
+//        connections.forEach { connection ->
+//            server.send(connection, MSG_COMMAND + " " + bots_info)
+//        }
+
+        Snackbar.make(root, bots_info, 5000).show()
 
         return cpuPlayers.value
     }
