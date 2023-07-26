@@ -140,13 +140,15 @@ class GameBoardFragment : Fragment(), OnDragListener {
             if (it.visible) {
                 binding?.winningCard?.root?.visibility = View.VISIBLE
                 binding?.winningCard?.winningCard?.setImageResource(it.lastCardWon.image())
-                val playerName = viewModel.gameModel.listener.getNameOfPlayer(it.lastPlayerWon)
-                val pointDifference = viewModel.gameModel.listener.getPointDifference(it.lastPlayerWon)
+                val playerWinnerName = viewModel.gameModel.listener.getWinnerRound() //stimmt
+                val pointDifference = viewModel.gameModel.listener.getPointDifference()
+                val pointArray = viewModel.gameModel.listener.getPointArrayDifference()
                 binding?.winningCard?.tvPlayerWon?.text = buildString {
-                    append(playerName)
-                    append(" \n won by")
+                    append(playerWinnerName)
+                    append(" \n won this Round by \n")
                     append(pointDifference)
-                    append(" \n  points!")
+                    append(" points! \n")
+                    append(pointArray)
                 }
                 binding?.trumpIndicatorCard?.root?.visibility = View.INVISIBLE
                 binding?.boardRecycler?.visibility = View.INVISIBLE

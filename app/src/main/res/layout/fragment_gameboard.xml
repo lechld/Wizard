@@ -114,8 +114,8 @@
     <include
         android:id="@+id/winning_card"
         layout="@layout/item_popup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="500dp"
+        android:layout_height="400dp"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         app:layout_constraintBottom_toBottomOf="parent"

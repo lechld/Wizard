@@ -82,17 +82,37 @@ class GameModelListener(
     }
 
 
-    fun getPointDifference(id: Int): ArrayList<Int> {
+    fun getPointDifference(): Int {
+        var highestNumber = Int.MIN_VALUE
+        var secondHighestNumber = Int.MIN_VALUE
 
-        val returnScore2 = ArrayList<Int>()
+        for (entry in scoresRound) {
+            if (entry.scoreRound >= highestNumber) {
+                secondHighestNumber = highestNumber
 
-        for (scoreR in scoresRound) {
-            returnScore2.add(scoreR.scoreRound)
+                highestNumber = entry.scoreRound
+            } else if (entry.scoreRound >= secondHighestNumber) {
+                secondHighestNumber = entry.scoreRound
+            }
         }
 
-        return returnScore2.toCollection(ArrayList())
+        val highestNumber2 = scoresRound.maxByOrNull { it.scoreRound }
+
+        return highestNumber2!!.scoreRound - secondHighestNumber
     }
 
+    fun getPointArrayDifference(): ArrayList<Int> {
+        val returnScore2 = ArrayList<Int>()
+        for (score in scoresRound) {
+            returnScore2.add(score.scoreRound)
+        }
+        return returnScore2
+    }
+
+    fun getWinnerRound(): String {
+        val highestScore = scoresRound.maxByOrNull { it.scoreRound }
+        return getNameOfPlayer(highestScore!!.playerId)
+    }
 
     fun getIconOfPlayer(id: Int): Int {
         return players[id].icon
@@ -167,7 +187,7 @@ class GameModelListener(
     private suspend fun popUpVisibilityDelay() {
         activePlayer = winningCardPopUp.lastPlayerWon
         viewModel?.updateData(parent)
-        delay(10000)
+        delay(4000)
         winningCardPopUp = WinningCardPopUp(
             winningCardPopUp.lastCardWon,
             winningCardPopUp.lastPlayerWon,
