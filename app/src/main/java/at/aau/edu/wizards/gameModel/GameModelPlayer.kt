@@ -12,6 +12,7 @@ class GameModelPlayer(
 
     val cards = ArrayList<GameModelCard>()
     val scores = ArrayList<Int>()
+    val scoresRound = ArrayList<Int>()
     val guesses = ArrayList<Int>()
     var hasCheated = false
 
@@ -35,6 +36,20 @@ class GameModelPlayer(
             scores.add(20 + (wins * 10))
         } else {
             scores.add((wins * 10) - ((abs(guesses[guesses.size - 1] - wins)) * 10))
+        }
+    }
+
+    fun scoreRound(wins: Int) {
+        scoresRound.clear()
+        if (guesses.isEmpty()) {
+            throw Exception("Failed to score: No guess was set!")
+        }
+        val guess =
+            guesses[guesses.lastIndex]
+        if (guess == wins) {
+            scoresRound.add(20 + (wins * 10))
+        } else {
+            scoresRound.add((wins * 10) - ((abs(guesses[guesses.size - 1] - wins)) * 10))
         }
     }
 }

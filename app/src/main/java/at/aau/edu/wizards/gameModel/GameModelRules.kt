@@ -54,6 +54,7 @@ class GameModelRules(
     private suspend fun nextRound() {
         for (player in players) {
             player.score(getAmountWon(player.id))
+            player.scoreRound(getAmountWon(player.id))
         }
         wins.clear()
         round++

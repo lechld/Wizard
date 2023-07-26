@@ -20,6 +20,7 @@ class GameModelListener(
         private set
     private val guesses = ArrayList<Guess>()
     private val scores = ArrayList<Score>()
+    private val scoresRound = ArrayList<ScoreRound>()
     private val board = ArrayList<GameModelCard>()
     var winningCard: GameModelCard = GameModelCard.NoCard
         private set
@@ -27,13 +28,14 @@ class GameModelListener(
         private set
     val headerList = ArrayList<GameBoardHeader>()
 
-    var lastSet = 0
+    var lastRound = 1
     var winningCardPopUp = WinningCardPopUp(GameModelCard.NoCard, 0, false)
     var cheatingFunction = true
 
     data class Card(val card: GameModelCard, val playerId: Int)
     data class Guess(val guess: Int, val playerId: Int)
     data class Score(val score: Int, val playerId: Int)
+    data class ScoreRound(val scoreRound: Int, val playerId: Int)
     data class WinningCardPopUp(
         val lastCardWon: GameModelCard,
         val lastPlayerWon: Int,
@@ -79,6 +81,19 @@ class GameModelListener(
         return returnScore
     }
 
+
+    fun getPointDifference(id: Int): ArrayList<Int> {
+
+        val returnScore2 = ArrayList<Int>()
+
+        for (scoreR in scoresRound) {
+            returnScore2.add(scoreR.scoreRound)
+        }
+
+        return returnScore2.toCollection(ArrayList())
+    }
+
+
     fun getIconOfPlayer(id: Int): Int {
         return players[id].icon
     }
@@ -97,6 +112,7 @@ class GameModelListener(
         hands.clear()
         guesses.clear()
         scores.clear()
+        scoresRound.clear()
         for (player in players) {
             for (card in player.cards) {
                 hands.add(Card(card, player.id))
@@ -106,6 +122,9 @@ class GameModelListener(
             }
             for (score in player.scores) {
                 scores.add(Score(score, player.id))
+            }
+            for (scoreRound in player.scoresRound) {
+                scoresRound.add(ScoreRound(scoreRound, player.id))
             }
         }
         calculateHeader()
@@ -138,9 +157,9 @@ class GameModelListener(
     }
 
     private suspend fun calculateWinningCardPopUp() {
-        if (rules.numberOfSet > lastSet) {
+        if (rules.round > lastRound) {
             winningCardPopUp = WinningCardPopUp(rules.lastCardWon, rules.lastPlayerWon, true)
-            lastSet = rules.numberOfSet
+            lastRound = rules.round
             popUpVisibilityDelay()
         }
     }
@@ -148,7 +167,7 @@ class GameModelListener(
     private suspend fun popUpVisibilityDelay() {
         activePlayer = winningCardPopUp.lastPlayerWon
         viewModel?.updateData(parent)
-        delay(3000)
+        delay(10000)
         winningCardPopUp = WinningCardPopUp(
             winningCardPopUp.lastCardWon,
             winningCardPopUp.lastPlayerWon,
