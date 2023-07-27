@@ -22,4 +22,8 @@
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="avatarSelectionSpinner">Used to select an avatar</string>
     <string name="avatarSelectionImageView">Used to show avatar</string>
+    <string name="message_from_winning_player">Message from Winning Player:</string>
+    <string name="message_1">Message 1</string>
+    <string name="message_2">Message 2</string>
+    <string name="message_3">Message 3</string>
 </resources>

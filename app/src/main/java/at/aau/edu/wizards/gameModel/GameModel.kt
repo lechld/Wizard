@@ -73,9 +73,6 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                                     rules.updatedGuess(playerIndex, newGuessValue)
                                     listener.update()
                                     true
-
-
-
                                 }
                                 else -> {
                                     false
@@ -203,6 +200,10 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
 
     fun sendGuessOfLocalPlayer(guess: Int): Boolean {
         return sendMessage(buildString { append((60 + rules.id * 11 + guess).toChar().toString()) })
+    }
+
+    fun sendMessageWinner(string: String): Boolean {
+        return sendMessage(buildString { append((string)) })
     }
 
     suspend fun updateGuessCount(newGuess: Int) {

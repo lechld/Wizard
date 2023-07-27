@@ -27,7 +27,6 @@ class ClientGameBoardViewModel(
         if (move == END_COMMAND) {
             _scoreboard.value = true
         } else {
-
             viewModelScope.launch {
                 client.connectionsSync().filterIsInstance(ClientConnection.Connected::class.java)
                     .forEach {

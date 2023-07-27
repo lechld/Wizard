@@ -29,7 +29,7 @@ class GameModelListener(
     val headerList = ArrayList<GameBoardHeader>()
 
     var lastRound = 1
-    var winningCardPopUp = WinningCardPopUp(GameModelCard.NoCard, 0, false)
+    var winningCardPopUp = WinningCardPopUp(GameModelCard.NoCard, 0, false, winner = false)
     var cheatingFunction = true
 
     data class Card(val card: GameModelCard, val playerId: Int)
@@ -39,7 +39,8 @@ class GameModelListener(
     data class WinningCardPopUp(
         val lastCardWon: GameModelCard,
         val lastPlayerWon: Int,
-        val visible: Boolean
+        val visible: Boolean,
+        val winner: Boolean
     )
 
     fun getHandOfPlayer(id: Int): ArrayList<GameModelCard> { //potential to internally store hands and only update when player makes a turn, would reduce cpu overhead slightly
@@ -114,6 +115,11 @@ class GameModelListener(
         return getNameOfPlayer(highestScore!!.playerId)
     }
 
+    fun getWinnerRoundInt(): Int {
+        val highestScore = scoresRound.maxByOrNull { it.scoreRound }
+        return highestScore!!.playerId
+    }
+
     fun getIconOfPlayer(id: Int): Int {
         return players[id].icon
     }
@@ -178,7 +184,19 @@ class GameModelListener(
 
     private suspend fun calculateWinningCardPopUp() {
         if (rules.round > lastRound) {
-            winningCardPopUp = WinningCardPopUp(rules.lastCardWon, rules.lastPlayerWon, true)
+            for (player in players) {
+                winningCardPopUp = if (getWinnerRoundInt() == player.id)
+                    WinningCardPopUp(
+                        rules.lastCardWon, rules.lastPlayerWon, true,
+                        winner = true
+                    )
+                else {
+                    WinningCardPopUp(
+                        rules.lastCardWon, rules.lastPlayerWon, true,
+                        winner = false
+                    )
+                }
+            }
             lastRound = rules.round
             popUpVisibilityDelay()
         }
@@ -187,11 +205,11 @@ class GameModelListener(
     private suspend fun popUpVisibilityDelay() {
         activePlayer = winningCardPopUp.lastPlayerWon
         viewModel?.updateData(parent)
-        delay(4000)
+        delay(8000)
         winningCardPopUp = WinningCardPopUp(
             winningCardPopUp.lastCardWon,
             winningCardPopUp.lastPlayerWon,
-            false
+            false, winner = false
         )
         activePlayer = rules.currentPlayer
     }

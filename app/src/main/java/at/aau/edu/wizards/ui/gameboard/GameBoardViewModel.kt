@@ -7,7 +7,7 @@ import at.aau.edu.wizards.gameModel.GameModelCard
 import at.aau.edu.wizards.gameModel.GameModelListener
 import kotlinx.coroutines.launch
 
-abstract class GameBoardViewModel : ViewModel() {
+abstract class GameBoardViewModel() : ViewModel() {
 
     private val _cards = MutableLiveData<ArrayList<GameModelCard>>()
     val cards: LiveData<ArrayList<GameModelCard>> = _cards.distinctUntilChanged()
@@ -24,6 +24,9 @@ abstract class GameBoardViewModel : ViewModel() {
 
     private val _guess = MutableLiveData<List<Int>>()
     val guess: LiveData<List<Int>> = _guess.distinctUntilChanged()
+
+    private val _text = MutableLiveData<String>()
+    val text: LiveData<String> = _text.distinctUntilChanged()
 
     protected val _scoreboard = MutableLiveData<Boolean>()
     val scoreboard: LiveData<Boolean> = _scoreboard.distinctUntilChanged()
@@ -46,7 +49,7 @@ abstract class GameBoardViewModel : ViewModel() {
             _guess.postValue(emptyList())
             _board.postValue(model.listener.boardAsNewArray())
         }
-
+        _text.value = "test"
         _cards.postValue(model.listener.getHandOfPlayer(model.localPlayer()))
         _trump.postValue(model.listener.trump)
 

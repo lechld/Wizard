@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnDragListener
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -138,6 +139,57 @@ class GameBoardFragment : Fragment(), OnDragListener {
     private fun setupPopUp() {
         viewModel.winningcard.observe(viewLifecycleOwner) {
             if (it.visible) {
+
+                binding?.winningCard?.btnMessage1?.setOnClickListener {
+                    viewModel.gameModel.sendMessageWinner("Test 1")
+                    Toast.makeText(activity, "Test", Toast.LENGTH_LONG).show()
+                }
+
+                binding?.winningCard?.btnMessage2?.setOnClickListener {
+                    viewModel.gameModel.sendMessageWinner("Test 2")
+                }
+
+                binding?.winningCard?.btnMessage3?.setOnClickListener {
+                    viewModel.gameModel.sendMessageWinner("Test 3")
+                }
+
+                viewModel.text.observe(viewLifecycleOwner) {
+                    binding?.winningCard?.tvMessage?.text = buildString {
+                        append(" \n won this Round by \n")
+                    }
+                }
+
+
+                if (it.winner) {
+                    /*binding?.winningCard?.btnMessage1?.visibility = View.VISIBLE
+                    binding?.winningCard?.btnMessage2?.visibility = View.VISIBLE
+                    binding?.winningCard?.btnMessage3?.visibility = View.VISIBLE
+                    binding?.winningCard?.tvWinningPlayerMessage?.visibility = View.VISIBLE
+
+                    binding?.winningCard?.btnMessage1?.setOnClickListener {
+                        viewModel.gameModel.sendMessageWinner("Test 1")
+                    }
+
+                    binding?.winningCard?.btnMessage2?.setOnClickListener {
+                        viewModel.gameModel.sendMessageWinner("Test 2")
+                    }
+
+                    binding?.winningCard?.btnMessage3?.setOnClickListener {
+                        viewModel.gameModel.sendMessageWinner("Test 3")
+                    }
+
+                   viewModel.text.observe(viewLifecycleOwner) {
+                       binding?.winningCard?.tvMessage?.visibility = View.INVISIBLE
+                   } */
+
+
+                } else {
+                    /* binding?.winningCard?.btnMessage1?.visibility = View.INVISIBLE
+                    binding?.winningCard?.btnMessage2?.visibility = View.INVISIBLE
+                    binding?.winningCard?.btnMessage3?.visibility = View.INVISIBLE
+                    binding?.winningCard?.tvWinningPlayerMessage?.visibility = View.INVISIBLE */
+                }
+
                 binding?.winningCard?.root?.visibility = View.VISIBLE
                 binding?.winningCard?.winningCard?.setImageResource(it.lastCardWon.image())
                 val playerWinnerName = viewModel.gameModel.listener.getWinnerRound() //stimmt
