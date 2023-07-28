@@ -20,4 +20,9 @@
     <string name="okay">Okay</string>
     <string name="avatarSelectionSpinner">Wird benutzt um Avatar zu wählen</string>
     <string name="avatarSelectionImageView">Wird benutzt um Avatar anzuzeigen</string>
+    <string name="message_1">Nachricht 1</string>
+    <string name="message_2">Nachricht 2</string>
+    <string name="message_3">Nachricht 3</string>
+    <string name="counter">Zähler</string>
+    <string name="message_from_winning_player">Message from Winning Player:</string>
 </resources>

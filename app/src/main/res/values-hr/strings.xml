@@ -20,4 +20,8 @@
     <string name="okay">U redu</string>
     <string name="avatarSelectionSpinner">Koristi se za odabir avatara</string>
     <string name="avatarSelectionImageView">Koristi se za prikaz avatara</string>
+    <string name="message_1">Message 1</string>
+    <string name="message_2">Message 2</string>
+    <string name="message_3">Message 3</string>
+    <string name="counter">Counter</string>    <string name="message_from_winning_player">Message from Winning Player:</string>
 </resources>
