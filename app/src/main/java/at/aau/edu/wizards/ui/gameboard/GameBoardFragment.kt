@@ -5,6 +5,7 @@ import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.DragEvent
@@ -24,12 +25,16 @@ import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
 import at.aau.edu.wizards.gameModel.GameModelCard
+import at.aau.edu.wizards.gameModel.MESSAGE1
+import at.aau.edu.wizards.gameModel.MESSAGE2
+import at.aau.edu.wizards.gameModel.MESSAGE3
 import at.aau.edu.wizards.ui.gameboard.claim.GuessAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.shake.ShakeDetector
 import at.aau.edu.wizards.util.OffsetItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.util.*
 
 
 class GameBoardFragment : Fragment(), OnDragListener {
@@ -137,62 +142,56 @@ class GameBoardFragment : Fragment(), OnDragListener {
     }
 
     private fun setupPopUp() {
+
+        binding?.winningCard?.btnMessage1?.setOnClickListener {
+            viewModel.gameModel.sendMessage(MESSAGE1)
+        }
+
+        binding?.winningCard?.btnMessage2?.setOnClickListener {
+            viewModel.gameModel.sendMessage(MESSAGE2)
+        }
+
+        binding?.winningCard?.btnMessage3?.setOnClickListener {
+            viewModel.gameModel.sendMessage(MESSAGE3)
+        }
+
+        viewModel.winningText.observe(viewLifecycleOwner) { message ->
+            Toast.makeText(activity, message.winningText, Toast.LENGTH_LONG).show()
+        }
+
         viewModel.winningcard.observe(viewLifecycleOwner) {
             if (it.visible) {
-
-                binding?.winningCard?.btnMessage1?.setOnClickListener {
-                    viewModel.gameModel.sendMessageWinner("Test 1")
-                    Toast.makeText(activity, "Test", Toast.LENGTH_LONG).show()
-                }
-
-                binding?.winningCard?.btnMessage2?.setOnClickListener {
-                    viewModel.gameModel.sendMessageWinner("Test 2")
-                }
-
-                binding?.winningCard?.btnMessage3?.setOnClickListener {
-                    viewModel.gameModel.sendMessageWinner("Test 3")
-                }
-
-                viewModel.text.observe(viewLifecycleOwner) {
-                    binding?.winningCard?.tvMessage?.text = buildString {
-                        append(" \n won this Round by \n")
-                    }
-                }
-
-
                 if (it.winner) {
-                    /*binding?.winningCard?.btnMessage1?.visibility = View.VISIBLE
+                    binding?.winningCard?.btnMessage1?.visibility = View.VISIBLE
                     binding?.winningCard?.btnMessage2?.visibility = View.VISIBLE
                     binding?.winningCard?.btnMessage3?.visibility = View.VISIBLE
                     binding?.winningCard?.tvWinningPlayerMessage?.visibility = View.VISIBLE
 
-                    binding?.winningCard?.btnMessage1?.setOnClickListener {
-                        viewModel.gameModel.sendMessageWinner("Test 1")
-                    }
-
-                    binding?.winningCard?.btnMessage2?.setOnClickListener {
-                        viewModel.gameModel.sendMessageWinner("Test 2")
-                    }
-
-                    binding?.winningCard?.btnMessage3?.setOnClickListener {
-                        viewModel.gameModel.sendMessageWinner("Test 3")
-                    }
-
-                   viewModel.text.observe(viewLifecycleOwner) {
-                       binding?.winningCard?.tvMessage?.visibility = View.INVISIBLE
-                   } */
-
-
                 } else {
-                    /* binding?.winningCard?.btnMessage1?.visibility = View.INVISIBLE
+                    binding?.winningCard?.btnMessage1?.visibility = View.INVISIBLE
                     binding?.winningCard?.btnMessage2?.visibility = View.INVISIBLE
                     binding?.winningCard?.btnMessage3?.visibility = View.INVISIBLE
-                    binding?.winningCard?.tvWinningPlayerMessage?.visibility = View.INVISIBLE */
+                    binding?.winningCard?.tvWinningPlayerMessage?.visibility = View.INVISIBLE
                 }
+
+                val counter = binding?.winningCard?.tvCounter
+
+                val countdownTimer = object : CountDownTimer(6000, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        val secondsRemaining = millisUntilFinished / 1000
+                        counter!!.text = secondsRemaining.toString()
+                    }
+
+                    override fun onFinish() {
+                        counter!!.text = ""
+                    }
+                }
+
+                countdownTimer.start()
 
                 binding?.winningCard?.root?.visibility = View.VISIBLE
                 binding?.winningCard?.winningCard?.setImageResource(it.lastCardWon.image())
-                val playerWinnerName = viewModel.gameModel.listener.getWinnerRound() //stimmt
+                val playerWinnerName = viewModel.gameModel.listener.getWinnerRound()
                 val pointDifference = viewModel.gameModel.listener.getPointDifference()
                 val pointArray = viewModel.gameModel.listener.getPointArrayDifference()
                 binding?.winningCard?.tvPlayerWon?.text = buildString {
@@ -229,7 +228,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
 
     private fun setupGuess(binding: FragmentGameboardBinding) {
         val guessAdapter = GuessAdapter { guess ->
-            // should not access GameModel here
+// should not access GameModel here
             viewModel.gameModel.sendGuessOfLocalPlayer(guess)
         }
 
@@ -280,7 +279,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
                 val item: GameModelCard = event.localState as GameModelCard
                 viewModel.sendMessage(item.getString())
 
-                // Trigger haptic feedback
+// Trigger haptic feedback
                 if (vibrator.hasVibrator()) {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                         vibrator.vibrate(
@@ -338,7 +337,7 @@ class GameBoardFragment : Fragment(), OnDragListener {
         private const val AMOUNT_CPU_EXTRA = "AMOUNT_CPU_EXTRA"
         fun instance(asClient: Boolean, amountCpu: Int = 0): GameBoardFragment {
             if (asClient && amountCpu > 0) {
-                // This is not handled ideally, but fine for now
+// This is not handled ideally, but fine for now
                 throw IllegalArgumentException("Only Server is allowed to define cpu players")
 
             }

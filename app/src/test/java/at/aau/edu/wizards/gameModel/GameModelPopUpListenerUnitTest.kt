@@ -7,6 +7,19 @@ import org.junit.jupiter.api.Test
 class GameModelPopUpListenerUnitTest {
     private val viewModel = null
 
+
+    @Test
+    fun testPopUp() = runTest {
+        val model = GameModel(viewModel)
+
+        assert(model.receiveMessage(buildString {
+            append(0.toChar())
+            append(6.toChar())
+            append(0.toChar())
+            append(420420.toString())
+        }))
+    }
+
     @Test
     fun test() = runTest {
         val model = GameModel(viewModel)

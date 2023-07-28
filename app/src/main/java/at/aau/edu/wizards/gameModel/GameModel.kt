@@ -12,7 +12,9 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
         private set
 
     fun sendMessage(move: String): Boolean {
-        return if (legalMessageGuessSend(move) || legalMessageCardSend(move) || move == END_COMMAND || legalCheatingGuess(move) || legalFountCheater(move)
+        return if (legalMessageGuessSend(move) || legalMessageCardSend(move) || move == END_COMMAND || legalCheatingGuess(
+                move
+            ) || legalFountCheater(move) || move == MESSAGE1 || move == MESSAGE2 || move == MESSAGE3
         ) {
             viewModel?.sendMessage(move)
             true
@@ -24,7 +26,6 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
     private fun legalMessageGuessSend(move: String): Boolean {
         return (legalMessageGuess(move) && (move[0].code - 60) / 11 == rules.id)
     }
-
 
     private fun legalMessageCardSend(move: String): Boolean {
         return legalMessageCard(move) && legalPlayFromLocalPlayer(move) && rules.everyoneHasGuessed()
@@ -94,7 +95,9 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                     }
                 }
             }
+
         }
+
     }
 
     private fun legalMessageInit(move: String): Boolean {
@@ -200,10 +203,6 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
 
     fun sendGuessOfLocalPlayer(guess: Int): Boolean {
         return sendMessage(buildString { append((60 + rules.id * 11 + guess).toChar().toString()) })
-    }
-
-    fun sendMessageWinner(string: String): Boolean {
-        return sendMessage(buildString { append((string)) })
     }
 
     suspend fun updateGuessCount(newGuess: Int) {

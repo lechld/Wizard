@@ -184,8 +184,8 @@ class GameModelListener(
 
     private suspend fun calculateWinningCardPopUp() {
         if (rules.round > lastRound) {
-            for (player in players) {
-                winningCardPopUp = if (getWinnerRoundInt() == player.id)
+
+                winningCardPopUp = if (getWinnerRoundInt() == rules.lastPlayerWon)
                     WinningCardPopUp(
                         rules.lastCardWon, rules.lastPlayerWon, true,
                         winner = true
@@ -196,7 +196,7 @@ class GameModelListener(
                         winner = false
                     )
                 }
-            }
+
             lastRound = rules.round
             popUpVisibilityDelay()
         }
@@ -205,7 +205,7 @@ class GameModelListener(
     private suspend fun popUpVisibilityDelay() {
         activePlayer = winningCardPopUp.lastPlayerWon
         viewModel?.updateData(parent)
-        delay(8000)
+        delay(6000)
         winningCardPopUp = WinningCardPopUp(
             winningCardPopUp.lastCardWon,
             winningCardPopUp.lastPlayerWon,

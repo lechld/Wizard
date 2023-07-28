@@ -3,8 +3,7 @@ package at.aau.edu.wizards.ui.gameboard
 import androidx.lifecycle.viewModelScope
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.api.model.ServerConnection
-import at.aau.edu.wizards.gameModel.END_COMMAND
-import at.aau.edu.wizards.gameModel.GameModel
+import at.aau.edu.wizards.gameModel.*
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -20,7 +19,25 @@ class ServerGameBoardViewModel(
 
         viewModelScope.launch {
             server.messages.collect { message ->
-                if (gameModel.receiveMessage(message.value)) {
+                if (message.value == MESSAGE1 || message.value == MESSAGE2 || message.value == MESSAGE3) {
+                    if (winningText.value == null) {
+                        _winningText.postValue(
+                            WinningText(
+                                message.value, 1
+                            )
+                        )
+                    } else {
+                        _winningText.postValue(
+                            WinningText(
+                                message.value,
+                                winningText.value!!.iteration + 1
+                            )
+                        )
+                    }
+                    connections.forEach {
+                        server.send(it, message.value)
+                    }
+                } else if (gameModel.receiveMessage(message.value)) {
                     connections.forEach {
                         server.send(it, message.value)
                     }
@@ -51,18 +68,41 @@ class ServerGameBoardViewModel(
     }
 
     override fun sendMessage(move: String) {
-        if (move == END_COMMAND) {
-            _scoreboard.value = true
-        } else {
-            viewModelScope.launch {
-                if (gameModel.receiveMessage(move)) {
-                    server.getConnectionsSync()
-                        .filterIsInstance(ServerConnection.Connected::class.java)
-                        .forEach {
-                            server.send(it, move)
+        when (move) {
+            END_COMMAND -> {
+                _scoreboard.value = true
+            }
+            else -> {
+                viewModelScope.launch {
+                    if (move == MESSAGE1 || move == MESSAGE2 || move == MESSAGE3) {
+                        if (winningText.value == null) {
+                            _winningText.postValue(
+                                WinningText(
+                                    move, 1
+                                )
+                            )
+                        } else {
+                            _winningText.postValue(
+                                WinningText(
+                                    move,
+                                    winningText.value!!.iteration + 1
+                                )
+                            )
                         }
+                        server.getConnectionsSync()
+                            .filterIsInstance(ServerConnection.Connected::class.java)
+                            .forEach {
+                                server.send(it, move)
+                            }
+                    } else if (gameModel.receiveMessage(move)) {
+                        server.getConnectionsSync()
+                            .filterIsInstance(ServerConnection.Connected::class.java)
+                            .forEach {
+                                server.send(it, move)
+                            }
+                    }
+                    updateData(gameModel)
                 }
-                updateData(gameModel)
             }
         }
     }
