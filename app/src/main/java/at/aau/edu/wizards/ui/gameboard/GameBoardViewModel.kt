@@ -35,6 +35,10 @@ abstract class GameBoardViewModel() : ViewModel() {
     val winningcard: LiveData<GameModelListener.WinningCardPopUp> =
         _winningcard
 
+    private val _winningcardforwinner = MutableLiveData<GameModelListener.WinningCardPopUpForWinner>()
+    val winningcardforwinner: LiveData<GameModelListener.WinningCardPopUpForWinner> =
+        _winningcardforwinner
+
     abstract fun sendMessage(move: String)
 
     abstract val gameModel: GameModel
@@ -53,6 +57,7 @@ abstract class GameBoardViewModel() : ViewModel() {
         _trump.postValue(model.listener.trump)
 
         _winningcard.value = model.listener.winningCardPopUp
+        _winningcardforwinner.value = model.listener.winningCardPopUpForWinner
     }
 
     private fun buildGuessList(model: GameModel): List<Int> {
@@ -94,8 +99,6 @@ abstract class GameBoardViewModel() : ViewModel() {
             gameModel.updateGuessCount(guessInt)
         }
     }
-
-
 
     fun getBuildGuess(): Array<CharSequence> {
 

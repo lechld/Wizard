@@ -30,6 +30,8 @@ class GameModelListener(
 
     var lastRound = 1
     var winningCardPopUp = WinningCardPopUp(GameModelCard.NoCard, 0, false, winner = false)
+    var winningCardPopUpForWinner = WinningCardPopUpForWinner(GameModelCard.NoCard, 0, false)
+
     var cheatingFunction = true
 
     data class Card(val card: GameModelCard, val playerId: Int)
@@ -40,7 +42,13 @@ class GameModelListener(
         val lastCardWon: GameModelCard,
         val lastPlayerWon: Int,
         val visible: Boolean,
-        val winner: Boolean
+        val winner: Boolean,
+    )
+
+    data class WinningCardPopUpForWinner(
+        val lastCardWon: GameModelCard,
+        val lastPlayerWon: Int,
+        val visible: Boolean,
     )
 
     fun getHandOfPlayer(id: Int): ArrayList<GameModelCard> { //potential to internally store hands and only update when player makes a turn, would reduce cpu overhead slightly
@@ -127,7 +135,6 @@ class GameModelListener(
     private fun getCurrentWins(id: Int): Int {
         return rules.getAmountWon(id)
     }
-
     suspend fun update() {
         activePlayer = rules.currentPlayer
         numberOfPlayers = players.size
@@ -156,6 +163,7 @@ class GameModelListener(
         calculateHeader()
         calculateWinningCardPopUp()
         viewModel?.updateData(parent)
+
     }
 
     private fun calculateHeader() {
@@ -184,21 +192,29 @@ class GameModelListener(
 
     private suspend fun calculateWinningCardPopUp() {
         if (rules.round > lastRound) {
-
-                winningCardPopUp = if (getWinnerRoundInt() == rules.lastPlayerWon)
-                    WinningCardPopUp(
-                        rules.lastCardWon, rules.lastPlayerWon, true,
-                        winner = true
-                    )
-                else {
-                    WinningCardPopUp(
-                        rules.lastCardWon, rules.lastPlayerWon, true,
-                        winner = false
-                    )
-                }
-
+            winningCardPopUp = if (getWinnerRoundInt() == rules.lastPlayerWon)
+                WinningCardPopUp(
+                    rules.lastCardWon, rules.lastPlayerWon, true,
+                winner = true
+                )
+            else {
+                WinningCardPopUp(
+                    rules.lastCardWon, rules.lastPlayerWon, true,
+                    winner = false
+                )
+            }
             lastRound = rules.round
             popUpVisibilityDelay()
+        }
+    }
+
+
+    private suspend fun calculateWinningCardPopUpForWinner() {
+        if (rules.round > lastRound) {
+            winningCardPopUpForWinner =
+                WinningCardPopUpForWinner(rules.lastCardWon, rules.lastPlayerWon, true)
+            lastRound = rules.round
+            popUpVisibilityDelayForWinner()
         }
     }
 
@@ -210,6 +226,18 @@ class GameModelListener(
             winningCardPopUp.lastCardWon,
             winningCardPopUp.lastPlayerWon,
             false, winner = false
+        )
+        activePlayer = rules.currentPlayer
+    }
+
+    private suspend fun popUpVisibilityDelayForWinner() {
+        activePlayer = winningCardPopUpForWinner.lastPlayerWon
+        viewModel?.updateData(parent)
+        delay(6000)
+        winningCardPopUpForWinner = WinningCardPopUpForWinner(
+            winningCardPopUpForWinner.lastCardWon,
+            winningCardPopUpForWinner.lastPlayerWon,
+            false
         )
         activePlayer = rules.currentPlayer
     }

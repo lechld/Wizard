@@ -24,10 +24,7 @@ import at.aau.edu.wizards.R
 import at.aau.edu.wizards.api.Client
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.databinding.FragmentGameboardBinding
-import at.aau.edu.wizards.gameModel.GameModelCard
-import at.aau.edu.wizards.gameModel.MESSAGE1
-import at.aau.edu.wizards.gameModel.MESSAGE2
-import at.aau.edu.wizards.gameModel.MESSAGE3
+import at.aau.edu.wizards.gameModel.*
 import at.aau.edu.wizards.ui.gameboard.claim.GuessAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
@@ -78,8 +75,6 @@ class GameBoardFragment : Fragment(), OnDragListener {
                     }.create().show()
             }
         })
-
-
     }
 
     override fun onCreateView(
@@ -90,7 +85,6 @@ class GameBoardFragment : Fragment(), OnDragListener {
         this.binding = binding
 
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -142,7 +136,6 @@ class GameBoardFragment : Fragment(), OnDragListener {
     }
 
     private fun setupPopUp() {
-
         binding?.winningCard?.btnMessage1?.setOnClickListener {
             viewModel.gameModel.sendMessage(MESSAGE1)
         }
