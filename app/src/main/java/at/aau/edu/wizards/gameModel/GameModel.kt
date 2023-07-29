@@ -91,13 +91,10 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                                 }
                             }
                         }
-
                     }
                 }
             }
-
         }
-
     }
 
     private fun legalMessageInit(move: String): Boolean {

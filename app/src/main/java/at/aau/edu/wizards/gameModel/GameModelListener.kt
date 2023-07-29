@@ -90,7 +90,6 @@ class GameModelListener(
         return returnScore
     }
 
-
     fun getPointDifference(): Int {
         var highestNumber = Int.MIN_VALUE
         var secondHighestNumber = Int.MIN_VALUE
@@ -163,7 +162,6 @@ class GameModelListener(
         calculateHeader()
         calculateWinningCardPopUp()
         viewModel?.updateData(parent)
-
     }
 
     private fun calculateHeader() {
@@ -207,7 +205,6 @@ class GameModelListener(
             popUpVisibilityDelay()
         }
     }
-
 
     private suspend fun calculateWinningCardPopUpForWinner() {
         if (rules.round > lastRound) {
