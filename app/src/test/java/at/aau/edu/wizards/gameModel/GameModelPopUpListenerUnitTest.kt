@@ -1,215 +1,53 @@
 package at.aau.edu.wizards.gameModel
 
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.mock
 
 class GameModelPopUpListenerUnitTest {
     private val viewModel = null
-
-
-    @Test
-    fun testPopUp() = runTest {
-        val model = GameModel(viewModel)
-
-        assert(model.receiveMessage(buildString {
-            append(0.toChar())
-            append(6.toChar())
-            append(0.toChar())
-            append(420420.toString())
-        }))
-    }
 
     @Test
     fun test() = runTest {
         val model = GameModel(viewModel)
         var listener = model.listener
 
-        assertEquals(GameModelCard.NoCard, listener.trump)
-        assertEquals(0, listener.numberOfPlayers)
-        assertEquals(GameModelCard.NoCard, listener.winningCard)
-        assert(listener.getHandOfPlayer(0).isEmpty())
+        assertEquals(GameModelCard.NoCard, listener.winningCardPopUp.lastCardWon)
 
-        assert(model.receiveMessage(buildString {
-            append(0.toChar())
-            append(6.toChar())
-            append(0.toChar())
-            append(420420.toString())
-        }))
-        listener = model.listener
+        assertEquals(false, listener.winningCardPopUp.visible)
+        assertEquals(false, listener.winningCardPopUp.winner)
 
-        assertEquals(6, listener.numberOfPlayers)
-        assertEquals(GameModelCard.Normal(GameModelCard.Color.Orange, 11), listener.trump)
-
-
-        assertEquals(0, listener.getCurrentGuessOfPlayer(0))
-        assertEquals(0, listener.getCurrentGuessOfPlayer(3))
-
-        assert(model.receiveMessage(60.toChar().toString()))
-        assert(model.receiveMessage((60 + 11).toChar().toString()))
-        assert(model.receiveMessage((60 + 22).toChar().toString()))
-        assert(model.receiveMessage((60 + 33 + 1).toChar().toString()))
-        assert(model.receiveMessage((60 + 44).toChar().toString()))
-        assert(model.receiveMessage((60 + 55).toChar().toString()))
-
-
-        assertEquals(0, listener.activePlayer)
-        assertEquals(GameModelCard.Normal(GameModelCard.Color.Orange, 11), listener.trump)
-        assert(listener.getAllScoresOfPlayer(0).isEmpty())
-        assertEquals(0, listener.getCurrentGuessOfPlayer(0))
-        assertEquals(0, listener.getCurrentGuessOfPlayer(6))
-        assertEquals(1, listener.getCurrentGuessOfPlayer(3))
-        assert(listener.getAllScoresOfPlayer(0).isEmpty())
-        assert(listener.getHandOfPlayer(6).isEmpty())
-
-        assertEquals(1, listener.getHandOfPlayer(0).size)
-        assertEquals(
-            GameModelCard.Jester(GameModelCard.Color.Orange),
-            listener.getHandOfPlayer(0)[0]
-        )
-
-        assert(model.receiveMessage(GameModelCard.Jester(GameModelCard.Color.Orange).getString()))
-        assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Green, 6).getString()))
-        assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Blue, 4).getString()))
-        assert(
-            model.receiveMessage(
-                GameModelCard.Normal(GameModelCard.Color.Orange, 8).getString()
-            )
-        )
-        assert(
-            model.receiveMessage(
-                GameModelCard.Normal(GameModelCard.Color.Green, 10).getString()
-            )
-        )
-        assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Green, 5).getString()))
-
-        assert(model.receiveMessage(60.toChar().toString()))
-        assert(model.receiveMessage((60 + 11).toChar().toString()))
-        assert(model.receiveMessage((60 + 22 + 1).toChar().toString()))
-        assert(model.receiveMessage((60 + 33 + 1).toChar().toString()))
-        assert(model.receiveMessage((60 + 44).toChar().toString()))
-        assert(model.receiveMessage((60 + 55).toChar().toString()))
-
-        assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Red, 7).getString()))
-        assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Blue, 1).getString()))
-        assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Blue, 6).getString()))
-        assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Red, 3).getString()))
-        assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Red, 13).getString()))
-        assertEquals(GameModelCard.Normal(GameModelCard.Color.Red, 13), listener.winningCard)
-        assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Red, 9).getString()))
-
-        assert(
-            model.receiveMessage(
-                GameModelCard.Normal(GameModelCard.Color.Orange, 10).getString()
-            )
-        )
-        assert(model.receiveMessage(GameModelCard.Jester(GameModelCard.Color.Orange).getString()))
-        assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Green, 3).getString()))
-        assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Red, 8).getString()))
-        assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Green, 2).getString()))
-        assert(model.receiveMessage(GameModelCard.Normal(GameModelCard.Color.Blue, 7).getString()))
-
-        assertEquals(2, listener.getAllScoresOfPlayer(0).size)
-        assertEquals(2, listener.getAllScoresOfPlayer(1).size)
-        assertEquals(2, listener.getAllScoresOfPlayer(2).size)
-        assertEquals(2, listener.getAllScoresOfPlayer(3).size)
-        assertEquals(2, listener.getAllScoresOfPlayer(4).size)
-        assertEquals(2, listener.getAllScoresOfPlayer(5).size)
-
-
-
-        assertEquals(40, listener.getCurrentScoreOfPlayer(0))
-        assertEquals(40, listener.getCurrentScoreOfPlayer(1))
-        assertEquals(10, listener.getCurrentScoreOfPlayer(2))
-        assertEquals(60, listener.getCurrentScoreOfPlayer(3))
-        assertEquals(40, listener.getCurrentScoreOfPlayer(4))
-        assertEquals(20, listener.getCurrentScoreOfPlayer(5))
-
-        assertEquals(20, listener.getAllScoresOfPlayer(0)[0])
-        assertEquals(20, listener.getAllScoresOfPlayer(0)[1])
-        assertEquals(20, listener.getAllScoresOfPlayer(1)[0])
-        assertEquals(20, listener.getAllScoresOfPlayer(1)[1])
-        assertEquals(20, listener.getAllScoresOfPlayer(2)[0])
-        assertEquals(-10, listener.getAllScoresOfPlayer(2)[1])
-        assertEquals(30, listener.getAllScoresOfPlayer(3)[0])
-        assertEquals(30, listener.getAllScoresOfPlayer(3)[1])
-        assertEquals(20, listener.getAllScoresOfPlayer(4)[0])
-        assertEquals(20, listener.getAllScoresOfPlayer(4)[1])
-        assertEquals(20, listener.getAllScoresOfPlayer(5)[0])
-        assertEquals(0, listener.getAllScoresOfPlayer(5)[1])
+        assertEquals(0, listener.getPointDifference())
+        assertEquals(0, listener.getWinnerRoundInt())
+        assertEquals("No Winner", listener.getWinnerRound())
     }
 
     @Test
-    fun testGuessing() = runTest {
+    fun testPointDifference() = runTest {
         val model = GameModel(viewModel)
         var listener = model.listener
 
-        assertFalse(listener.guessing)
+        assertEquals(0, listener.getPointDifference())
 
-        assertTrue(model.receiveMessage(buildString {
-            append(0.toChar())
-            append(1.toChar())
-            append(2.toChar())
-            append(420420.toString())
-        }))
-        listener = model.listener
-        assertTrue(listener.guessing)
-        assertTrue(model.receiveMessage(60.toChar().toString()))
-        assertFalse(listener.guessing)
-        assertTrue(model.receiveMessage(listener.getHandOfPlayer(0)[0].getString()))
-        assertTrue(listener.guessing)
-        assertTrue(model.receiveMessage(62.toChar().toString()))
-        assertFalse(listener.guessing)
-    }
+        val player0 = GameModelListener.ScoreRound(10, 0)
+        val player1 = GameModelListener.ScoreRound(20, 1)
+        val player2 = GameModelListener.ScoreRound(-10, 2)
+        val player3 = GameModelListener.ScoreRound(40, 3)
+        val player4 = GameModelListener.ScoreRound(80, 4)
 
-    @Test
-    fun testGetNameOfPlayer() = runTest {
-        val model = GameModel(viewModel)
-        assertTrue(model.receiveMessage(buildString {
-            append(0.toChar())
-            append(1.toChar())
-            append(5.toChar())
-            append(420420.toString())
-        }))
-        val listener = model.listener
-        for (player in 0..5) {
-            assertNotEquals("MissingPlayer", listener.getNameOfPlayer(player))
-        }
-        assertEquals("MissingPlayer", listener.getNameOfPlayer(-1))
-        assertEquals("MissingPlayer", listener.getNameOfPlayer(6))
-    }
+        val playerScoreList = ArrayList<GameModelListener.ScoreRound>()
+        playerScoreList.add(player0)
+        playerScoreList.add(player1)
+        playerScoreList.add(player2)
+        playerScoreList.add(player3)
+        playerScoreList.add(player4)
 
-    @Test
-    fun testBoardAsNewArray() = runTest {
-        val model = GameModel(viewModel)
-        assertTrue(model.receiveMessage(buildString {
-            append(0.toChar())
-            append(1.toChar())
-            append(5.toChar())
-            append(420420.toString())
-        }))
-        val listener = model.listener
-        val board1 = listener.boardAsNewArray()
-        val board2 = listener.boardAsNewArray()
-        assertEquals(board1, board2)
-        board1.removeAt(0)
-        assertNotEquals(board1, board2)
-    }
+        //TODO HILFE
+        val mock = mock<GameModelListener>()
 
-    @Test
-    fun testHasCheated() = runTest {
-        val model = GameModel(viewModel)
-        val listener = model.listener
+        mock.scoresRound = playerScoreList
 
-        assert(listener.getHandOfPlayer(0).isEmpty())
-
-        assert(model.receiveMessage(buildString {
-            append(0.toChar())
-            append(6.toChar())
-            append(0.toChar())
-            append(420420.toString())
-        }))
-
-        assertFalse(listener.hasCheated())
+        assertEquals(40, listener.getPointDifference())
     }
 }

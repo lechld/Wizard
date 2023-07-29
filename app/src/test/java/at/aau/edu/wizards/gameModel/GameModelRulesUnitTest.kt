@@ -346,9 +346,5 @@ class GameModelRulesUnitTest {
         rules.init()
         assertEquals(-10, player2.scores[player2.scores.lastIndex])
         assertEquals(10, player0.scores[player0.scores.lastIndex])
-
-
-
-
     }
 }

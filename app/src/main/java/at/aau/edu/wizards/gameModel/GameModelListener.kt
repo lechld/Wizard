@@ -20,7 +20,7 @@ class GameModelListener(
         private set
     private val guesses = ArrayList<Guess>()
     private val scores = ArrayList<Score>()
-    private val scoresRound = ArrayList<ScoreRound>()
+    var scoresRound = ArrayList<ScoreRound>()
     private val board = ArrayList<GameModelCard>()
     var winningCard: GameModelCard = GameModelCard.NoCard
         private set
@@ -107,25 +107,25 @@ class GameModelListener(
 
         val highestNumber2 = scoresRound.maxByOrNull { it.scoreRound }
 
-        return highestNumber2!!.scoreRound - secondHighestNumber
+        return (highestNumber2?.scoreRound?.minus(secondHighestNumber)) ?: 0
     }
 
     fun getPointArrayDifference(): ArrayList<Int> {
-        val returnScore2 = ArrayList<Int>()
+        val returnScore = ArrayList<Int>()
         for (score in scoresRound) {
-            returnScore2.add(score.scoreRound)
+            returnScore.add(score.scoreRound)
         }
-        return returnScore2
+        return returnScore
     }
 
     fun getWinnerRound(): String {
         val highestScore = scoresRound.maxByOrNull { it.scoreRound }
-        return getNameOfPlayer(highestScore!!.playerId)
+        return highestScore?.playerId?.let { getNameOfPlayer(it) } ?: "No Winner"
     }
 
     fun getWinnerRoundInt(): Int {
         val highestScore = scoresRound.maxByOrNull { it.scoreRound }
-        return highestScore!!.playerId
+        return highestScore?.playerId ?: 0
     }
 
     fun getIconOfPlayer(id: Int): Int {
@@ -307,5 +307,4 @@ class GameModelListener(
         }
         return false
     }
-
 }

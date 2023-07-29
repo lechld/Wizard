@@ -111,7 +111,6 @@ class GameBoardFragment : Fragment(), OnDragListener {
         setupPopUp()
     }
 
-
     private fun setupTrump(binding: FragmentGameboardBinding) {
         binding.trumpIndicatorCard.text.visibility = View.INVISIBLE
         viewModel.trump.observe(viewLifecycleOwner) { trump ->
