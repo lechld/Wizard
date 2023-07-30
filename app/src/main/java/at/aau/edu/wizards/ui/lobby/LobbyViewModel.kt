@@ -5,7 +5,6 @@ import androidx.lifecycle.*
 import at.aau.edu.wizards.*
 import at.aau.edu.wizards.api.Server
 import at.aau.edu.wizards.api.model.ServerConnection
-import at.aau.edu.wizards.gameModel.MSG_COMMAND
 import at.aau.edu.wizards.gameModel.START_COMMAND
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.Flow
@@ -91,7 +90,7 @@ class LobbyViewModel(
         cpuPlayers.tryEmit(cpuPlayers.value - 1)
     }
 
-    fun startGame(root: ConstraintLayout): Int {
+    fun startGame(): Int {
 
         while (numPlayer < 4) {
             addCpuPlayer()
@@ -104,14 +103,6 @@ class LobbyViewModel(
         connections.forEach { connection ->
             server.send(connection, START_COMMAND)
         }
-
-        val bots_info = "Added " + cpuPlayers.value + " bots to the game to reach the minimum number of players (4)."
-
-//        connections.forEach { connection ->
-//            server.send(connection, MSG_COMMAND + " " + bots_info)
-//        }
-
-        Snackbar.make(root, bots_info, 5000).show()
 
         return cpuPlayers.value
     }

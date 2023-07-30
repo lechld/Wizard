@@ -29,6 +29,7 @@ import at.aau.edu.wizards.ui.gameboard.recycler.GameBoardBoardAdapter
 import at.aau.edu.wizards.ui.gameboard.shake.ShakeDetector
 import at.aau.edu.wizards.util.OffsetItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 
 
 class GameBoardFragment : Fragment(), OnDragListener {
@@ -72,8 +73,6 @@ class GameBoardFragment : Fragment(), OnDragListener {
                     }.create().show()
             }
         })
-
-
     }
 
     override fun onCreateView(
@@ -84,7 +83,6 @@ class GameBoardFragment : Fragment(), OnDragListener {
         this.binding = binding
 
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -92,6 +90,10 @@ class GameBoardFragment : Fragment(), OnDragListener {
 
         setupUI()
         registerShakeListener()
+
+        val bots_info = "Added " + amountCpu + " bots to the game to reach the minimum number of players (4)."
+        println(bots_info)
+        Snackbar.make(this.binding!!.root, bots_info, 5000).show()
     }
 
     override fun onDestroyView() {

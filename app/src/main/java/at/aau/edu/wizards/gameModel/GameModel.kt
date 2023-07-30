@@ -1,7 +1,6 @@
 package at.aau.edu.wizards.gameModel
 
 import at.aau.edu.wizards.ui.gameboard.GameBoardViewModel
-import com.google.android.material.snackbar.Snackbar
 import kotlin.random.Random
 
 class GameModel(private val viewModel: GameBoardViewModel?) {
@@ -74,9 +73,6 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                                     rules.updatedGuess(playerIndex, newGuessValue)
                                     listener.update()
                                     true
-
-
-
                                 }
                                 else -> {
                                     false
@@ -186,10 +182,6 @@ class GameModel(private val viewModel: GameBoardViewModel?) {
                 )
             )
         }
-
-        val bots_info = "GAME MODEL: Added " + move[2].code + " bots to the game to reach the minimum number of players (4)."
-
-        println(bots_info)
 
         rules.init()
     }
