@@ -28,10 +28,6 @@ class DiscoverViewModel(
                 if (data.value == START_COMMAND) {
                     _startGame.postValue(Unit)
                 }
-//                else if (data.value.startsWith(MSG_COMMAND)) {
-//                    val message = data.value.substring(MSG_COMMAND.length + 1)
-//                    // TODO: Show the message as Snackbar!
-//                }
             }
         }
     }
