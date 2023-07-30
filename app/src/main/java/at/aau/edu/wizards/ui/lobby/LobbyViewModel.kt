@@ -80,7 +80,7 @@ class LobbyViewModel(
         server.declineClientRequest(lobbyItem.connection)
     }
 
-    public fun addCpuPlayer() {
+    private fun addCpuPlayer() {
         cpuPlayers.tryEmit(cpuPlayers.value + 1)
     }
 
