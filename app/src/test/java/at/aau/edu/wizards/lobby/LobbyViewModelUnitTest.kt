@@ -18,9 +18,9 @@ class LobbyViewModelUnitTest {
     private val viewModel = LobbyViewModel(server, lobbyItemFactory)
 
     @Test
-    fun `Testing numPlayer adding human CPU player`() {
-        viewModel.clicked(LobbyItem.AddCpu)
-        assertEquals(2, viewModel.numPlayer)
+    fun `Testing numPlayer adding CPU player`() {
+        viewModel.startGame()
+        assertEquals(4, viewModel.numPlayer)
     }
 
     @Test
