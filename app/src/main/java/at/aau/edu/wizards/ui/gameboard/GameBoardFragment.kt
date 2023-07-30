@@ -91,8 +91,10 @@ class GameBoardFragment : Fragment(), OnDragListener {
         setupUI()
         registerShakeListener()
 
-        val bots_info = "Added " + amountCpu + " bots to the game to reach the minimum number of players (4)."
-        println(bots_info)
+        val numCpuPlayers = viewModel.gameModel.players.filter { player -> !player.isHuman }.count()
+
+        val bots_info = "Added " + numCpuPlayers + " bots to the game to reach the minimum number of players (4)."
+
         Snackbar.make(this.binding!!.root, bots_info, 5000).show()
     }
 

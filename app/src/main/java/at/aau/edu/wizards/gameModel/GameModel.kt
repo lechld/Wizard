@@ -5,7 +5,7 @@ import kotlin.random.Random
 
 class GameModel(private val viewModel: GameBoardViewModel?) {
 
-    private val players = ArrayList<GameModelPlayer>()
+    val players = ArrayList<GameModelPlayer>()
     private var dealer = GameModelDealer(0)
     private var rules = GameModelRules(players, 0, dealer, this, 0)
     var listener = GameModelListener(rules, players, viewModel, this)
